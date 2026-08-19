@@ -12,9 +12,6 @@ namespace Deucarian.Simultria.API.Configuration
     /// environment profiles and the Simultria API v2 endpoint catalog without
     /// storing an active environment or any credential.
     /// </summary>
-    [CreateAssetMenu(
-        fileName = "SimultriaApiProfile",
-        menuName = "Deucarian/Simultria/API Profile")]
     public sealed class SimultriaApiProfile : ScriptableObject
     {
         [SerializeField] private List<ApiEnvironmentProfile> environments =
@@ -28,7 +25,10 @@ namespace Deucarian.Simultria.API.Configuration
 
         public ApiComposition CreateComposition()
         {
-            return new ApiComposition(environments, endpointCatalog);
+            return new ApiComposition(
+                environments,
+                endpointCatalog,
+                SimultriaEnvironmentDescriptors.Standard);
         }
 
         public bool TryCreateComposition(

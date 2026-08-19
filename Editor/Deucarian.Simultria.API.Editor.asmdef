@@ -1,0 +1,20 @@
+{
+  "name": "Deucarian.Simultria.API.Editor",
+  "rootNamespace": "Deucarian.Simultria.API.Editor",
+  "references": [
+    "Deucarian.API",
+    "Deucarian.Editor",
+    "Deucarian.Simultria.API"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
