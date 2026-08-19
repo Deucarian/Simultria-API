@@ -79,9 +79,9 @@ namespace Deucarian.Simultria.API.Tests.EditMode
 
         public void Dispose()
         {
-            Object.DestroyImmediate(Profile);
-            Object.DestroyImmediate(Catalog);
-            Object.DestroyImmediate(Environment);
+            UnityEngine.Object.DestroyImmediate(Profile);
+            UnityEngine.Object.DestroyImmediate(Catalog);
+            UnityEngine.Object.DestroyImmediate(Environment);
         }
 
         private void Add(
