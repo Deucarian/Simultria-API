@@ -1,0 +1,1786 @@
+{
+  "catalogOperations": 351,
+  "derivedLoggingSuppressedByDefault": true,
+  "derivedMappings": [
+    {
+      "method": "GET",
+      "operationId": "showAppContent",
+      "path": "/api/v2/admin/app-contents/{key}"
+    },
+    {
+      "method": "PATCH",
+      "operationId": "updateAppContent",
+      "path": "/api/v2/admin/app-contents/{key}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexAppSettings",
+      "path": "/api/v2/admin/app-settings"
+    },
+    {
+      "method": "GET",
+      "operationId": "showAppSetting",
+      "path": "/api/v2/admin/app-settings/{key}"
+    },
+    {
+      "method": "PATCH",
+      "operationId": "updateAppSetting",
+      "path": "/api/v2/admin/app-settings/{key}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexAutodeskErrors",
+      "path": "/api/v2/admin/autodesk-errors"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeAutodeskError",
+      "path": "/api/v2/admin/autodesk-errors"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteAutodeskError",
+      "path": "/api/v2/admin/autodesk-errors/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "showAutodeskError",
+      "path": "/api/v2/admin/autodesk-errors/{id}"
+    },
+    {
+      "method": "PUT",
+      "operationId": "updateAutodeskError",
+      "path": "/api/v2/admin/autodesk-errors/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexChangelogItems",
+      "path": "/api/v2/admin/changelog-items"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeChangelogItem",
+      "path": "/api/v2/admin/changelog-items"
+    },
+    {
+      "method": "PATCH",
+      "operationId": "syncChangelogItems",
+      "path": "/api/v2/admin/changelog-items/sync"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteChangelogItem",
+      "path": "/api/v2/admin/changelog-items/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "viewChangelogItem",
+      "path": "/api/v2/admin/changelog-items/{id}"
+    },
+    {
+      "method": "PUT",
+      "operationId": "updateChangelogItem",
+      "path": "/api/v2/admin/changelog-items/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexCompanies",
+      "path": "/api/v2/admin/companies"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeCompany",
+      "path": "/api/v2/admin/companies"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteCompany",
+      "path": "/api/v2/admin/companies/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "showCompany",
+      "path": "/api/v2/admin/companies/{id}"
+    },
+    {
+      "method": "PUT",
+      "operationId": "updateCompany",
+      "path": "/api/v2/admin/companies/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexDownloads",
+      "path": "/api/v2/admin/downloads"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeDownload",
+      "path": "/api/v2/admin/downloads"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteDownload",
+      "path": "/api/v2/admin/downloads/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "showDownload",
+      "path": "/api/v2/admin/downloads/{id}"
+    },
+    {
+      "method": "PUT",
+      "operationId": "updateDownload",
+      "path": "/api/v2/admin/downloads/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexFeedbackReports",
+      "path": "/api/v2/admin/feedback-reports"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteFeedbackReport",
+      "path": "/api/v2/admin/feedback-reports/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "viewFeedbackReport",
+      "path": "/api/v2/admin/feedback-reports/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexIPWhitelists",
+      "path": "/api/v2/admin/ip-whitelists"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeIPWhitelist",
+      "path": "/api/v2/admin/ip-whitelists"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteIPWhitelist",
+      "path": "/api/v2/admin/ip-whitelists/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "viewIPWhitelist",
+      "path": "/api/v2/admin/ip-whitelists/{id}"
+    },
+    {
+      "method": "PUT",
+      "operationId": "updateIPWhitelist",
+      "path": "/api/v2/admin/ip-whitelists/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexIssueMonitors",
+      "path": "/api/v2/admin/issue-monitor"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeIssueMonitor",
+      "path": "/api/v2/admin/issue-monitor"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteIssueMonitor",
+      "path": "/api/v2/admin/issue-monitor/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "viewIssueMonitor",
+      "path": "/api/v2/admin/issue-monitor/{id}"
+    },
+    {
+      "method": "PUT",
+      "operationId": "updateIssueMonitor",
+      "path": "/api/v2/admin/issue-monitor/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexIssueReports",
+      "path": "/api/v2/admin/issue-reports"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteIssueReport",
+      "path": "/api/v2/admin/issue-reports/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "viewIssueReport",
+      "path": "/api/v2/admin/issue-reports/{id}"
+    },
+    {
+      "method": "PUT",
+      "operationId": "updateIssueReport",
+      "path": "/api/v2/admin/issue-reports/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexKnowledgeBaseArticles",
+      "path": "/api/v2/admin/knowledge_base_articles"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeKnowledgeBaseArticle",
+      "path": "/api/v2/admin/knowledge_base_articles"
+    },
+    {
+      "method": "GET",
+      "operationId": "listCategories",
+      "path": "/api/v2/admin/knowledge_base_articles/categories"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteKnowledgeBaseArticle",
+      "path": "/api/v2/admin/knowledge_base_articles/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "showKnowledgeBaseArticle",
+      "path": "/api/v2/admin/knowledge_base_articles/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexTranslationLanguages",
+      "path": "/api/v2/admin/languages"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeTranslationLanguage",
+      "path": "/api/v2/admin/languages"
+    },
+    {
+      "method": "PATCH",
+      "operationId": "massUpdateTranslationLanguages",
+      "path": "/api/v2/admin/languages/mass-update"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteTranslationLanguage",
+      "path": "/api/v2/admin/languages/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "showTranslationLanguage",
+      "path": "/api/v2/admin/languages/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexPlannedMaintenance",
+      "path": "/api/v2/admin/planned-maintenance"
+    },
+    {
+      "method": "POST",
+      "operationId": "storePlannedMaintenance",
+      "path": "/api/v2/admin/planned-maintenance"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deletePlannedMaintenance",
+      "path": "/api/v2/admin/planned-maintenance/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "showPlannedMaintenance",
+      "path": "/api/v2/admin/planned-maintenance/{id}"
+    },
+    {
+      "method": "PUT",
+      "operationId": "updatePlannedMaintenance",
+      "path": "/api/v2/admin/planned-maintenance/{id}"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeQuestionFAQ",
+      "path": "/api/v2/admin/questions"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeQuestionCategory",
+      "path": "/api/v2/admin/questions/categories"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteQuestionCategory",
+      "path": "/api/v2/admin/questions/categories/{questionCategory_id}"
+    },
+    {
+      "method": "PATCH",
+      "operationId": "updateQuestionCategory",
+      "path": "/api/v2/admin/questions/categories/{questionCategory_id}"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteQuestionFAQ",
+      "path": "/api/v2/admin/questions/{id}"
+    },
+    {
+      "method": "PUT",
+      "operationId": "updateQuestionFAQ",
+      "path": "/api/v2/admin/questions/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexTranslationKeysWithTranslations",
+      "path": "/api/v2/admin/translations"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeTranslationKeyWithTranslations",
+      "path": "/api/v2/admin/translations"
+    },
+    {
+      "method": "PATCH",
+      "operationId": "bulkImportTranslationKeysAndTranslations",
+      "path": "/api/v2/admin/translations/bulk-import"
+    },
+    {
+      "method": "PATCH",
+      "operationId": "massUpdateTranslations",
+      "path": "/api/v2/admin/translations/mass-update"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteTranslationKey",
+      "path": "/api/v2/admin/translations/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "showTranslationKey",
+      "path": "/api/v2/admin/translations/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexUnityBuildVersions",
+      "path": "/api/v2/admin/unity/builds/versions"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeUnityBuildVersion",
+      "path": "/api/v2/admin/unity/builds/versions"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteUnityBuildVersion",
+      "path": "/api/v2/admin/unity/builds/versions/{id}/{product}"
+    },
+    {
+      "method": "GET",
+      "operationId": "viewUnityBuildVersion",
+      "path": "/api/v2/admin/unity/builds/versions/{id}/{product}"
+    },
+    {
+      "method": "GET",
+      "operationId": "showUnityEnvironmentConfig",
+      "path": "/api/v2/admin/unity/environments/{environment}/config"
+    },
+    {
+      "method": "PATCH",
+      "operationId": "updateUnityEnvironmentConfig",
+      "path": "/api/v2/admin/unity/environments/{environment}/config"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexAbilitiesAndLicenses",
+      "path": "/api/v2/auth/abilities"
+    },
+    {
+      "method": "POST",
+      "operationId": "loginToAutodesk",
+      "path": "/api/v2/autodesk/oauth/login"
+    },
+    {
+      "method": "GET",
+      "operationId": "loginCallbackDONOTUSE",
+      "path": "/api/v2/autodesk/oauth/login/callback"
+    },
+    {
+      "method": "POST",
+      "operationId": "logoutOfAutodesk",
+      "path": "/api/v2/autodesk/oauth/logout"
+    },
+    {
+      "method": "GET",
+      "operationId": "getProjectIssueTypes",
+      "path": "/api/v2/autodesk/{autodeskProjectType}/projects/{autodeskProjectId}/issues/types"
+    },
+    {
+      "method": "GET",
+      "operationId": "getDashboardChangelogItems",
+      "path": "/api/v2/changelog"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexCompanies",
+      "path": "/api/v2/companies"
+    },
+    {
+      "method": "GET",
+      "operationId": "showDemoModel",
+      "path": "/api/v2/companies/demo-model"
+    },
+    {
+      "method": "GET",
+      "operationId": "showCompany",
+      "path": "/api/v2/companies/my-company"
+    },
+    {
+      "method": "PATCH",
+      "operationId": "updateCompany",
+      "path": "/api/v2/companies/my-company"
+    },
+    {
+      "method": "GET",
+      "operationId": "showCompanyBySubdomain",
+      "path": "/api/v2/companies/{subdomain}"
+    },
+    {
+      "method": "GET",
+      "operationId": "downloadDocumentVersion",
+      "path": "/api/v2/documents/versions/{version_id}/download"
+    },
+    {
+      "method": "GET",
+      "operationId": "downloadDocument",
+      "path": "/api/v2/documents/{document_id}/download"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexDownloads",
+      "path": "/api/v2/downloads"
+    },
+    {
+      "method": "GET",
+      "operationId": "downloadDownload",
+      "path": "/api/v2/downloads/{download_id}/download"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeFeedbackReport",
+      "path": "/api/v2/feedback-reports"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexGroups",
+      "path": "/api/v2/groups"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeGroup",
+      "path": "/api/v2/groups"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteGroup",
+      "path": "/api/v2/groups/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "showGroup",
+      "path": "/api/v2/groups/{id}"
+    },
+    {
+      "method": "PUT",
+      "operationId": "updateGroup",
+      "path": "/api/v2/groups/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexLabels",
+      "path": "/api/v2/groups/{model_id}/labels"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeLabel",
+      "path": "/api/v2/groups/{model_id}/labels"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "detachLabels",
+      "path": "/api/v2/groups/{model_id}/labels/{id}"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeIssueReport",
+      "path": "/api/v2/issue-reports"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexLabels",
+      "path": "/api/v2/labels"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeLabel",
+      "path": "/api/v2/labels"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteLabel",
+      "path": "/api/v2/labels/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "viewLabel",
+      "path": "/api/v2/labels/{id}"
+    },
+    {
+      "method": "PUT",
+      "operationId": "updateLabel",
+      "path": "/api/v2/labels/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexLibraries",
+      "path": "/api/v2/libraries"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeLibrary",
+      "path": "/api/v2/libraries"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexLibraryItems",
+      "path": "/api/v2/libraries/items"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeLibraryItem",
+      "path": "/api/v2/libraries/items"
+    },
+    {
+      "method": "POST",
+      "operationId": "massUpdateLibraryItems",
+      "path": "/api/v2/libraries/items/update"
+    },
+    {
+      "method": "GET",
+      "operationId": "viewLibraryItemVersion",
+      "path": "/api/v2/libraries/items/versions/{id}"
+    },
+    {
+      "method": "PATCH",
+      "operationId": "updateLibraryItemVersion",
+      "path": "/api/v2/libraries/items/versions/{id}"
+    },
+    {
+      "method": "POST",
+      "operationId": "duplicateLibraryItemVersion",
+      "path": "/api/v2/libraries/items/versions/{version_id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "downloadLibraryItemVersion",
+      "path": "/api/v2/libraries/items/versions/{version_id}/download"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexLibraryItemVersionMetaData",
+      "path": "/api/v2/libraries/items/versions/{version_id}/meta-data"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexGeometryObjects",
+      "path": "/api/v2/libraries/items/versions/{version_id}/objects"
+    },
+    {
+      "method": "GET",
+      "operationId": "viewGeometryObject",
+      "path": "/api/v2/libraries/items/versions/{version_id}/objects/{external_id}"
+    },
+    {
+      "method": "PATCH",
+      "operationId": "updateGeometryObject",
+      "path": "/api/v2/libraries/items/versions/{version_id}/objects/{external_id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexGeometryObjectMetaData",
+      "path": "/api/v2/libraries/items/versions/{version_id}/objects/{external_id}/meta-data"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteGeometryObjectMetaData",
+      "path": "/api/v2/libraries/items/versions/{version_id}/objects/{external_id}/meta-data/{key}"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteLibraryItem",
+      "path": "/api/v2/libraries/items/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "viewLibraryItem",
+      "path": "/api/v2/libraries/items/{id}"
+    },
+    {
+      "method": "PUT",
+      "operationId": "updateLibraryItem",
+      "path": "/api/v2/libraries/items/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "downloadLibraryItem",
+      "path": "/api/v2/libraries/items/{item_id}/download"
+    },
+    {
+      "method": "POST",
+      "operationId": "duplicateLibraryItem",
+      "path": "/api/v2/libraries/items/{item_id}/duplicate"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexLibraryItemMetaData",
+      "path": "/api/v2/libraries/items/{item_id}/meta-data"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteLibraryItemMetaData",
+      "path": "/api/v2/libraries/items/{item_id}/meta-data/{key}"
+    },
+    {
+      "method": "POST",
+      "operationId": "reprocessLibraryItem",
+      "path": "/api/v2/libraries/items/{item_id}/reprocess"
+    },
+    {
+      "method": "GET",
+      "operationId": "restoreLibraryItem",
+      "path": "/api/v2/libraries/items/{item}/restore"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexLabels",
+      "path": "/api/v2/libraries/items/{model_id}/labels"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeLabel",
+      "path": "/api/v2/libraries/items/{model_id}/labels"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "detachLabels",
+      "path": "/api/v2/libraries/items/{model_id}/labels/{id}"
+    },
+    {
+      "method": "POST",
+      "operationId": "massUpdateLibraries",
+      "path": "/api/v2/libraries/update"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteLibrary",
+      "path": "/api/v2/libraries/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "viewLibrary",
+      "path": "/api/v2/libraries/{id}"
+    },
+    {
+      "method": "PUT",
+      "operationId": "updateLibrary",
+      "path": "/api/v2/libraries/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexLibraryItems",
+      "path": "/api/v2/libraries/{library_id}/items"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "detachLibraryItem",
+      "path": "/api/v2/libraries/{library_id}/items/{item_id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "restoreLibrary",
+      "path": "/api/v2/libraries/{library}/restore"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexLabels",
+      "path": "/api/v2/libraries/{model_id}/labels"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeLabel",
+      "path": "/api/v2/libraries/{model_id}/labels"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "detachLabels",
+      "path": "/api/v2/libraries/{model_id}/labels/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "logout",
+      "path": "/api/v2/logout"
+    },
+    {
+      "method": "GET",
+      "operationId": "logoutOfAllDevices",
+      "path": "/api/v2/logout-all"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexMentionedMarkups",
+      "path": "/api/v2/markups/mentions"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexMaterials",
+      "path": "/api/v2/materials"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeMaterial",
+      "path": "/api/v2/materials"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexMaterialCategories",
+      "path": "/api/v2/materials/categories"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeMaterialCategory",
+      "path": "/api/v2/materials/categories"
+    },
+    {
+      "method": "POST",
+      "operationId": "massUpdateMaterialCategories",
+      "path": "/api/v2/materials/categories/update"
+    },
+    {
+      "method": "GET",
+      "operationId": "restoreMaterialCategory",
+      "path": "/api/v2/materials/categories/{category}/restore"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteMaterialCategory",
+      "path": "/api/v2/materials/categories/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "showMaterialCategory",
+      "path": "/api/v2/materials/categories/{id}"
+    },
+    {
+      "method": "PUT",
+      "operationId": "updateMaterialCategory",
+      "path": "/api/v2/materials/categories/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexLabels",
+      "path": "/api/v2/materials/categories/{model_id}/labels"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeLabel",
+      "path": "/api/v2/materials/categories/{model_id}/labels"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "detachLabels",
+      "path": "/api/v2/materials/categories/{model_id}/labels/{id}"
+    },
+    {
+      "method": "POST",
+      "operationId": "importMaterial",
+      "path": "/api/v2/materials/import"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexTextures",
+      "path": "/api/v2/materials/textures"
+    },
+    {
+      "method": "GET",
+      "operationId": "showTexture",
+      "path": "/api/v2/materials/textures/{texture_id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "downloadTexture",
+      "path": "/api/v2/materials/textures/{texture_id}/download"
+    },
+    {
+      "method": "POST",
+      "operationId": "massUpdateMaterials",
+      "path": "/api/v2/materials/update"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexMaterialVersionMetaData",
+      "path": "/api/v2/materials/versions/{version_id}/meta-data"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexLabels",
+      "path": "/api/v2/materials/{model_id}/labels"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeLabel",
+      "path": "/api/v2/materials/{model_id}/labels"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "detachLabels",
+      "path": "/api/v2/materials/{model_id}/labels/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "showMaterial",
+      "path": "/api/v2/materials/{nameOrId}"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteMaterial",
+      "path": "/api/v2/materials/{name}"
+    },
+    {
+      "method": "PATCH",
+      "operationId": "updateMaterial",
+      "path": "/api/v2/materials/{name}"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "detachMaterial",
+      "path": "/api/v2/materials/{name}/categories/{category_id}"
+    },
+    {
+      "method": "POST",
+      "operationId": "duplicateMaterial",
+      "path": "/api/v2/materials/{name}/duplicate"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexMaterialMetaData",
+      "path": "/api/v2/materials/{name}/meta-data"
+    },
+    {
+      "method": "GET",
+      "operationId": "restoreMaterial",
+      "path": "/api/v2/materials/{name}/restore"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexMaterialVariants",
+      "path": "/api/v2/materials/{name}/variants"
+    },
+    {
+      "method": "GET",
+      "operationId": "showAccount",
+      "path": "/api/v2/my-account"
+    },
+    {
+      "method": "PATCH",
+      "operationId": "updateAccount",
+      "path": "/api/v2/my-account"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexUserActivityMyAccount",
+      "path": "/api/v2/my-account/activity"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexUserNotifications",
+      "path": "/api/v2/my-account/notifications"
+    },
+    {
+      "method": "POST",
+      "operationId": "markAllNotificationsAsRead",
+      "path": "/api/v2/my-account/notifications/read-all"
+    },
+    {
+      "method": "PATCH",
+      "operationId": "updateUserNotification",
+      "path": "/api/v2/my-account/notifications/{id}"
+    },
+    {
+      "method": "POST",
+      "operationId": "resetPINCode",
+      "path": "/api/v2/my-account/reset-pin"
+    },
+    {
+      "method": "GET",
+      "operationId": "viewOption",
+      "path": "/api/v2/option-sets/options/{id}"
+    },
+    {
+      "method": "PATCH",
+      "operationId": "updateOption",
+      "path": "/api/v2/option-sets/options/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexLabels",
+      "path": "/api/v2/option-sets/options/{model_id}/labels"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeLabel",
+      "path": "/api/v2/option-sets/options/{model_id}/labels"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "detachLabels",
+      "path": "/api/v2/option-sets/options/{model_id}/labels/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexLabels",
+      "path": "/api/v2/option-sets/{model_id}/labels"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeLabel",
+      "path": "/api/v2/option-sets/{model_id}/labels"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "detachLabels",
+      "path": "/api/v2/option-sets/{model_id}/labels/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "viewOptionSet",
+      "path": "/api/v2/option-sets/{optionSet_id}"
+    },
+    {
+      "method": "PATCH",
+      "operationId": "updateOptionSet",
+      "path": "/api/v2/option-sets/{optionSet_id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexOptions",
+      "path": "/api/v2/option-sets/{optionSet_id}/options"
+    },
+    {
+      "method": "GET",
+      "operationId": "showPlaceholderImage",
+      "path": "/api/v2/placeholders/{name}"
+    },
+    {
+      "method": "POST",
+      "operationId": "handelFinishEvent",
+      "path": "/api/v2/processor/event/finish"
+    },
+    {
+      "method": "POST",
+      "operationId": "handelUpdateEvent",
+      "path": "/api/v2/processor/event/update"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeScreenshot",
+      "path": "/api/v2/processor/materials/versions/{version_id}/screenshot"
+    },
+    {
+      "method": "POST",
+      "operationId": "processorStart",
+      "path": "/api/v2/processor/start"
+    },
+    {
+      "method": "GET",
+      "operationId": "checkProcessorStatus",
+      "path": "/api/v2/processor/status"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeCompressedTextures",
+      "path": "/api/v2/processor/textures/{texture_id}/compressed"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexProjectModels",
+      "path": "/api/v2/projects/models"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexProjectModelIssues",
+      "path": "/api/v2/projects/models/activities/{activity_id}/issues"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeANewProjectIssue",
+      "path": "/api/v2/projects/models/activities/{activity_id}/issues"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteProjectIssue",
+      "path": "/api/v2/projects/models/issues/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "showProjectIssue",
+      "path": "/api/v2/projects/models/issues/{id}"
+    },
+    {
+      "method": "PUT",
+      "operationId": "updateProjectIssue",
+      "path": "/api/v2/projects/models/issues/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "downloadIssueAttachment",
+      "path": "/api/v2/projects/models/issues/{issue_id}/attachments/{media_id}/download"
+    },
+    {
+      "method": "POST",
+      "operationId": "mergeUploadedChunksIntoASingleMediaFileForAProjectModelIssue",
+      "path": "/api/v2/projects/models/issues/{issue_id}/media/merge-chunks"
+    },
+    {
+      "method": "GET",
+      "operationId": "getTheMergeStatusOfAMediaFileForAProjectModelIssue",
+      "path": "/api/v2/projects/models/issues/{issue_id}/media/merge-status"
+    },
+    {
+      "method": "POST",
+      "operationId": "uploadAChunkOfMediaFileForAProjectModelIssue",
+      "path": "/api/v2/projects/models/issues/{issue_id}/media/upload-chunk"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "removeMediaFileAssociatedWithAProjectModelIssue",
+      "path": "/api/v2/projects/models/issues/{issue_id}/media/{media}"
+    },
+    {
+      "method": "POST",
+      "operationId": "massUpdateProjectModels",
+      "path": "/api/v2/projects/models/update"
+    },
+    {
+      "method": "PATCH",
+      "operationId": "updateProjectModelVersion",
+      "path": "/api/v2/projects/models/versions/{id}"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeANewlyCreatedActivityForAProjectModelVersion",
+      "path": "/api/v2/projects/models/versions/{version_id}/activities"
+    },
+    {
+      "method": "PATCH",
+      "operationId": "toggleTheDoneStatusOfAProjectModelActivity",
+      "path": "/api/v2/projects/models/versions/{version_id}/activities/{activity_id}/status-toggle"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "removeTheSpecifiedActivityFromAProjectModelVersion",
+      "path": "/api/v2/projects/models/versions/{version_id}/activities/{id}"
+    },
+    {
+      "method": "PUT",
+      "operationId": "updateTheSpecifiedActivityForAProjectModelVersion",
+      "path": "/api/v2/projects/models/versions/{version_id}/activities/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "viewProjectModelVersionChanges",
+      "path": "/api/v2/projects/models/versions/{version_id}/changes"
+    },
+    {
+      "method": "GET",
+      "operationId": "freezeProjectModelVersion",
+      "path": "/api/v2/projects/models/versions/{version_id}/freeze"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexProjectModelVersionMetaData",
+      "path": "/api/v2/projects/models/versions/{version_id}/meta-data"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexGeometryObjects",
+      "path": "/api/v2/projects/models/versions/{version_id}/objects"
+    },
+    {
+      "method": "GET",
+      "operationId": "viewGeometryObject",
+      "path": "/api/v2/projects/models/versions/{version_id}/objects/{external_id}"
+    },
+    {
+      "method": "PATCH",
+      "operationId": "updateGeometryObject",
+      "path": "/api/v2/projects/models/versions/{version_id}/objects/{external_id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexGeometryObjectMetaData",
+      "path": "/api/v2/projects/models/versions/{version_id}/objects/{external_id}/meta-data"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteGeometryObjectMetaData",
+      "path": "/api/v2/projects/models/versions/{version_id}/objects/{external_id}/meta-data/{key}"
+    },
+    {
+      "method": "GET",
+      "operationId": "unfreezeProjectModelVersion",
+      "path": "/api/v2/projects/models/versions/{version_id}/unfreeze"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteProjectModel",
+      "path": "/api/v2/projects/models/{id}"
+    },
+    {
+      "method": "PUT",
+      "operationId": "updateProjectModel",
+      "path": "/api/v2/projects/models/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexProjectModelConstraints",
+      "path": "/api/v2/projects/models/{model_id}/constraints"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeOrUpdateProjectModelConstraint",
+      "path": "/api/v2/projects/models/{model_id}/constraints"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteProjectConstraint",
+      "path": "/api/v2/projects/models/{model_id}/constraints/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "showProjectConstraint",
+      "path": "/api/v2/projects/models/{model_id}/constraints/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "downloadProjectModel",
+      "path": "/api/v2/projects/models/{model_id}/download"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexLabels",
+      "path": "/api/v2/projects/models/{model_id}/labels"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeLabel",
+      "path": "/api/v2/projects/models/{model_id}/labels"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "detachLabels",
+      "path": "/api/v2/projects/models/{model_id}/labels/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexProjectModelLibraries",
+      "path": "/api/v2/projects/models/{model_id}/libraries"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeProjectModelLibrary",
+      "path": "/api/v2/projects/models/{model_id}/libraries"
+    },
+    {
+      "method": "PATCH",
+      "operationId": "toggleProjectModelLibraries",
+      "path": "/api/v2/projects/models/{model_id}/libraries/toggle"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteProjectModelLibrary",
+      "path": "/api/v2/projects/models/{model_id}/libraries/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "showProjectModelLibrary",
+      "path": "/api/v2/projects/models/{model_id}/libraries/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "syncProjectModelLibrary",
+      "path": "/api/v2/projects/models/{model_id}/libraries/{library_id}/sync"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexProjectModelMaterialCategories",
+      "path": "/api/v2/projects/models/{model_id}/material-categories"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeProjectModelMaterialCategory",
+      "path": "/api/v2/projects/models/{model_id}/material-categories"
+    },
+    {
+      "method": "PATCH",
+      "operationId": "toggleProjectModelMaterialCategories",
+      "path": "/api/v2/projects/models/{model_id}/material-categories/toggle"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteProjectModelMaterialCategory",
+      "path": "/api/v2/projects/models/{model_id}/material-categories/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "showProjectModelMaterialCategory",
+      "path": "/api/v2/projects/models/{model_id}/material-categories/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexProjectModelMetaData",
+      "path": "/api/v2/projects/models/{model_id}/meta-data"
+    },
+    {
+      "method": "POST",
+      "operationId": "generateMultiplayerToken",
+      "path": "/api/v2/projects/models/{model_id}/multiplayer/tokens"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexOptionSets",
+      "path": "/api/v2/projects/models/{model_id}/option-sets"
+    },
+    {
+      "method": "POST",
+      "operationId": "reprocessProjectModel",
+      "path": "/api/v2/projects/models/{model_id}/reprocess"
+    },
+    {
+      "method": "GET",
+      "operationId": "restoreProjectModel",
+      "path": "/api/v2/projects/models/{model}/restore"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteProject",
+      "path": "/api/v2/projects/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexLabels",
+      "path": "/api/v2/projects/{model_id}/labels"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeLabel",
+      "path": "/api/v2/projects/{model_id}/labels"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "detachLabels",
+      "path": "/api/v2/projects/{model_id}/labels/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexProjectDocuments",
+      "path": "/api/v2/projects/{project_id}/documents"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeProjectDocuments",
+      "path": "/api/v2/projects/{project_id}/documents"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteProjectDocument",
+      "path": "/api/v2/projects/{project_id}/documents/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "showProjectDocument",
+      "path": "/api/v2/projects/{project_id}/documents/{id}"
+    },
+    {
+      "method": "PUT",
+      "operationId": "updateProjectDocument",
+      "path": "/api/v2/projects/{project_id}/documents/{id}"
+    },
+    {
+      "method": "POST",
+      "operationId": "duplicateProject",
+      "path": "/api/v2/projects/{project_id}/duplicate"
+    },
+    {
+      "method": "PATCH",
+      "operationId": "favoriteProject",
+      "path": "/api/v2/projects/{project_id}/favorite"
+    },
+    {
+      "method": "GET",
+      "operationId": "getProjectHistory",
+      "path": "/api/v2/projects/{project_id}/history"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexMarkups",
+      "path": "/api/v2/projects/{project_id}/markups"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeMarkup",
+      "path": "/api/v2/projects/{project_id}/markups"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteMarkup",
+      "path": "/api/v2/projects/{project_id}/markups/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "showMarkup",
+      "path": "/api/v2/projects/{project_id}/markups/{id}"
+    },
+    {
+      "method": "PUT",
+      "operationId": "updateMarkup",
+      "path": "/api/v2/projects/{project_id}/markups/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "downloadMarkupAttachment",
+      "path": "/api/v2/projects/{project_id}/markups/{markup_id}/download-attachment"
+    },
+    {
+      "method": "POST",
+      "operationId": "reSyncMarkupToAutodesk",
+      "path": "/api/v2/projects/{project_id}/markups/{markup_id}/resync-autodesk"
+    },
+    {
+      "method": "GET",
+      "operationId": "showMarkupScreenshot",
+      "path": "/api/v2/projects/{project_id}/markups/{markup_id}/screenshot"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexProjectMembers",
+      "path": "/api/v2/projects/{project_id}/members"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeProjectMember",
+      "path": "/api/v2/projects/{project_id}/members"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteProjectMember",
+      "path": "/api/v2/projects/{project_id}/members/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "showProjectMember",
+      "path": "/api/v2/projects/{project_id}/members/{id}"
+    },
+    {
+      "method": "PUT",
+      "operationId": "updateProjectMember",
+      "path": "/api/v2/projects/{project_id}/members/{id}"
+    },
+    {
+      "method": "POST",
+      "operationId": "generateMultiplayerToken",
+      "path": "/api/v2/projects/{project_id}/multiplayer/tokens"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexOptionSets",
+      "path": "/api/v2/projects/{project_id}/option-sets"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexReceipts",
+      "path": "/api/v2/projects/{project_id}/receipts"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeReceipt",
+      "path": "/api/v2/projects/{project_id}/receipts"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteReceipt",
+      "path": "/api/v2/projects/{project_id}/receipts/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "showReceipt",
+      "path": "/api/v2/projects/{project_id}/receipts/{id}"
+    },
+    {
+      "method": "PUT",
+      "operationId": "updateReceipt",
+      "path": "/api/v2/projects/{project_id}/receipts/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "showReceiptPDF",
+      "path": "/api/v2/projects/{project_id}/receipts/{receipt_id}/{filename}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexProjectResources",
+      "path": "/api/v2/projects/{project_id}/resources"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeProjectResource",
+      "path": "/api/v2/projects/{project_id}/resources"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteProjectResource",
+      "path": "/api/v2/projects/{project_id}/resources/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "showProjectResource",
+      "path": "/api/v2/projects/{project_id}/resources/{id}"
+    },
+    {
+      "method": "PUT",
+      "operationId": "updateProjectResource",
+      "path": "/api/v2/projects/{project_id}/resources/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "getApiV2ProjectsProject_idShares",
+      "path": "/api/v2/projects/{project_id}/shares"
+    },
+    {
+      "method": "POST",
+      "operationId": "postApiV2ProjectsProject_idShares",
+      "path": "/api/v2/projects/{project_id}/shares"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteApiV2ProjectsProject_idSharesId",
+      "path": "/api/v2/projects/{project_id}/shares/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "getApiV2ProjectsProject_idSharesId",
+      "path": "/api/v2/projects/{project_id}/shares/{id}"
+    },
+    {
+      "method": "PUT",
+      "operationId": "putApiV2ProjectsProject_idSharesId",
+      "path": "/api/v2/projects/{project_id}/shares/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "syncModelScreenshots",
+      "path": "/api/v2/projects/{project_id}/sync-model-screenshots"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexProjectUsers",
+      "path": "/api/v2/projects/{project_id}/users"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeProjectUser",
+      "path": "/api/v2/projects/{project_id}/users"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "showProjectUser",
+      "path": "/api/v2/projects/{project_id}/users/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "showProjectUser",
+      "path": "/api/v2/projects/{project_id}/users/{id}"
+    },
+    {
+      "method": "PUT",
+      "operationId": "updateProjectUsers",
+      "path": "/api/v2/projects/{project_id}/users/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "restoreProject",
+      "path": "/api/v2/projects/{project}/restore"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexPropertyFilters",
+      "path": "/api/v2/property-filters"
+    },
+    {
+      "method": "POST",
+      "operationId": "storePropertyFilter",
+      "path": "/api/v2/property-filters"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deletePropertyFilter",
+      "path": "/api/v2/property-filters/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "viewPropertyFilter",
+      "path": "/api/v2/property-filters/{id}"
+    },
+    {
+      "method": "PUT",
+      "operationId": "updatePropertyFilter",
+      "path": "/api/v2/property-filters/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexPropertyMaps",
+      "path": "/api/v2/property-maps"
+    },
+    {
+      "method": "POST",
+      "operationId": "storePropertyMap",
+      "path": "/api/v2/property-maps"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deletePropertyMap",
+      "path": "/api/v2/property-maps/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "showPropertyMap",
+      "path": "/api/v2/property-maps/{id}"
+    },
+    {
+      "method": "PUT",
+      "operationId": "updatePropertyMap",
+      "path": "/api/v2/property-maps/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexQuestionsFAQs",
+      "path": "/api/v2/questions"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexQuestionCategories",
+      "path": "/api/v2/questions/categories"
+    },
+    {
+      "method": "GET",
+      "operationId": "showQuestionCategory",
+      "path": "/api/v2/questions/categories/{questionCategory_id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "showQuestionFAQ",
+      "path": "/api/v2/questions/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexRoles",
+      "path": "/api/v2/roles"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeRole",
+      "path": "/api/v2/roles"
+    },
+    {
+      "method": "GET",
+      "operationId": "getSettingGroupsRole",
+      "path": "/api/v2/roles/settings-groups"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteRole",
+      "path": "/api/v2/roles/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "showRole",
+      "path": "/api/v2/roles/{id}"
+    },
+    {
+      "method": "PUT",
+      "operationId": "updateRole",
+      "path": "/api/v2/roles/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "showAPreviewOfAModel",
+      "path": "/api/v2/screenshots/preview-image"
+    },
+    {
+      "method": "GET",
+      "operationId": "getTranslationsByGroup",
+      "path": "/api/v2/translations/group/{group}"
+    },
+    {
+      "method": "GET",
+      "operationId": "listOfTranslationGroups",
+      "path": "/api/v2/translations/groups"
+    },
+    {
+      "method": "GET",
+      "operationId": "getTranslationsByKeys",
+      "path": "/api/v2/translations/list"
+    },
+    {
+      "method": "GET",
+      "operationId": "showTranslationByKey",
+      "path": "/api/v2/translations/{key}"
+    },
+    {
+      "method": "GET",
+      "operationId": "viewUnityBuildVersion",
+      "path": "/api/v2/unity/builds/versions/{id}/{product}"
+    },
+    {
+      "method": "GET",
+      "operationId": "downloadUnityBuildVersionInstaller",
+      "path": "/api/v2/unity/builds/versions/{version}/{product}/installer"
+    },
+    {
+      "method": "GET",
+      "operationId": "showUnityEnvironmentConfig",
+      "path": "/api/v2/unity/environments/{environment}/config"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexUsers",
+      "path": "/api/v2/users"
+    },
+    {
+      "method": "POST",
+      "operationId": "storeUser",
+      "path": "/api/v2/users"
+    },
+    {
+      "method": "POST",
+      "operationId": "inviteUser",
+      "path": "/api/v2/users/invite"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexRecentUsersActivity",
+      "path": "/api/v2/users/recent/activity"
+    },
+    {
+      "method": "DELETE",
+      "operationId": "deleteUser",
+      "path": "/api/v2/users/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "showUser",
+      "path": "/api/v2/users/{id}"
+    },
+    {
+      "method": "PUT",
+      "operationId": "updateUser",
+      "path": "/api/v2/users/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexUserActivity",
+      "path": "/api/v2/users/{user_id}/activity"
+    },
+    {
+      "method": "GET",
+      "operationId": "resendUserInvite",
+      "path": "/api/v2/users/{user_id}/invite"
+    }
+  ],
+  "deterministicallyDerivedOperations": 339,
+  "operationsInSuppliedSnapshot": 351,
+  "operationsNotInCatalog": [],
+  "overlayMappedOperations": 12,
+  "overlayMappings": [
+    {
+      "method": "GET",
+      "operationId": "validateUser",
+      "overlayKey": "validateUser",
+      "path": "/api/v2/auth/validate"
+    },
+    {
+      "method": "POST",
+      "operationId": "login",
+      "overlayKey": "login",
+      "path": "/api/v2/login"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexProjects",
+      "overlayKey": "indexProjects",
+      "path": "/api/v2/projects"
+    },
+    {
+      "method": "GET",
+      "operationId": "viewProjectModelVersion",
+      "overlayKey": "viewProjectModelVersion",
+      "path": "/api/v2/projects/models/versions/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "displayAListingOfTheActivitiesForAProjectModelVersion",
+      "overlayKey": "displayAListingOfTheActivitiesForAProjectModelVersion",
+      "path": "/api/v2/projects/models/versions/{version_id}/activities"
+    },
+    {
+      "method": "GET",
+      "operationId": "displayTheSpecifiedActivityForAProjectModelVersion",
+      "overlayKey": "displayTheSpecifiedActivityForAProjectModelVersion",
+      "path": "/api/v2/projects/models/versions/{version_id}/activities/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "downloadProjectModelVersion",
+      "overlayKey": "downloadProjectModelVersion",
+      "path": "/api/v2/projects/models/versions/{version_id}/download"
+    },
+    {
+      "method": "GET",
+      "operationId": "viewProjectModel",
+      "overlayKey": "viewProjectModel",
+      "path": "/api/v2/projects/models/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "viewProjectModelActiveVersion",
+      "overlayKey": "viewProjectModelActiveVersion",
+      "path": "/api/v2/projects/models/{model_id}/versions/active"
+    },
+    {
+      "method": "GET",
+      "operationId": "viewProjectModelFrozenVersion",
+      "overlayKey": "viewProjectModelFrozenVersion",
+      "path": "/api/v2/projects/models/{model_id}/versions/frozen"
+    },
+    {
+      "method": "GET",
+      "operationId": "viewProject",
+      "overlayKey": "viewProject",
+      "path": "/api/v2/projects/{id}"
+    },
+    {
+      "method": "GET",
+      "operationId": "indexProjectModels",
+      "overlayKey": "GET /api/v2/projects/{project_id}/models",
+      "path": "/api/v2/projects/{project_id}/models"
+    }
+  ],
+  "schemaVersion": 1,
+  "scopeNote": "Coverage applies only to the supplied local snapshot and does not claim completeness against any live Simultria deployment.",
+  "snapshotCoverage": "351/351",
+  "snapshotCoverageComplete": true,
+  "sourceFileName": "openapi.yaml",
+  "sourceSha256": "7955245f18e5caa09429d84dbc706680baa97a5e8dc6883b03c2de7e552a5f1b",
+  "unusedOverlayKeys": []
+}

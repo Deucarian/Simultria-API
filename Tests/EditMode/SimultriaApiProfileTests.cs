@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Deucarian.API.Configuration;
 using Deucarian.API.Core;
 using Deucarian.API.Models;
@@ -77,9 +78,12 @@ namespace Deucarian.Simultria.API.Tests.EditMode
             SimultriaApiProfile profile = SimultriaApiProfileDefaults.Load();
 
             Assert.That(profile, Is.Not.Null);
-            Assert.That(profile.Environments.Count, Is.EqualTo(1));
-            Assert.That(profile.Environments[0].Clients.Count, Is.EqualTo(1));
-            Assert.That(profile.Environments[0].Clients[0].BaseUrl, Is.Empty);
+            Assert.That(profile.Environments.Count, Is.EqualTo(4));
+            foreach (ApiEnvironmentProfile environment in profile.Environments)
+            {
+                Assert.That(environment.Clients.Count, Is.EqualTo(1));
+                Assert.That(environment.Clients[0].BaseUrl, Is.Empty);
+            }
             ApiComposition composition = profile.CreateComposition();
             foreach (ApiEnvironmentDescriptor descriptor in
                 SimultriaEnvironmentDescriptors.Standard)
@@ -99,6 +103,82 @@ namespace Deucarian.Simultria.API.Tests.EditMode
                     Is.False);
                 Assert.That(message, Does.Contain("not configured"));
             }
+        }
+
+        [Test]
+        public void PackageCatalogCoversEveryOperationInPinnedSnapshot()
+        {
+            ApiEndpointCatalog catalog =
+                SimultriaApiProfileDefaults.LoadEndpointCatalog();
+
+            Assert.That(catalog, Is.Not.Null);
+            Assert.That(catalog.IsValid(out string validationMessage),
+                Is.True,
+                validationMessage);
+            Assert.That(catalog.Endpoints, Has.Count.EqualTo(351));
+
+            var endpointIds = new HashSet<string>(StringComparer.Ordinal);
+            int unauthenticatedCount = 0;
+            int derivedCount = 0;
+            foreach (ApiEndpointCatalogEntry endpoint in catalog.Endpoints)
+            {
+                Assert.That(endpointIds.Add(endpoint.EndpointId), Is.True);
+                Assert.That(
+                    endpoint.ClientId,
+                    Is.EqualTo(SimultriaClientIds.Primary.Value));
+                Assert.That(
+                    Uri.TryCreate(
+                        endpoint.RouteTemplate,
+                        UriKind.Absolute,
+                        out _),
+                    Is.False);
+                if (endpoint.Authentication ==
+                    ApiAuthenticationRequirement.Disabled)
+                {
+                    unauthenticatedCount++;
+                }
+
+                if (endpoint.EndpointId.StartsWith(
+                    "simultria.generated.",
+                    StringComparison.Ordinal))
+                {
+                    derivedCount++;
+                    Assert.That(
+                        endpoint.SuppressLogging,
+                        Is.True,
+                        endpoint.EndpointId);
+                }
+            }
+
+            Assert.That(unauthenticatedCount, Is.EqualTo(4));
+            Assert.That(derivedCount, Is.EqualTo(339));
+            Assert.That(
+                catalog.TryGetEndpoint(
+                    SimultriaEndpointIds.Login,
+                    out ApiEndpointCatalogEntry login),
+                Is.True);
+            Assert.That(login.Method, Is.EqualTo(Deucarian.API.HttpMethod.POST));
+            Assert.That(
+                login.Authentication,
+                Is.EqualTo(ApiAuthenticationRequirement.Disabled));
+            Assert.That(login.SuppressLogging, Is.True);
+            Assert.That(
+                catalog.TryGetEndpoint(
+                    new ApiEndpointId(
+                        "simultria.generated.get.api.v2.companies.demo-model"),
+                    out ApiEndpointCatalogEntry publicDemoModel),
+                Is.True);
+            Assert.That(
+                publicDemoModel.Authentication,
+                Is.EqualTo(ApiAuthenticationRequirement.Disabled));
+            Assert.That(
+                catalog.TryGetEndpoint(
+                    new ApiEndpointId(
+                        "simultria.generated.post.api.v2.projects." +
+                        "by-project_id.multiplayer.tokens"),
+                    out ApiEndpointCatalogEntry multiplayerToken),
+                Is.True);
+            Assert.That(multiplayerToken.SuppressLogging, Is.True);
         }
 
         [Test]
@@ -196,10 +276,107 @@ namespace Deucarian.Simultria.API.Tests.EditMode
             }
         }
 
+        [Test]
+        public void GenericDefaultProfileFailsBeforeEndpointResolution()
+        {
+            ApiEndpointCatalog catalog =
+                SimultriaApiProfileDefaults.LoadEndpointCatalog();
+            var environments = new List<ApiEnvironmentProfile>();
+            var descriptors = new List<ApiEnvironmentDescriptor>();
+            foreach (ApiEnvironmentStage stage in ApiEnvironmentStages.Standard)
+            {
+                string id = stage.ToString().ToLowerInvariant();
+                descriptors.Add(
+                    new ApiEnvironmentDescriptor(
+                        new ApiEnvironmentId(id),
+                        stage,
+                        stage.ToString()));
+                environments.Add(
+                    CreateEnvironment(
+                        new ApiEnvironmentId(id),
+                        stage.ToString(),
+                        string.Empty,
+                        "primary"));
+            }
+
+            ApiConnectionProfile profile =
+                ApiConnectionProfile.CreateTransient(
+                    environments,
+                    catalog,
+                    descriptors);
+            try
+            {
+                Assert.That(
+                    SimultriaApiConnectionProfileAdapter.IsCompatibleProfile(
+                        profile,
+                        out string message),
+                    Is.False);
+                Assert.That(message, Does.Contain("simultria.development"));
+                Assert.That(
+                    SimultriaApiConnectionProfileAdapter.TryCreateComposition(
+                        profile,
+                        out ApiComposition composition,
+                        out message),
+                    Is.False);
+                Assert.That(composition, Is.Null);
+                Assert.That(message, Does.Contain("simultria.development"));
+            }
+            finally
+            {
+                UnityEngine.Object.DestroyImmediate(profile);
+                foreach (ApiEnvironmentProfile environment in environments)
+                {
+                    UnityEngine.Object.DestroyImmediate(environment);
+                }
+            }
+        }
+
+        [Test]
+        public void SimultriaGenericProfileRequiresSimultriaPrimaryClient()
+        {
+            ApiEndpointCatalog catalog =
+                SimultriaApiProfileDefaults.LoadEndpointCatalog();
+            var environments = new List<ApiEnvironmentProfile>();
+            foreach (ApiEnvironmentDescriptor descriptor in
+                SimultriaEnvironmentDescriptors.Standard)
+            {
+                environments.Add(
+                    CreateEnvironment(
+                        descriptor.EnvironmentId,
+                        descriptor.DisplayName,
+                        string.Empty,
+                        "primary"));
+            }
+
+            ApiConnectionProfile profile =
+                ApiConnectionProfile.CreateTransient(
+                    environments,
+                    catalog,
+                    SimultriaEnvironmentDescriptors.Standard);
+            try
+            {
+                Assert.That(
+                    SimultriaApiConnectionProfileAdapter.IsCompatibleProfile(
+                        profile,
+                        out string message),
+                    Is.False);
+                Assert.That(message, Does.Contain("simultria.primary"));
+            }
+            finally
+            {
+                UnityEngine.Object.DestroyImmediate(profile);
+                foreach (ApiEnvironmentProfile environment in environments)
+                {
+                    UnityEngine.Object.DestroyImmediate(environment);
+                }
+            }
+        }
+
         private static ApiEnvironmentProfile CreateEnvironment(
             ApiEnvironmentId environmentId,
             string displayName,
-            string baseUrl)
+            string baseUrl,
+            string clientId = null)
         {
             ApiEnvironmentProfile environment =
                 ScriptableObject.CreateInstance<ApiEnvironmentProfile>();
@@ -208,7 +385,8 @@ namespace Deucarian.Simultria.API.Tests.EditMode
             environment.Clients.Add(
                 new ApiNamedClientDefinition
                 {
-                    ClientId = SimultriaClientIds.Primary.Value,
+                    ClientId = clientId ??
+                        SimultriaClientIds.Primary.Value,
                     BaseUrl = baseUrl
                 });
             return environment;
