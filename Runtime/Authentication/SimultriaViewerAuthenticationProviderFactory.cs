@@ -1,4 +1,5 @@
 using System;
+using Deucarian.API.Configuration;
 using Deucarian.API.Core;
 using Deucarian.API.Models;
 using Deucarian.Simultria.API.Configuration;
@@ -36,6 +37,17 @@ namespace Deucarian.Simultria.API.Authentication
         }
 
         public static SimultriaViewerAuthenticationProvider Create(
+            ApiConnectionProfile profile,
+            ApiEnvironmentId environmentId,
+            IApiClient apiClient)
+        {
+            return Create(
+                SimultriaApiConnectionProfileAdapter.CreateComposition(profile),
+                environmentId,
+                apiClient);
+        }
+
+        public static SimultriaViewerAuthenticationProvider Create(
             ApiEnvironmentId environmentId,
             IApiClient apiClient)
         {
@@ -66,6 +78,42 @@ namespace Deucarian.Simultria.API.Authentication
             }
 
             if (!profile.TryCreateComposition(
+                    out ApiComposition composition,
+                    out message))
+            {
+                return false;
+            }
+
+            status = composition.GetEnvironmentStatus(environmentId);
+            if (!status.IsResolved)
+            {
+                message = status.Message;
+                return false;
+            }
+
+            if (apiClient == null)
+            {
+                message = "A Deucarian API client is required.";
+                return false;
+            }
+
+            provider = Create(composition, environmentId, apiClient);
+            message = null;
+            return true;
+        }
+
+        public static bool TryCreate(
+            ApiConnectionProfile profile,
+            ApiEnvironmentId environmentId,
+            IApiClient apiClient,
+            out SimultriaViewerAuthenticationProvider provider,
+            out ApiEnvironmentStatus status,
+            out string message)
+        {
+            provider = null;
+            status = null;
+            if (!SimultriaApiConnectionProfileAdapter.TryCreateComposition(
+                    profile,
                     out ApiComposition composition,
                     out message))
             {

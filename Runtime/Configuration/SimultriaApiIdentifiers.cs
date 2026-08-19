@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Deucarian.API.Models;
 
 namespace Deucarian.Simultria.API.Configuration
@@ -65,5 +67,28 @@ namespace Deucarian.Simultria.API.Configuration
             new ApiEndpointId("simultria.activities.list");
         public static readonly ApiEndpointId ModelVersionActivity =
             new ApiEndpointId("simultria.activities.get");
+
+        private static readonly IReadOnlyList<ApiEndpointId> stable =
+            Array.AsReadOnly(new[]
+            {
+                Login,
+                ValidateAuthentication,
+                Projects,
+                Project,
+                ProjectModels,
+                Model,
+                ModelVersion,
+                ActiveModelVersion,
+                FrozenModelVersion,
+                ModelVersionDownload,
+                ModelVersionActivities,
+                ModelVersionActivity
+            });
+
+        /// <summary>
+        /// Stable endpoint IDs used by the typed Simultria accessors and
+        /// compatibility services.
+        /// </summary>
+        public static IReadOnlyList<ApiEndpointId> Stable => stable;
     }
 }

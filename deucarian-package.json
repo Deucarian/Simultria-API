@@ -12,7 +12,9 @@
   "editorAssemblies": [
     "Deucarian.Simultria.API.Editor"
   ],
-  "sampleAssemblies": [],
+  "sampleAssemblies": [
+    "Deucarian.Simultria.API.Samples.StarterAssets"
+  ],
   "testAssemblies": [
     "Deucarian.Simultria.API.Tests.EditMode"
   ],
@@ -27,5 +29,5 @@
   "optionalVersionDefinedDependencies": [],
   "allowedDirectDebugCalls": [],
   "allowedDirectUnityObjectLifetimeCalls": [],
-  "expectedSamplesRoot": ""
+  "expectedSamplesRoot": "Samples~"
 }
