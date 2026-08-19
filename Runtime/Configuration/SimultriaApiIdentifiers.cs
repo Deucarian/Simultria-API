@@ -8,16 +8,17 @@ namespace Deucarian.Simultria.API.Configuration
         public static readonly ApiEnvironmentId Development =
             new ApiEnvironmentId("simultria.development");
 
+        public static readonly ApiEnvironmentId Testing =
+            new ApiEnvironmentId("simultria.testing");
+
         /// <summary>
-        /// Stable future-facing ID. No acceptance host is shipped until one is
-        /// explicitly configured and verified.
+        /// Stable acceptance ID. No host is implied by this identifier.
         /// </summary>
         public static readonly ApiEnvironmentId Acceptance =
             new ApiEnvironmentId("simultria.acceptance");
 
         /// <summary>
-        /// Stable future-facing ID. No production host is shipped until one is
-        /// explicitly configured and verified.
+        /// Stable production ID. No host is implied by this identifier.
         /// </summary>
         public static readonly ApiEnvironmentId Production =
             new ApiEnvironmentId("simultria.production");

@@ -20,7 +20,7 @@ namespace Deucarian.Simultria.API.Tests.EditMode
                 {
                     ClientId = SimultriaClientIds.Primary.Value,
                     BaseUrl =
-                        "https://realization-simultria.backend.dev-buildingvirtuality.com"
+                        "https://api.example.invalid"
                 });
 
             Catalog = ScriptableObject.CreateInstance<ApiEndpointCatalog>();

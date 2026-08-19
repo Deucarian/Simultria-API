@@ -1,6 +1,6 @@
 {
   "name": "com.deucarian.simultria-api",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "displayName": "Deucarian Simultria API",
   "description": "Typed Simultria environments, endpoint catalog, API lookups, and Viewer Authentication adapters.",
   "unity": "2021.3",
@@ -20,7 +20,8 @@
     "authentication"
   ],
   "dependencies": {
-    "com.deucarian.api": "1.2.0",
+    "com.deucarian.api": "1.3.0",
+    "com.deucarian.editor": "1.0.5",
     "com.deucarian.session": "1.0.6",
     "com.deucarian.session.api-integration": "1.1.1",
     "com.deucarian.viewer-authentication": "0.4.0",

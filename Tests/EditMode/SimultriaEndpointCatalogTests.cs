@@ -96,7 +96,7 @@ namespace Deucarian.Simultria.API.Tests.EditMode
                     fixture.Composition,
                     SimultriaEnvironmentIds.Development,
                     0),
-                Throws.ArgumentException);
+                Throws.TypeOf<System.ArgumentOutOfRangeException>());
         }
     }
 }
