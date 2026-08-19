@@ -1,0 +1,17 @@
+{
+  "name": "Deucarian.Simultria.API.Samples.StarterAssets",
+  "rootNamespace": "Deucarian.Simultria.API.Samples.StarterAssets",
+  "references": [
+    "Deucarian.API",
+    "Deucarian.Simultria.API"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

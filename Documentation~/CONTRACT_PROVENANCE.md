@@ -1,0 +1,111 @@
+# Simultria API Contract Provenance
+
+## Current status
+
+The package-owned `SimultriaApiV2EndpointCatalog.asset` is a snapshot-scoped,
+read-only integration catalog. Its routes and HTTP methods were generated from
+this local Scribe OpenAPI extraction:
+
+- source: `storage/app/scribe/openapi.yaml` from the backend extraction
+  worktree;
+- backend source: `Building-Virtuality-Backend` `origin/development` commit
+  `53f2ee778c5ec3d22763c86537850061642317cb`;
+- size: 2,336,763 bytes;
+- SHA-256:
+  `7955245F18E5CAA09429D84DBC706680BAA97A5E8DC6883B03C2DE7E552A5F1B`;
+- parsed surface: 232 paths and 351 HTTP operations; and
+- runtime catalog coverage: all 351 operations in that exact snapshot;
+- hand-curated compatibility mappings: 12 existing stable IDs described by
+  `simultria-api-v2.supported-subset.overlay.json`; and
+- deterministic generated mappings: 339 method/path-derived IDs.
+
+This is **not** evidence of full Simultria API coverage. Scribe returned a
+non-zero status with route-level extraction warnings, while a separate docs
+text scan observed roughly 383 method/path entries. The snapshot's only server
+is a placeholder (`http://{tenant}.example.invalid`). In the isolated
+extraction worktree, the only tracked source change set Scribe
+`response_calls.methods` from `['GET']` to `[]`; that guarantees contract
+generation did not invoke a live application route. The snapshot is not
+committed here because it is a large backend-generated artifact; the backend
+commit and SHA-256 pin the exact review trail.
+
+Environment base URLs are deliberately excluded from the contract. They are
+project-owned values entered in generic `ApiConnectionProfile` assets. Legacy
+`SimultriaApiProfile` assets remain supported for serialized compatibility.
+
+## Intended source of truth
+
+Package authors should keep an approved, versioned local OpenAPI snapshot for
+each release review and pair it with a small Deucarian overlay. The snapshot
+owns paths and HTTP methods. The overlay owns stable
+endpoint IDs and Deucarian metadata that OpenAPI may not express, such as the
+named client, authentication requirement, logging suppression, response hint,
+and request-policy overrides.
+
+Generated catalog and coverage JSON are checked in under
+`Documentation~/Generated`. The generator also writes the Unity catalog asset,
+which is the authoritative runtime artifact. Runtime code must never download
+an endpoint catalog: authentication bootstrap, offline use, and
+installed-package versioning all require a pinned local contract.
+
+## Local generation workflow
+
+`Tools~/generate_contract.py` accepts JSON directly and YAML when PyYAML is
+installed. Both inputs must be local files; URL inputs are rejected.
+
+The checked-in `simultria-api-v2.supported-subset.overlay.json` is the current
+overlay. A minimal overlay entry has this shape:
+
+```json
+{
+  "catalogId": "simultria.api-v2",
+  "displayName": "Simultria API v2",
+  "defaultClientId": "simultria.primary",
+  "operations": {
+    "loginOperationIdFromTheApprovedSpec": {
+      "endpointId": "simultria.auth.login",
+      "authentication": "Disabled",
+      "suppressLogging": true
+    }
+  }
+}
+```
+
+Generate review files:
+
+```text
+python Tools~/generate_contract.py \
+  --spec path/to/approved-openapi.json \
+  --overlay Documentation~/simultria-api-v2.supported-subset.overlay.json \
+  --catalog-out Documentation~/Generated/SimultriaApiV2EndpointCatalog.generated.json \
+  --coverage-out Documentation~/Generated/SimultriaApiV2EndpointCatalog.coverage.json \
+  --unity-asset-out Runtime/Resources/Deucarian/Simultria/API/SimultriaApiV2EndpointCatalog.asset \
+  --require-complete
+```
+
+Unmapped operations receive deterministic
+`simultria.generated.<method>.<route>` IDs. The overlay preserves reviewed IDs
+and settings where package APIs already depend on them. `--require-complete`
+checks that every operation is emitted and that every overlay entry matches.
+That result proves coverage only for the exact file hash, never for a live
+service. Add `--check` in CI to compare existing generated files without
+rewriting them.
+
+Every derived/unreviewed operation suppresses API request, response, and error
+logging by default. Only reviewed overlay entries may opt back into normal
+logging. This prevents newly discovered credential, token, or sensitive payload
+routes from becoming loggable merely because they appeared in a new snapshot.
+
+Before updating the Unity asset, review:
+
+1. the snapshot source, approval, version, and SHA-256;
+2. every unmapped operation and unused overlay key in the coverage output;
+3. authentication and logging suppression for credential-bearing routes;
+4. relative route templates only (never deployment URLs); and
+5. typed accessor/service tests for each operation the package claims to
+   support.
+
+The checked-in Unity catalog remains the authoritative runtime artifact. A
+release must not describe the package as covering the complete backend unless
+the Scribe warnings are resolved, the source discrepancy is explained, and a
+separately reviewed scope decision explicitly adopts every operation.

@@ -32,16 +32,26 @@ Simultria defines four known environments in a stable order:
 4. Production (`simultria.production`)
 
 The descriptors contain only a typed ID, lifecycle stage, and safe display
-name. They never imply a host. Create a project-owned profile from:
+name. They never imply a host. Create a generic project-owned connection
+profile from:
 
 `Assets > Create > Deucarian > Simultria > API Profile`
 
-The created ScriptableObject contains four editable environment sub-assets.
+The created `ApiConnectionProfile` contains four editable environment
+sub-assets.
 Each has the fixed `simultria.primary` client and an empty base URL. The custom
-inspector reports an empty slot as **Not configured**. A valid absolute HTTP(S)
-URL changes it to **Configured**; malformed or partial configuration is
-**Invalid** and fails closed. Configuring one slot never causes another slot to
-fall back to that host.
+inspector keeps the everyday view to four URL/status cards. An empty slot is
+**Not configured**. A valid absolute HTTP(S) URL changes it to **Configured**;
+malformed or partial configuration is **Invalid** and fails closed.
+Configuring one slot never causes another slot to fall back to that host.
+
+You can also import **Simultria API Starter Assets** from Package Manager. It
+contains the same four blank slots and is already wired to the package-managed
+contract. IDs, request policies, and explicit project-owned contract overrides
+remain available through the profile's **Advanced** details and the single
+Simultria **Advanced** creation submenu. Existing
+`SimultriaApiProfile` references continue to work; an Advanced compatibility
+menu can still create that legacy wrapper when migration is not yet possible.
 
 Project profiles should be referenced explicitly and must not be placed at the
 same Resources path as the package fallback profile.
@@ -62,11 +72,11 @@ ApiEnvironmentStatus status =
 ```
 
 The packaged Development slot keeps its existing asset identity for migration
-safety, but its base URL is blank. No Development, Testing, Acceptance, or
-Production URL is shipped. New projects should use the project-owned four-slot
-workflow above. Unknown and unconfigured IDs fail closed instead of guessing a
-deployment URL. Profiles never contain credentials or tokens, and sanitized
-`ApiEnvironmentStatus` values do not expose base URLs.
+safety; Testing, Acceptance, and Production now accompany it as equally blank
+slots. No deployment URL is shipped. New projects should use the project-owned
+four-slot workflow above. Unknown and unconfigured IDs fail closed instead of
+guessing a deployment URL. Profiles never contain credentials or tokens, and
+sanitized `ApiEnvironmentStatus` values do not expose base URLs.
 
 ## Lookup services
 
@@ -129,7 +139,16 @@ Session API Integration, clears transient values after the operation, and
 returns only sanitized lifecycle/validation results. API continues to own the
 `Authorization: Bearer` header.
 
-## Documented routes in the catalog
+## Snapshot-scoped route catalog
+
+The package-managed catalog contains all 351 operations parsed from the pinned
+Scribe OpenAPI snapshot identified in
+[`Documentation~/CONTRACT_PROVENANCE.md`](Documentation~/CONTRACT_PROVENANCE.md).
+This is 351/351 coverage of that exact extracted file, not a claim that the
+snapshot completely describes every live backend deployment. Extraction
+warnings and the source discrepancy are recorded with the pinned SHA-256.
+
+Existing package services keep these 12 hand-curated stable mappings:
 
 - `POST /api/v2/login`
 - `GET /api/v2/auth/validate`
@@ -145,5 +164,10 @@ returns only sanitized lifecycle/validation results. API continues to own the
 - `GET /api/v2/projects/models/versions/{version_id}/activities/{id}`
 
 The route catalog exposes resolved `ApiEndpoint` instances so callers do not
-copy URL or authentication rules. Login and validation entries suppress API
+copy URL or authentication rules. The remaining 339 operations receive
+deterministic `simultria.generated.<method>.<route>` IDs and are available
+through the generic catalog API. Login and validation entries suppress API
 request, response, and error logging because their payloads are sensitive.
+
+No route contains a deployment host. Every absolute base URL remains in a
+project-owned profile or imported starter asset and is blank by default.
