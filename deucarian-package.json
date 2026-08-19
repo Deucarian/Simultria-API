@@ -9,13 +9,16 @@
   "runtimeAssemblies": [
     "Deucarian.Simultria.API"
   ],
-  "editorAssemblies": [],
+  "editorAssemblies": [
+    "Deucarian.Simultria.API.Editor"
+  ],
   "sampleAssemblies": [],
   "testAssemblies": [
     "Deucarian.Simultria.API.Tests.EditMode"
   ],
   "requiredDependencies": [
     "com.deucarian.api",
+    "com.deucarian.editor",
     "com.deucarian.session",
     "com.deucarian.session.api-integration",
     "com.deucarian.viewer-authentication",

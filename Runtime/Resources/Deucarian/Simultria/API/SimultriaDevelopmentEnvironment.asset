@@ -24,7 +24,7 @@ MonoBehaviour:
     rateLimitWindowSecondsHint: -1
   clients:
   - clientId: simultria.primary
-    baseUrl: https://realization-simultria.backend.dev-buildingvirtuality.com
+    baseUrl:
     defaultHeaders: []
     requestPolicy:
       timeoutSeconds: -1
