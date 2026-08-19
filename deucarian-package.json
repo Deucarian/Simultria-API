@@ -1,0 +1,28 @@
+{
+  "packageId": "com.deucarian.simultria-api",
+  "displayName": "Deucarian Simultria API",
+  "samplePolicy": "tool",
+  "operationalPackage": false,
+  "ownedCapabilities": [
+    "simultria-api-integration"
+  ],
+  "runtimeAssemblies": [
+    "Deucarian.Simultria.API"
+  ],
+  "editorAssemblies": [],
+  "sampleAssemblies": [],
+  "testAssemblies": [
+    "Deucarian.Simultria.API.Tests.EditMode"
+  ],
+  "requiredDependencies": [
+    "com.deucarian.api",
+    "com.deucarian.session",
+    "com.deucarian.session.api-integration",
+    "com.deucarian.viewer-authentication",
+    "com.unity.nuget.newtonsoft-json"
+  ],
+  "optionalVersionDefinedDependencies": [],
+  "allowedDirectDebugCalls": [],
+  "allowedDirectUnityObjectLifetimeCalls": [],
+  "expectedSamplesRoot": ""
+}
