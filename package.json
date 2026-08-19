@@ -1,6 +1,6 @@
 {
   "name": "com.deucarian.simultria-api",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "displayName": "Deucarian Simultria API",
   "description": "Typed Simultria environments, endpoint catalog, API lookups, and Viewer Authentication adapters.",
   "unity": "2021.3",
