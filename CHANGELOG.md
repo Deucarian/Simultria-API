@@ -2,6 +2,37 @@
 
 All notable changes to this package are documented here.
 
+## [0.3.0] - 2026-08-19
+
+### Added
+
+- Added an importable **Simultria API Starter Assets** sample with blank
+  Development, Testing, Acceptance, and Production URL slots.
+- Added a package-author-only deterministic OpenAPI generator, pinned contract
+  provenance, generated review data, and snapshot coverage reporting.
+- Added a safe project-owned endpoint-catalog override workflow behind the
+  profile inspector's Advanced section.
+
+### Changed
+
+- Expanded the package-managed runtime catalog to all 351 operations in the
+  pinned Scribe snapshot while preserving the 12 existing stable endpoint IDs.
+- Simplified the normal profile inspector to four URL/status cards and an
+  explicit `Simultria API v2 · package managed · read-only` contract summary.
+- Login and validation now inherit method, authentication requirement, and
+  resolved timeout from the catalog instead of duplicating those values.
+- Updated the Deucarian API dependency to 1.4.2 and adopted its generic
+  project connection aggregate for new starter assets and guided creation.
+- Expanded the blank package fallback from one physical environment asset to
+  all four standard slots while preserving the Development asset identity.
+
+### Security
+
+- Kept all deployment URLs blank in package and sample assets. The generator
+  emits only relative route templates and never fetches a runtime catalog.
+- Suppressed API logging by default for every generated/unreviewed operation;
+  only the reviewed typed subset may explicitly opt back into normal logging.
+
 ## [0.2.0] - 2026-08-19
 
 ### Added

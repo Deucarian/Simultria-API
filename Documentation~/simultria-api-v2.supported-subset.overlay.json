@@ -1,0 +1,57 @@
+{
+  "catalogId": "simultria.api-v2",
+  "defaultClientId": "simultria.primary",
+  "displayName": "Simultria API v2",
+  "operations": {
+    "GET /api/v2/projects/{project_id}/models": {
+      "endpointId": "simultria.project-models.list",
+      "suppressLogging": false
+    },
+    "displayAListingOfTheActivitiesForAProjectModelVersion": {
+      "endpointId": "simultria.activities.list",
+      "suppressLogging": false
+    },
+    "displayTheSpecifiedActivityForAProjectModelVersion": {
+      "endpointId": "simultria.activities.get",
+      "suppressLogging": false
+    },
+    "downloadProjectModelVersion": {
+      "endpointId": "simultria.model-versions.download",
+      "suppressLogging": false
+    },
+    "indexProjects": {
+      "endpointId": "simultria.projects.list",
+      "suppressLogging": false
+    },
+    "login": {
+      "authentication": "Disabled",
+      "endpointId": "simultria.auth.login",
+      "suppressLogging": true
+    },
+    "validateUser": {
+      "authentication": "Required",
+      "endpointId": "simultria.auth.validate",
+      "suppressLogging": true
+    },
+    "viewProject": {
+      "endpointId": "simultria.projects.get",
+      "suppressLogging": false
+    },
+    "viewProjectModel": {
+      "endpointId": "simultria.models.get",
+      "suppressLogging": false
+    },
+    "viewProjectModelActiveVersion": {
+      "endpointId": "simultria.model-versions.active",
+      "suppressLogging": false
+    },
+    "viewProjectModelFrozenVersion": {
+      "endpointId": "simultria.model-versions.frozen",
+      "suppressLogging": false
+    },
+    "viewProjectModelVersion": {
+      "endpointId": "simultria.model-versions.get",
+      "suppressLogging": false
+    }
+  }
+}

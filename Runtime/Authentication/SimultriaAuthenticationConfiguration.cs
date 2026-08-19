@@ -1,3 +1,4 @@
+using System;
 using Deucarian.API;
 using Deucarian.API.Core;
 using Deucarian.API.Models;
@@ -12,8 +13,11 @@ namespace Deucarian.Simultria.API.Authentication
             ApiComposition composition,
             ApiEnvironmentId environmentId)
         {
+            ApiEndpoint endpoint = SimultriaEndpointCatalog.Login(
+                composition,
+                environmentId);
             return new SessionTokenEndpointConfig(
-                SimultriaEndpointCatalog.Login(composition, environmentId).Path,
+                endpoint.Path,
                 new[]
                 {
                     new SessionTokenEndpointInputDefinition(
@@ -34,26 +38,54 @@ namespace Deucarian.Simultria.API.Authentication
                 new SessionTokenEndpointResponseMapping(
                     accessTokenJsonPath: "access_token",
                     useJwtExpiryFallback: true),
-                HttpMethod.POST,
-                timeoutSeconds: 30,
-                useCurrentAccessTokenAsBearer: false);
+                endpoint.Method,
+                ResolveTimeoutSeconds(endpoint),
+                ResolveBearerRequirement(endpoint));
         }
 
         internal static SessionTokenEndpointConfig CreateValidation(
             ApiComposition composition,
             ApiEnvironmentId environmentId)
         {
+            ApiEndpoint endpoint = SimultriaEndpointCatalog
+                .ValidateAuthentication(composition, environmentId);
             return new SessionTokenEndpointConfig(
-                SimultriaEndpointCatalog
-                    .ValidateAuthentication(composition, environmentId)
-                    .Path,
+                endpoint.Path,
                 null,
                 new SessionTokenEndpointResponseMapping(
                     accessTokenJsonPath: "access_token",
                     useJwtExpiryFallback: true),
-                HttpMethod.GET,
-                timeoutSeconds: 30,
-                useCurrentAccessTokenAsBearer: true);
+                endpoint.Method,
+                ResolveTimeoutSeconds(endpoint),
+                ResolveBearerRequirement(endpoint));
+        }
+
+        private static int ResolveTimeoutSeconds(ApiEndpoint endpoint)
+        {
+            if (endpoint.TimeoutSeconds.HasValue)
+            {
+                return endpoint.TimeoutSeconds.Value;
+            }
+
+            return endpoint.RequestPolicy != null
+                ? endpoint.RequestPolicy.TimeoutSeconds
+                : 0;
+        }
+
+        private static bool ResolveBearerRequirement(ApiEndpoint endpoint)
+        {
+            switch (endpoint.Authentication)
+            {
+                case ApiAuthenticationRequirement.Disabled:
+                    return false;
+                case ApiAuthenticationRequirement.Required:
+                    return true;
+                default:
+                    throw new InvalidOperationException(
+                        "Simultria token endpoints must resolve authentication " +
+                        "to Disabled or Required before the session exchange is " +
+                        "created.");
+            }
         }
     }
 }

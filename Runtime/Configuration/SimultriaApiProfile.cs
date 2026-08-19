@@ -25,6 +25,13 @@ namespace Deucarian.Simultria.API.Configuration
 
         public ApiComposition CreateComposition()
         {
+            if (!SimultriaApiConnectionProfileAdapter.IsCompatibleCatalog(
+                    endpointCatalog,
+                    out string compatibilityMessage))
+            {
+                throw new InvalidOperationException(compatibilityMessage);
+            }
+
             return new ApiComposition(
                 environments,
                 endpointCatalog,
