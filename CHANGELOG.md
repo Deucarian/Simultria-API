@@ -2,6 +2,13 @@
 
 All notable changes to this package are documented here.
 
+## [0.1.1] - 2026-08-19
+
+### Fixed
+
+- Qualified Unity object cleanup in the shared EditMode test composition so it
+  compiles without ambiguity against System.Object.
+
 ## [0.1.0] - 2026-08-19
 
 ### Added
