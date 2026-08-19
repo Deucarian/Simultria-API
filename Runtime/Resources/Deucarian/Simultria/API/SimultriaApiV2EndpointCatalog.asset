@@ -1,0 +1,221 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eff91661a22149c8aebd90e85283eb76, type: 3}
+  m_Name: SimultriaApiV2EndpointCatalog
+  m_EditorClassIdentifier: Deucarian.API::Deucarian.API.Configuration.ApiEndpointCatalog
+  catalogId: simultria.api-v2
+  displayName: Simultria API v2
+  endpoints:
+  - endpointId: simultria.auth.login
+    clientId: simultria.primary
+    routeTemplate: api/v2/login
+    method: 1
+    authentication: 3
+    responseFormat: 0
+    defaultHeaders: []
+    defaultQueryParameters: []
+    requestPolicy:
+      timeoutSeconds: -1
+      maxRetryAttempts: -1
+      initialRetryBackoffMilliseconds: -1
+      retryBackoffMultiplier: 0
+      maximumRetryBackoffMilliseconds: -1
+      rateLimitRequestCountHint: -1
+      rateLimitWindowSecondsHint: -1
+    suppressLogging: 1
+  - endpointId: simultria.auth.validate
+    clientId: simultria.primary
+    routeTemplate: api/v2/auth/validate
+    method: 0
+    authentication: 1
+    responseFormat: 0
+    defaultHeaders: []
+    defaultQueryParameters: []
+    requestPolicy:
+      timeoutSeconds: -1
+      maxRetryAttempts: -1
+      initialRetryBackoffMilliseconds: -1
+      retryBackoffMultiplier: 0
+      maximumRetryBackoffMilliseconds: -1
+      rateLimitRequestCountHint: -1
+      rateLimitWindowSecondsHint: -1
+    suppressLogging: 1
+  - endpointId: simultria.projects.list
+    clientId: simultria.primary
+    routeTemplate: api/v2/projects
+    method: 0
+    authentication: 1
+    responseFormat: 0
+    defaultHeaders: []
+    defaultQueryParameters: []
+    requestPolicy:
+      timeoutSeconds: -1
+      maxRetryAttempts: -1
+      initialRetryBackoffMilliseconds: -1
+      retryBackoffMultiplier: 0
+      maximumRetryBackoffMilliseconds: -1
+      rateLimitRequestCountHint: -1
+      rateLimitWindowSecondsHint: -1
+    suppressLogging: 0
+  - endpointId: simultria.projects.get
+    clientId: simultria.primary
+    routeTemplate: api/v2/projects/{id}
+    method: 0
+    authentication: 1
+    responseFormat: 0
+    defaultHeaders: []
+    defaultQueryParameters: []
+    requestPolicy:
+      timeoutSeconds: -1
+      maxRetryAttempts: -1
+      initialRetryBackoffMilliseconds: -1
+      retryBackoffMultiplier: 0
+      maximumRetryBackoffMilliseconds: -1
+      rateLimitRequestCountHint: -1
+      rateLimitWindowSecondsHint: -1
+    suppressLogging: 0
+  - endpointId: simultria.project-models.list
+    clientId: simultria.primary
+    routeTemplate: api/v2/projects/{project_id}/models
+    method: 0
+    authentication: 1
+    responseFormat: 0
+    defaultHeaders: []
+    defaultQueryParameters: []
+    requestPolicy:
+      timeoutSeconds: -1
+      maxRetryAttempts: -1
+      initialRetryBackoffMilliseconds: -1
+      retryBackoffMultiplier: 0
+      maximumRetryBackoffMilliseconds: -1
+      rateLimitRequestCountHint: -1
+      rateLimitWindowSecondsHint: -1
+    suppressLogging: 0
+  - endpointId: simultria.models.get
+    clientId: simultria.primary
+    routeTemplate: api/v2/projects/models/{id}
+    method: 0
+    authentication: 1
+    responseFormat: 0
+    defaultHeaders: []
+    defaultQueryParameters: []
+    requestPolicy:
+      timeoutSeconds: -1
+      maxRetryAttempts: -1
+      initialRetryBackoffMilliseconds: -1
+      retryBackoffMultiplier: 0
+      maximumRetryBackoffMilliseconds: -1
+      rateLimitRequestCountHint: -1
+      rateLimitWindowSecondsHint: -1
+    suppressLogging: 0
+  - endpointId: simultria.model-versions.get
+    clientId: simultria.primary
+    routeTemplate: api/v2/projects/models/versions/{id}
+    method: 0
+    authentication: 1
+    responseFormat: 0
+    defaultHeaders: []
+    defaultQueryParameters: []
+    requestPolicy:
+      timeoutSeconds: -1
+      maxRetryAttempts: -1
+      initialRetryBackoffMilliseconds: -1
+      retryBackoffMultiplier: 0
+      maximumRetryBackoffMilliseconds: -1
+      rateLimitRequestCountHint: -1
+      rateLimitWindowSecondsHint: -1
+    suppressLogging: 0
+  - endpointId: simultria.model-versions.active
+    clientId: simultria.primary
+    routeTemplate: api/v2/projects/models/{model_id}/versions/active
+    method: 0
+    authentication: 1
+    responseFormat: 0
+    defaultHeaders: []
+    defaultQueryParameters: []
+    requestPolicy:
+      timeoutSeconds: -1
+      maxRetryAttempts: -1
+      initialRetryBackoffMilliseconds: -1
+      retryBackoffMultiplier: 0
+      maximumRetryBackoffMilliseconds: -1
+      rateLimitRequestCountHint: -1
+      rateLimitWindowSecondsHint: -1
+    suppressLogging: 0
+  - endpointId: simultria.model-versions.frozen
+    clientId: simultria.primary
+    routeTemplate: api/v2/projects/models/{model_id}/versions/frozen
+    method: 0
+    authentication: 1
+    responseFormat: 0
+    defaultHeaders: []
+    defaultQueryParameters: []
+    requestPolicy:
+      timeoutSeconds: -1
+      maxRetryAttempts: -1
+      initialRetryBackoffMilliseconds: -1
+      retryBackoffMultiplier: 0
+      maximumRetryBackoffMilliseconds: -1
+      rateLimitRequestCountHint: -1
+      rateLimitWindowSecondsHint: -1
+    suppressLogging: 0
+  - endpointId: simultria.model-versions.download
+    clientId: simultria.primary
+    routeTemplate: api/v2/projects/models/versions/{version_id}/download
+    method: 0
+    authentication: 1
+    responseFormat: 0
+    defaultHeaders: []
+    defaultQueryParameters: []
+    requestPolicy:
+      timeoutSeconds: -1
+      maxRetryAttempts: -1
+      initialRetryBackoffMilliseconds: -1
+      retryBackoffMultiplier: 0
+      maximumRetryBackoffMilliseconds: -1
+      rateLimitRequestCountHint: -1
+      rateLimitWindowSecondsHint: -1
+    suppressLogging: 0
+  - endpointId: simultria.activities.list
+    clientId: simultria.primary
+    routeTemplate: api/v2/projects/models/versions/{version_id}/activities
+    method: 0
+    authentication: 1
+    responseFormat: 0
+    defaultHeaders: []
+    defaultQueryParameters: []
+    requestPolicy:
+      timeoutSeconds: -1
+      maxRetryAttempts: -1
+      initialRetryBackoffMilliseconds: -1
+      retryBackoffMultiplier: 0
+      maximumRetryBackoffMilliseconds: -1
+      rateLimitRequestCountHint: -1
+      rateLimitWindowSecondsHint: -1
+    suppressLogging: 0
+  - endpointId: simultria.activities.get
+    clientId: simultria.primary
+    routeTemplate: api/v2/projects/models/versions/{version_id}/activities/{id}
+    method: 0
+    authentication: 1
+    responseFormat: 0
+    defaultHeaders: []
+    defaultQueryParameters: []
+    requestPolicy:
+      timeoutSeconds: -1
+      maxRetryAttempts: -1
+      initialRetryBackoffMilliseconds: -1
+      retryBackoffMultiplier: 0
+      maximumRetryBackoffMilliseconds: -1
+      rateLimitRequestCountHint: -1
+      rateLimitWindowSecondsHint: -1
+    suppressLogging: 0
