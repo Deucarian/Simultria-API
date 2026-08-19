@@ -2,6 +2,25 @@
 
 All notable changes to this package are documented here.
 
+## [0.2.0] - 2026-08-19
+
+### Added
+
+- Added canonical Development, Testing, Acceptance, and Production descriptors
+  without implied deployment URLs.
+- Added a project-owned API profile creator with four editable, initially
+  unconfigured environment sub-assets.
+- Added a profile inspector using the shared Editor status language for
+  Configured, Not configured, and Invalid state without exposing connection
+  details through status objects.
+
+### Changed
+
+- Simultria profile composition now preserves known-but-unconfigured
+  environments and fails closed for invalid partial configuration.
+- Kept the existing package Development profile asset identity for migration
+  safety while clearing its host, so no deployment URL ships in the package.
+
 ## [0.1.1] - 2026-08-19
 
 ### Fixed

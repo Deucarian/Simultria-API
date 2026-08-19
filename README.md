@@ -9,8 +9,9 @@ typed source for environments, routes, lookup DTOs, and token acquisition.
 
 This package owns:
 
-- the documented Simultria API v2 development environment and stable
-  environment IDs;
+- canonical Development, Testing, Acceptance, and Production descriptors;
+- a safe package fallback that knows the standard environments but contains
+  no deployment host;
 - credential-free custom environment profiles;
 - typed endpoints for login, validation, projects, project models, model
   versions, downloads, and activities;
@@ -23,8 +24,33 @@ viewer auto-load context, browser commands, report issues, media, or markers.
 
 ## Environments
 
-The only built-in deployment currently backed by the supplied API
-documentation is:
+Simultria defines four known environments in a stable order:
+
+1. Development (`simultria.development`)
+2. Testing (`simultria.testing`)
+3. Acceptance (`simultria.acceptance`)
+4. Production (`simultria.production`)
+
+The descriptors contain only a typed ID, lifecycle stage, and safe display
+name. They never imply a host. Create a project-owned profile from:
+
+`Assets > Create > Deucarian > Simultria > API Profile`
+
+The created ScriptableObject contains four editable environment sub-assets.
+Each has the fixed `simultria.primary` client and an empty base URL. The custom
+inspector reports an empty slot as **Not configured**. A valid absolute HTTP(S)
+URL changes it to **Configured**; malformed or partial configuration is
+**Invalid** and fails closed. Configuring one slot never causes another slot to
+fall back to that host.
+
+Project profiles should be referenced explicitly and must not be placed at the
+same Resources path as the package fallback profile.
+
+## Package fallback profile
+
+The package fallback contains no deployment URL. It exists so consumers can
+discover the four known environment states safely even before a project-owned
+profile is assigned:
 
 ```csharp
 ApiEnvironmentId environmentId = SimultriaEnvironmentIds.Development;
@@ -35,17 +61,12 @@ ApiEnvironmentStatus status =
     composition.GetEnvironmentStatus(environmentId);
 ```
 
-The package-provided development profile maps that ID to the
-`realization-simultria` tenant on
-`https://realization-simultria.backend.dev-buildingvirtuality.com`. Selection
-stores only the serializable `ApiEnvironmentId`; the generic API profile owns
-the URL. A future deployment adds an explicit `ApiEnvironmentProfile` to the
-`SimultriaApiProfile`. Unknown IDs fail closed instead of guessing a production
-URL. Profiles and status objects never contain credentials or tokens, and the
-sanitized `ApiEnvironmentStatus` intentionally does not expose base URLs.
-Stable `Acceptance` and `Production` IDs are available for selection data, but
-the default profile intentionally does not resolve them until verified generic
-API environment assets are supplied.
+The packaged Development slot keeps its existing asset identity for migration
+safety, but its base URL is blank. No Development, Testing, Acceptance, or
+Production URL is shipped. New projects should use the project-owned four-slot
+workflow above. Unknown and unconfigured IDs fail closed instead of guessing a
+deployment URL. Profiles never contain credentials or tokens, and sanitized
+`ApiEnvironmentStatus` values do not expose base URLs.
 
 ## Lookup services
 
