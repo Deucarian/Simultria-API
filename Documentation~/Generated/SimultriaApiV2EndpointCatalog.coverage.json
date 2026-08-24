@@ -1639,11 +1639,6 @@
     },
     {
       "method": "GET",
-      "operationId": "viewUnityBuildVersion",
-      "path": "/api/v2/unity/builds/versions/{id}/{product}"
-    },
-    {
-      "method": "GET",
       "operationId": "downloadUnityBuildVersionInstaller",
       "path": "/api/v2/unity/builds/versions/{version}/{product}/installer"
     },
@@ -1698,10 +1693,10 @@
       "path": "/api/v2/users/{user_id}/invite"
     }
   ],
-  "deterministicallyDerivedOperations": 339,
+  "deterministicallyDerivedOperations": 338,
   "operationsInSuppliedSnapshot": 351,
   "operationsNotInCatalog": [],
-  "overlayMappedOperations": 12,
+  "overlayMappedOperations": 13,
   "overlayMappings": [
     {
       "method": "GET",
@@ -1774,6 +1769,12 @@
       "operationId": "indexProjectModels",
       "overlayKey": "GET /api/v2/projects/{project_id}/models",
       "path": "/api/v2/projects/{project_id}/models"
+    },
+    {
+      "method": "GET",
+      "operationId": "viewUnityBuildVersion",
+      "overlayKey": "GET /api/v2/unity/builds/versions/{id}/{product}",
+      "path": "/api/v2/unity/builds/versions/{id}/{product}"
     }
   ],
   "schemaVersion": 1,
