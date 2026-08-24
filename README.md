@@ -14,7 +14,7 @@ This package owns:
   no deployment host;
 - credential-free custom environment profiles;
 - typed endpoints for login, validation, projects, project models, model
-  versions, downloads, and activities;
+  versions, downloads, activities, and Unity build environment discovery;
 - typed read-only project/model/version/activity lookup services; and
 - an injected provider that implements Viewer Authentication acquisition and
   server validation through the Simultria login and validation routes.
@@ -96,6 +96,14 @@ ApiResult<SimultriaResourceResponse<SimultriaProjectDto>> result =
 `SimultriaActivityLookupService` returns activity metadata. Report-specific
 issue/media payloads intentionally remain in the Report integration.
 
+`SimultriaUnityBuildVersionLookupService` calls the documented public Unity
+build directory through an explicitly configured environment profile. It uses
+`Application.version` only when a viewer integration deliberately supplies it;
+the API package itself does not choose a build version, product, host, or
+fallback environment. The backend names `development`, `test`/`testing`,
+`accept`/`acceptance`, and `production` map to the four canonical Simultria
+environment IDs. Missing, deprecated, and unknown values fail closed.
+
 `SimultriaViewerModelResolver` accepts a project ID, model ID, and optional
 version ID. It fetches project detail and returns the resolved project/model/
 version IDs, names, and download URL. When no version is requested it selects
@@ -148,7 +156,7 @@ This is 351/351 coverage of that exact extracted file, not a claim that the
 snapshot completely describes every live backend deployment. Extraction
 warnings and the source discrepancy are recorded with the pinned SHA-256.
 
-Existing package services keep these 12 hand-curated stable mappings:
+Existing package services keep these 13 hand-curated stable mappings:
 
 - `POST /api/v2/login`
 - `GET /api/v2/auth/validate`
@@ -162,12 +170,15 @@ Existing package services keep these 12 hand-curated stable mappings:
 - `GET /api/v2/projects/models/versions/{version_id}/download`
 - `GET /api/v2/projects/models/versions/{version_id}/activities`
 - `GET /api/v2/projects/models/versions/{version_id}/activities/{id}`
+- `GET /api/v2/unity/builds/versions/{id}/{product}`
 
 The route catalog exposes resolved `ApiEndpoint` instances so callers do not
-copy URL or authentication rules. The remaining 339 operations receive
+copy URL or authentication rules. The remaining 338 operations receive
 deterministic `simultria.generated.<method>.<route>` IDs and are available
 through the generic catalog API. Login and validation entries suppress API
 request, response, and error logging because their payloads are sensitive.
+The public Unity build lookup disables bearer authentication and suppresses
+request/response logging so environment discovery cannot depend on a session.
 
 No route contains a deployment host. Every absolute base URL remains in a
 project-owned profile or imported starter asset and is blank by default.

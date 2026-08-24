@@ -2547,11 +2547,11 @@
       "suppressLogging": true
     },
     {
-      "authentication": "Required",
+      "authentication": "Disabled",
       "clientId": "simultria.primary",
       "defaultHeaders": [],
       "defaultQueryParameters": [],
-      "endpointId": "simultria.generated.get.api.v2.unity.builds.versions.by-id.by-product",
+      "endpointId": "simultria.unity-builds.version",
       "method": "GET",
       "requestPolicy": {},
       "responseFormat": "Auto",
