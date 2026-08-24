@@ -7,6 +7,11 @@
       "endpointId": "simultria.project-models.list",
       "suppressLogging": false
     },
+    "GET /api/v2/unity/builds/versions/{id}/{product}": {
+      "authentication": "Disabled",
+      "endpointId": "simultria.unity-builds.version",
+      "suppressLogging": true
+    },
     "displayAListingOfTheActivitiesForAProjectModelVersion": {
       "endpointId": "simultria.activities.list",
       "suppressLogging": false

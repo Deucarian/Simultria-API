@@ -159,6 +159,28 @@ namespace Deucarian.Simultria.API.Endpoints
                     RequireId(activityId, nameof(activityId)));
         }
 
+        /// <summary>
+        /// Resolves the public build-directory route used to discover the
+        /// backend-selected environment for one Unity build.
+        /// </summary>
+        public static ApiEndpoint UnityBuildVersion(
+            ApiComposition composition,
+            ApiEnvironmentId directoryEnvironmentId,
+            string buildVersion,
+            string product)
+        {
+            return Resolve(
+                    composition,
+                    directoryEnvironmentId,
+                    SimultriaEndpointIds.UnityBuildVersion)
+                .WithPathParameter(
+                    "id",
+                    RequireSegment(buildVersion, nameof(buildVersion)))
+                .WithPathParameter(
+                    "product",
+                    RequireSegment(product, nameof(product)));
+        }
+
         private static ApiEndpoint Resolve(
             ApiComposition composition,
             ApiEnvironmentId environmentId,
@@ -182,6 +204,20 @@ namespace Deucarian.Simultria.API.Endpoints
             }
 
             return value;
+        }
+
+        private static string RequireSegment(
+            string value,
+            string parameterName)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new ArgumentException(
+                    "A non-empty Simultria route value is required.",
+                    parameterName);
+            }
+
+            return value.Trim();
         }
     }
 }

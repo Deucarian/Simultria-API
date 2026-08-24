@@ -62,6 +62,11 @@ namespace Deucarian.Simultria.API.Tests.EditMode
             Add(
                 SimultriaEndpointIds.ModelVersionActivity,
                 "api/v2/projects/models/versions/{version_id}/activities/{id}");
+            Add(
+                SimultriaEndpointIds.UnityBuildVersion,
+                "api/v2/unity/builds/versions/{id}/{product}",
+                authentication: ApiAuthenticationRequirement.Disabled,
+                suppressLogging: true);
 
             Profile = SimultriaApiProfile.CreateTransient(
                 new[] { Environment },

@@ -2,6 +2,24 @@
 
 All notable changes to this package are documented here.
 
+## [0.4.0] - 2026-08-24
+
+### Added
+
+- Added a typed, credential-free Unity build-version lookup service and DTO.
+- Added strict mapping from documented backend environment names to canonical
+  Simultria environment IDs.
+
+### Changed
+
+- Promoted the public Unity build-version route to a reviewed stable endpoint
+  with authentication disabled and logging suppressed.
+
+### Security
+
+- Missing, deprecated, and unknown build environments fail closed; no runtime
+  lookup silently defaults to Production.
+
 ## [0.3.0] - 2026-08-19
 
 ### Added
