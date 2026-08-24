@@ -67,6 +67,8 @@ namespace Deucarian.Simultria.API.Configuration
             new ApiEndpointId("simultria.activities.list");
         public static readonly ApiEndpointId ModelVersionActivity =
             new ApiEndpointId("simultria.activities.get");
+        public static readonly ApiEndpointId UnityBuildVersion =
+            new ApiEndpointId("simultria.unity-builds.version");
 
         private static readonly IReadOnlyList<ApiEndpointId> stable =
             Array.AsReadOnly(new[]
@@ -82,7 +84,8 @@ namespace Deucarian.Simultria.API.Configuration
                 FrozenModelVersion,
                 ModelVersionDownload,
                 ModelVersionActivities,
-                ModelVersionActivity
+                ModelVersionActivity,
+                UnityBuildVersion
             });
 
         /// <summary>

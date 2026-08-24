@@ -15,9 +15,9 @@ this local Scribe OpenAPI extraction:
   `7955245F18E5CAA09429D84DBC706680BAA97A5E8DC6883B03C2DE7E552A5F1B`;
 - parsed surface: 232 paths and 351 HTTP operations; and
 - runtime catalog coverage: all 351 operations in that exact snapshot;
-- hand-curated compatibility mappings: 12 existing stable IDs described by
+- hand-curated compatibility mappings: 13 stable IDs described by
   `simultria-api-v2.supported-subset.overlay.json`; and
-- deterministic generated mappings: 339 method/path-derived IDs.
+- deterministic generated mappings: 338 method/path-derived IDs.
 
 This is **not** evidence of full Simultria API coverage. Scribe returned a
 non-zero status with route-level extraction warnings, while a separate docs

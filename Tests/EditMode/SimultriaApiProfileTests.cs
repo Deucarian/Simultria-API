@@ -150,8 +150,8 @@ namespace Deucarian.Simultria.API.Tests.EditMode
                 }
             }
 
-            Assert.That(unauthenticatedCount, Is.EqualTo(4));
-            Assert.That(derivedCount, Is.EqualTo(339));
+            Assert.That(unauthenticatedCount, Is.EqualTo(5));
+            Assert.That(derivedCount, Is.EqualTo(338));
             Assert.That(
                 catalog.TryGetEndpoint(
                     SimultriaEndpointIds.Login,
@@ -162,6 +162,15 @@ namespace Deucarian.Simultria.API.Tests.EditMode
                 login.Authentication,
                 Is.EqualTo(ApiAuthenticationRequirement.Disabled));
             Assert.That(login.SuppressLogging, Is.True);
+            Assert.That(
+                catalog.TryGetEndpoint(
+                    SimultriaEndpointIds.UnityBuildVersion,
+                    out ApiEndpointCatalogEntry unityBuildVersion),
+                Is.True);
+            Assert.That(
+                unityBuildVersion.Authentication,
+                Is.EqualTo(ApiAuthenticationRequirement.Disabled));
+            Assert.That(unityBuildVersion.SuppressLogging, Is.True);
             Assert.That(
                 catalog.TryGetEndpoint(
                     new ApiEndpointId(

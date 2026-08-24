@@ -3619,11 +3619,11 @@ MonoBehaviour:
       rateLimitRequestCountHint: -1
       rateLimitWindowSecondsHint: -1
     suppressLogging: 1
-  - endpointId: simultria.generated.get.api.v2.unity.builds.versions.by-id.by-product
+  - endpointId: simultria.unity-builds.version
     clientId: simultria.primary
     routeTemplate: api/v2/unity/builds/versions/{id}/{product}
     method: 0
-    authentication: 1
+    authentication: 3
     responseFormat: 0
     defaultHeaders: []
     defaultQueryParameters: []
