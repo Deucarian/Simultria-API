@@ -9,20 +9,116 @@ namespace Deucarian.Simultria.API.Tests.EditMode
     public sealed class SimultriaViewerModelResolverTests
     {
         [Test]
-        public void RequestedVersionWinsOverLatestFallback()
+        public void RequestedVersionWinsOverActiveAndLatestFallbacks()
         {
             SimultriaViewerModelResolveResult result =
                 SimultriaViewerModelResolver.ResolveFromProjects(
                     1,
                     2,
                     17,
-                    Projects(
+                    ProjectWithActiveVersion(
+                        99,
                         Version(17, "1", order: "1"),
                         Version(99, "9", order: "9")));
 
             Assert.That(result.Succeeded, Is.True);
             Assert.That(result.ModelVersionId, Is.EqualTo(17));
             Assert.That(result.UsedRequestedVersion, Is.True);
+            Assert.That(result.UsedActiveVersion, Is.False);
+        }
+
+        [Test]
+        public void UnpinnedSelectionUsesActiveVersionInsteadOfLatest()
+        {
+            SimultriaViewerModelResolveResult result =
+                SimultriaViewerModelResolver.ResolveFromProjects(
+                    1,
+                    2,
+                    null,
+                    ProjectWithActiveVersion(
+                        17,
+                        Version(17, "1", order: "1"),
+                        Version(99, "9", order: "9")));
+
+            Assert.That(result.Succeeded, Is.True);
+            Assert.That(result.ModelVersionId, Is.EqualTo(17));
+            Assert.That(result.UsedRequestedVersion, Is.False);
+            Assert.That(result.UsedActiveVersion, Is.True);
+            Assert.That(
+                result.Message,
+                Is.EqualTo("Resolved the active Simultria model version."));
+        }
+
+        [Test]
+        public void UnpinnedSelectionUsesLatestOnlyWhenActiveVersionIsMissing()
+        {
+            SimultriaViewerModelResolveResult result =
+                SimultriaViewerModelResolver.ResolveFromProjects(
+                    1,
+                    2,
+                    null,
+                    Projects(
+                        Version(17, "1", order: "1"),
+                        Version(99, "9", order: "9")));
+
+            Assert.That(result.Succeeded, Is.True);
+            Assert.That(result.ModelVersionId, Is.EqualTo(99));
+            Assert.That(result.UsedRequestedVersion, Is.False);
+            Assert.That(result.UsedActiveVersion, Is.False);
+            Assert.That(
+                result.Message,
+                Is.EqualTo("Resolved the latest Simultria model version."));
+        }
+
+        [Test]
+        public void MissingActiveVersionDetailsFailWithoutUsingLatestVersion()
+        {
+            SimultriaViewerModelResolveResult result =
+                SimultriaViewerModelResolver.ResolveFromProjects(
+                    1,
+                    2,
+                    null,
+                    ProjectWithActiveVersion(
+                        17,
+                        Version(99, "9", order: "9")));
+
+            Assert.That(result.Succeeded, Is.False);
+            Assert.That(
+                result.ErrorCode,
+                Is.EqualTo(
+                    SimultriaViewerModelErrorCodes.ModelVersionNotFound));
+            Assert.That(result.Message, Does.StartWith("The active Simultria"));
+            Assert.That(result.DownloadUrl, Is.Null);
+        }
+
+        [Test]
+        public void DetailedActiveVersionWorksWhenVersionCollectionsAreNull()
+        {
+            var project = new SimultriaProjectDto
+            {
+                Id = 1,
+                Models = new List<SimultriaModelDto>
+                {
+                    new SimultriaModelDto
+                    {
+                        Id = 2,
+                        ActiveVersion = Version(17, "1"),
+                        ModelVersions = null,
+                        Versions = null
+                    }
+                }
+            };
+
+            SimultriaViewerModelResolveResult result =
+                SimultriaViewerModelResolver.ResolveFromProjects(
+                    1,
+                    2,
+                    null,
+                    new[] { project });
+
+            Assert.That(result.Succeeded, Is.True);
+            Assert.That(result.ModelVersionId, Is.EqualTo(17));
+            Assert.That(result.UsedActiveVersion, Is.True);
         }
 
         [Test]
@@ -94,6 +190,7 @@ namespace Deucarian.Simultria.API.Tests.EditMode
             Assert.That(result.ProjectId, Is.EqualTo(5));
             Assert.That(result.ModelId, Is.EqualTo(8));
             Assert.That(result.ModelVersionId, Is.EqualTo(13));
+            Assert.That(result.UsedActiveVersion, Is.False);
         }
 
         [Test]
@@ -133,6 +230,20 @@ namespace Deucarian.Simultria.API.Tests.EditMode
                     }
                 }
             };
+        }
+
+        private static IEnumerable<SimultriaProjectDto> ProjectWithActiveVersion(
+            int activeVersionId,
+            params SimultriaModelVersionDto[] versions)
+        {
+            IEnumerable<SimultriaProjectDto> projects = Projects(versions);
+            foreach (SimultriaProjectDto project in projects)
+            {
+                project.Models[0].ActiveVersion =
+                    new SimultriaModelVersionDto { Id = activeVersionId };
+            }
+
+            return projects;
         }
 
         private static SimultriaModelVersionDto Version(
