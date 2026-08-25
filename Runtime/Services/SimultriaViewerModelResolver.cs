@@ -12,7 +12,7 @@ namespace Deucarian.Simultria.API.Services
 {
     /// <summary>
     /// Resolves a project/model/version selection to the documented download
-    /// URL using the same deterministic fallback policy across viewers.
+    /// URL using exact, active, then deterministic latest-version precedence.
     /// </summary>
     public sealed class SimultriaViewerModelResolver :
         SimultriaLookupServiceBase
@@ -157,14 +157,29 @@ namespace Deucarian.Simultria.API.Services
             }
 
             bool exactVersionRequested = modelVersionId.HasValue;
-            SimultriaModelVersionDto version = exactVersionRequested
-                ? FindVersion(versions, modelVersionId.Value)
-                : SelectLatestVersion(versions);
+            bool activeVersionSelected =
+                !exactVersionRequested && model.ActiveVersion?.Id > 0;
+            SimultriaModelVersionDto version;
+            if (exactVersionRequested)
+            {
+                version = FindVersion(versions, modelVersionId.Value);
+            }
+            else if (activeVersionSelected)
+            {
+                version = SelectActiveVersion(model);
+            }
+            else
+            {
+                version = SelectLatestVersion(versions);
+            }
             if (version == null)
             {
                 return SimultriaViewerModelResolveResult.Failure(
                     SimultriaViewerModelErrorCodes.ModelVersionNotFound,
-                    "The requested Simultria model version was not found.");
+                    activeVersionSelected
+                        ? "The active Simultria model version was not returned " +
+                          "with the model's version details."
+                        : "The requested Simultria model version was not found.");
             }
 
             if (string.IsNullOrWhiteSpace(version.DownloadUrl))
@@ -178,7 +193,8 @@ namespace Deucarian.Simultria.API.Services
                 project,
                 model,
                 version,
-                exactVersionRequested);
+                exactVersionRequested,
+                activeVersionSelected);
         }
 
         public static SimultriaModelVersionDto SelectLatestVersion(
@@ -363,6 +379,11 @@ namespace Deucarian.Simultria.API.Services
             IEnumerable<SimultriaModelVersionDto> versions,
             int versionId)
         {
+            if (versions == null)
+            {
+                return null;
+            }
+
             foreach (SimultriaModelVersionDto version in versions)
             {
                 if (version != null && version.Id == versionId)
@@ -372,6 +393,29 @@ namespace Deucarian.Simultria.API.Services
             }
 
             return null;
+        }
+
+        private static SimultriaModelVersionDto SelectActiveVersion(
+            SimultriaModelDto model)
+        {
+            SimultriaModelVersionDto active = model?.ActiveVersion;
+            if (active?.Id <= 0)
+            {
+                return null;
+            }
+
+            SimultriaModelVersionDto detailed =
+                FindVersion(model.ModelVersions, active.Id) ??
+                FindVersion(model.Versions, active.Id);
+            if (detailed != null &&
+                !string.IsNullOrWhiteSpace(detailed.DownloadUrl))
+            {
+                return detailed;
+            }
+
+            return !string.IsNullOrWhiteSpace(active.DownloadUrl)
+                ? active
+                : detailed;
         }
 
         private static List<SimultriaModelVersionDto> GetCandidateVersions(

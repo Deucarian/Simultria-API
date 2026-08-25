@@ -29,6 +29,7 @@ namespace Deucarian.Simultria.API.Models
             string modelVersionName,
             string downloadUrl,
             bool usedRequestedVersion,
+            bool usedActiveVersion,
             string message,
             string errorCode)
         {
@@ -41,6 +42,7 @@ namespace Deucarian.Simultria.API.Models
             ModelVersionName = modelVersionName;
             DownloadUrl = downloadUrl;
             UsedRequestedVersion = usedRequestedVersion;
+            UsedActiveVersion = usedActiveVersion;
             Message = message;
             ErrorCode = errorCode;
         }
@@ -63,6 +65,11 @@ namespace Deucarian.Simultria.API.Models
 
         public bool UsedRequestedVersion { get; }
 
+        /// <summary>
+        /// Whether an unpinned request resolved the model's active version.
+        /// </summary>
+        public bool UsedActiveVersion { get; }
+
         public string Message { get; }
 
         public string ErrorCode { get; }
@@ -72,6 +79,21 @@ namespace Deucarian.Simultria.API.Models
             SimultriaModelDto model,
             SimultriaModelVersionDto version,
             bool usedRequestedVersion)
+        {
+            return Success(
+                project,
+                model,
+                version,
+                usedRequestedVersion,
+                false);
+        }
+
+        internal static SimultriaViewerModelResolveResult Success(
+            SimultriaProjectDto project,
+            SimultriaModelDto model,
+            SimultriaModelVersionDto version,
+            bool usedRequestedVersion,
+            bool usedActiveVersion)
         {
             return new SimultriaViewerModelResolveResult(
                 true,
@@ -83,9 +105,12 @@ namespace Deucarian.Simultria.API.Models
                 version.Name,
                 version.DownloadUrl,
                 usedRequestedVersion,
+                usedActiveVersion,
                 usedRequestedVersion
                     ? "Resolved the requested Simultria model version."
-                    : "Resolved the latest Simultria model version.",
+                    : usedActiveVersion
+                        ? "Resolved the active Simultria model version."
+                        : "Resolved the latest Simultria model version.",
                 null);
         }
 
@@ -102,6 +127,7 @@ namespace Deucarian.Simultria.API.Models
                 0,
                 null,
                 null,
+                false,
                 false,
                 message,
                 errorCode);

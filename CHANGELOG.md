@@ -2,6 +2,15 @@
 
 All notable changes to this package are documented here.
 
+## [0.4.1] - 2026-08-25
+
+### Fixed
+
+- Unpinned viewer model resolution now uses the model's configured active
+  version before the deterministic latest-version fallback.
+- Positive model-version IDs remain exact pins and are never replaced by the
+  active or latest version.
+
 ## [0.4.0] - 2026-08-24
 
 ### Added
