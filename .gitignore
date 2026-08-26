@@ -10,3 +10,10 @@ TestResults*.xml
 *.csproj
 *.sln
 *.user
+__pycache__/
+*.py[cod]
+
+# Private package-author inbox; generated review files are committed instead.
+ContractSource~/openapi.json
+ContractSource~/openapi.yaml
+ContractSource~/openapi.yml

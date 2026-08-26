@@ -19,6 +19,11 @@ this local Scribe OpenAPI extraction:
   `simultria-api-v2.supported-subset.overlay.json`; and
 - deterministic generated mappings: 338 method/path-derived IDs.
 
+The same source identity is recorded mechanically in
+`Generated/SimultriaApiV2Contract.manifest.json`. The generated
+`Generated/API-Endpoints.md` file provides a reviewable route table for every
+catalog operation without deployment URLs or request/response examples.
+
 This is **not** evidence of full Simultria API coverage. Scribe returned a
 non-zero status with route-level extraction warnings, while a separate docs
 text scan observed roughly 383 method/path entries. The snapshot's only server
@@ -53,6 +58,19 @@ installed-package versioning all require a pinned local contract.
 `Tools~/generate_contract.py` accepts JSON directly and YAML when PyYAML is
 installed. Both inputs must be local files; URL inputs are rejected.
 
+Package authors normally use the Editor Contract Updater or the one-command
+wrapper. Both invoke the same deterministic generator:
+
+```text
+python Tools~/update_contract.py \
+  --spec path/to/approved-openapi.yaml \
+  --source-revision <backend-git-commit>
+```
+
+The wrapper also regenerates the manifest and Markdown endpoint reference.
+`--change-report-out` and `--change-report-markdown-out` emit ephemeral semantic
+review summaries suitable for a future backend-triggered package PR.
+
 The checked-in `simultria-api-v2.supported-subset.overlay.json` is the current
 overlay. A minimal overlay entry has this shape:
 
@@ -79,7 +97,10 @@ python Tools~/generate_contract.py \
   --overlay Documentation~/simultria-api-v2.supported-subset.overlay.json \
   --catalog-out Documentation~/Generated/SimultriaApiV2EndpointCatalog.generated.json \
   --coverage-out Documentation~/Generated/SimultriaApiV2EndpointCatalog.coverage.json \
+  --manifest-out Documentation~/Generated/SimultriaApiV2Contract.manifest.json \
+  --documentation-out Documentation~/Generated/API-Endpoints.md \
   --unity-asset-out Runtime/Resources/Deucarian/Simultria/API/SimultriaApiV2EndpointCatalog.asset \
+  --source-revision <backend-git-commit> \
   --require-complete
 ```
 
