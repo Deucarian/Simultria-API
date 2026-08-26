@@ -2,6 +2,38 @@
 
 All notable changes to this package are documented here.
 
+## [0.5.0] - 2026-08-26
+
+### Added
+
+- Added a package-author Contract Updater that previews a local backend Scribe
+  snapshot and regenerates the runtime catalog, coverage, provenance, and local
+  endpoint reference from one Editor workflow.
+- Added deterministic contract manifest and Markdown endpoint-reference output.
+- Added semantic JSON and Markdown change reports for added, removed, changed,
+  breaking, authentication, and logging-policy changes.
+- Added a headless `update_contract.py` entry point for future backend-triggered
+  package pull requests and a generated-artifact validation mode for package CI.
+- Added an ignored `ContractSource~` inbox and a once-per-session Editor notice
+  when its OpenAPI hash differs from the installed contract.
+- Added Python generator tests, Editor contract-status tests, and GitHub package
+  and generated-contract validation.
+
+### Changed
+
+- Snapshot count tests now use the deterministic generated manifest, so valid
+  endpoint additions do not require hand-editing test counts.
+- The package catalog inspector now shows its source commit, hash, coverage, and
+  opens the Contract Updater.
+
+### Security
+
+- Contract updates still accept local files only, require an exact backend Git
+  commit, store no credentials or deployment URLs, and keep generated routes
+  logging-suppressed until reviewed.
+- Breaking route/method/authentication/logging changes are explicitly marked for
+  human review; automation prepares updates and PRs but does not silently merge.
+
 ## [0.4.1] - 2026-08-25
 
 ### Fixed

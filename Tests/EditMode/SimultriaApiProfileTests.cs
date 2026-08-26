@@ -4,6 +4,7 @@ using Deucarian.API.Configuration;
 using Deucarian.API.Core;
 using Deucarian.API.Models;
 using Deucarian.Simultria.API.Configuration;
+using Deucarian.Simultria.API.Editor;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -106,16 +107,25 @@ namespace Deucarian.Simultria.API.Tests.EditMode
         }
 
         [Test]
-        public void PackageCatalogCoversEveryOperationInPinnedSnapshot()
+        public void PackageCatalogMatchesGeneratedContractManifest()
         {
             ApiEndpointCatalog catalog =
                 SimultriaApiProfileDefaults.LoadEndpointCatalog();
+            Assert.That(
+                SimultriaContractUpdateService.TryLoadCurrentManifest(
+                    out SimultriaContractManifestDocument manifest,
+                    out string manifestError),
+                Is.True,
+                manifestError);
 
             Assert.That(catalog, Is.Not.Null);
             Assert.That(catalog.IsValid(out string validationMessage),
                 Is.True,
                 validationMessage);
-            Assert.That(catalog.Endpoints, Has.Count.EqualTo(351));
+            Assert.That(
+                catalog.Endpoints,
+                Has.Count.EqualTo(manifest.catalog.operationCount));
+            Assert.That(manifest.coverage.snapshotCoverageComplete, Is.True);
 
             var endpointIds = new HashSet<string>(StringComparer.Ordinal);
             int unauthenticatedCount = 0;
@@ -150,8 +160,12 @@ namespace Deucarian.Simultria.API.Tests.EditMode
                 }
             }
 
-            Assert.That(unauthenticatedCount, Is.EqualTo(5));
-            Assert.That(derivedCount, Is.EqualTo(338));
+            Assert.That(
+                unauthenticatedCount,
+                Is.EqualTo(manifest.catalog.unauthenticatedOperationCount));
+            Assert.That(
+                derivedCount,
+                Is.EqualTo(manifest.catalog.generatedOperationCount));
             Assert.That(
                 catalog.TryGetEndpoint(
                     SimultriaEndpointIds.Login,
