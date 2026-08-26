@@ -1,0 +1,29 @@
+{
+  "catalog": {
+    "catalogId": "simultria.api-v2",
+    "displayName": "Simultria API v2",
+    "generatedOperationCount": 338,
+    "operationCount": 351,
+    "reviewedStableOperationCount": 13,
+    "unauthenticatedOperationCount": 5
+  },
+  "coverage": {
+    "catalogOperations": 351,
+    "operationsInSuppliedSnapshot": 351,
+    "snapshotCoverage": "351/351",
+    "snapshotCoverageComplete": true,
+    "unusedOverlayKeyCount": 0
+  },
+  "safety": {
+    "containsDeploymentUrls": false,
+    "derivedOperationsSuppressLoggingByDefault": true,
+    "runtimeDownloadsContract": false
+  },
+  "schemaVersion": 1,
+  "source": {
+    "backendRevision": "53f2ee778c5ec3d22763c86537850061642317cb",
+    "fileName": "openapi.yaml",
+    "openapiVersion": "3.0.3",
+    "sha256": "7955245f18e5caa09429d84dbc706680baa97a5e8dc6883b03c2de7e552a5f1b"
+  }
+}
