@@ -1,5 +1,6 @@
 using System;
 using Deucarian.API.Configuration;
+using Deucarian.Editor;
 using Deucarian.Simultria.API.Configuration;
 using UnityEditor;
 using UnityEngine;
@@ -49,6 +50,8 @@ namespace Deucarian.Simultria.API.Editor
                 "project catalog override from that profile's Advanced section.",
                 MessageType.Info);
 
+            DrawGeneratedContractStatus();
+
             showPackageDetails = EditorGUILayout.Foldout(
                 showPackageDetails,
                 "Contract details",
@@ -60,6 +63,57 @@ namespace Deucarian.Simultria.API.Editor
                     DrawDefaultInspector();
                 }
             }
+        }
+
+        private static void DrawGeneratedContractStatus()
+        {
+            if (SimultriaContractUpdateService.TryLoadCurrentManifest(
+                    out SimultriaContractManifestDocument manifest,
+                    out _) &&
+                manifest.source != null &&
+                manifest.coverage != null)
+            {
+                using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
+                {
+                    EditorGUILayout.LabelField(
+                        "Generated contract provenance",
+                        EditorStyles.boldLabel);
+                    EditorGUILayout.LabelField(
+                        "Backend commit",
+                        ShortValue(manifest.source.backendRevision, 16));
+                    EditorGUILayout.LabelField(
+                        "Source SHA-256",
+                        ShortValue(manifest.source.sha256, 20));
+                    EditorGUILayout.LabelField(
+                        "Snapshot coverage",
+                        manifest.coverage.snapshotCoverage ?? "Unknown");
+                }
+            }
+            else
+            {
+                EditorGUILayout.HelpBox(
+                    "Generated contract provenance is missing. Validate the " +
+                    "package before release.",
+                    MessageType.Warning);
+            }
+
+            if (DeucarianEditorButtons.Secondary(
+                    "Open Contract Updater",
+                    true,
+                    GUILayout.Height(26f)))
+            {
+                SimultriaContractUpdateWindow.OpenWindow();
+            }
+        }
+
+        private static string ShortValue(string value, int length)
+        {
+            if (string.IsNullOrWhiteSpace(value) || value.Length <= length)
+            {
+                return value ?? "Unknown";
+            }
+
+            return value.Substring(0, length) + "…";
         }
 
         internal static bool IsCanonicalPackageCatalog(

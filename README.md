@@ -182,3 +182,33 @@ request/response logging so environment discovery cannot depend on a session.
 
 No route contains a deployment host. Every absolute base URL remains in a
 project-owned profile or imported starter asset and is blank by default.
+
+## Updating the contract
+
+The backend does not need a Unity-specific endpoint. A backend author generates
+Scribe OpenAPI, then supplies the local `openapi.yaml` file and its exact Git
+commit. Open the package-author workflow from:
+
+`Tools > Deucarian > Simultria API > Open Contract Updater`
+
+The updater previews semantic endpoint changes before it regenerates the
+runtime catalog, coverage JSON, deterministic provenance manifest, and the
+human-readable
+[`Documentation~/Generated/API-Endpoints.md`](Documentation~/Generated/API-Endpoints.md).
+It marks removals and route, method, authentication, or logging changes for
+explicit review. The package must be referenced as a local or embedded package
+to apply changes; installed Git packages remain read-only.
+
+For command-line and future backend-CI integration, use:
+
+```text
+python Tools~/update_contract.py \
+  --spec <local-openapi.yaml> \
+  --source-revision <backend-git-commit>
+```
+
+The same command can emit JSON and Markdown change reports for an automated PR.
+See
+[`Documentation~/CONTRACT_AUTOMATION.md`](Documentation~/CONTRACT_AUTOMATION.md)
+for the manual handoff, CI commands, security model, and deliberate human-review
+boundary.
