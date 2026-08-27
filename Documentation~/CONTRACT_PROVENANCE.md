@@ -35,8 +35,8 @@ committed here because it is a large backend-generated artifact; the backend
 commit and SHA-256 pin the exact review trail.
 
 Environment base URLs are deliberately excluded from the contract. They are
-project-owned values entered in generic `ApiConnectionProfile` assets. Legacy
-`SimultriaApiProfile` assets remain supported for serialized compatibility.
+project-owned values entered in `ApiConnectionSettings` assets that reference
+the generated `ApiServiceDefinition`.
 
 ## Intended source of truth
 

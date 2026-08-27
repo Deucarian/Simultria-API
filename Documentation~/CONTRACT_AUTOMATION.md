@@ -20,7 +20,9 @@ The Editor always previews first. Applying regenerates:
 
 - the runtime `ApiEndpointCatalog` asset;
 - catalog and coverage JSON;
-- the deterministic provenance manifest; and
+- the deterministic provenance manifest;
+- the package-owned `SimultriaApiV2Definition.asset` source version and
+  fingerprint; and
 - `Documentation~/Generated/API-Endpoints.md`.
 
 The original OpenAPI file is not copied into package runtime content.

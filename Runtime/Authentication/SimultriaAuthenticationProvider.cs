@@ -5,23 +5,23 @@ using System.Threading.Tasks;
 using Deucarian.API.Core;
 using Deucarian.API.Models;
 using Deucarian.Session;
-using Deucarian.ViewerAuthentication;
+using Deucarian.Authentication;
 
 namespace Deucarian.Simultria.API.Authentication
 {
     /// <summary>
     /// Concrete Simultria sign-in and validation semantics injected into the
-    /// vendor-neutral Viewer Authentication lifecycle.
+    /// vendor-neutral Authentication lifecycle.
     /// </summary>
-    public sealed class SimultriaViewerAuthenticationProvider :
-        IInteractiveViewerAuthenticationAcquisitionProvider,
-        IViewerAuthenticationValidationProvider
+    public sealed class SimultriaAuthenticationProvider :
+        IInteractiveAuthenticationAcquisitionProvider,
+        IAuthenticationValidationProvider
     {
-        private readonly ViewerAuthenticationEndpointProvider acquisition;
-        private readonly ViewerAuthenticationEndpointValidationProvider
+        private readonly AuthenticationEndpointProvider acquisition;
+        private readonly AuthenticationEndpointValidationProvider
             validation;
 
-        public SimultriaViewerAuthenticationProvider(
+        public SimultriaAuthenticationProvider(
             IApiClient apiClient,
             ApiComposition composition,
             ApiEnvironmentId environmentId)
@@ -40,12 +40,12 @@ namespace Deucarian.Simultria.API.Authentication
             }
 
             EnvironmentId = environmentId;
-            acquisition = new ViewerAuthenticationEndpointProvider(
+            acquisition = new AuthenticationEndpointProvider(
                 apiClient,
                 SimultriaAuthenticationConfiguration.CreateLogin(
                     composition,
                     environmentId));
-            validation = new ViewerAuthenticationEndpointValidationProvider(
+            validation = new AuthenticationEndpointValidationProvider(
                 apiClient,
                 SimultriaAuthenticationConfiguration
                     .CreateValidation(composition, environmentId));
@@ -61,13 +61,13 @@ namespace Deucarian.Simultria.API.Authentication
 
         public string ValidationEndpoint => validation.EndpointTemplate;
 
-        public IReadOnlyList<ViewerAuthenticationInputDescriptor>
+        public IReadOnlyList<AuthenticationInputDescriptor>
             InputDescriptors => acquisition.InputDescriptors;
 
-        string IViewerAuthenticationAcquisitionProvider.DisplayName =>
+        string IAuthenticationAcquisitionProvider.DisplayName =>
             "Sign in to Simultria";
 
-        string IViewerAuthenticationValidationProvider.DisplayName =>
+        string IAuthenticationValidationProvider.DisplayName =>
             "Simultria server validation";
 
         public Task<SessionResult> AcquireAsync(
@@ -81,7 +81,7 @@ namespace Deucarian.Simultria.API.Authentication
 
         public Task<SessionResult> AcquireAsync(
             ISessionService sessionService,
-            ViewerAuthenticationInputValues inputValues,
+            AuthenticationInputValues inputValues,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             return acquisition.AcquireAsync(
@@ -90,7 +90,7 @@ namespace Deucarian.Simultria.API.Authentication
                 cancellationToken);
         }
 
-        public Task<ViewerAuthenticationValidationResult> ValidateAsync(
+        public Task<AuthenticationValidationResult> ValidateAsync(
             ISessionService sessionService,
             CancellationToken cancellationToken = default(CancellationToken))
         {

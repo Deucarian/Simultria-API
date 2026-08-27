@@ -10,7 +10,7 @@ Registry.
 This package owns Simultria-specific environment resolution, stable API v2
 routes, response DTOs, read-only project/model/version/activity lookup
 services, and the concrete Simultria acquisition/validation adapter injected
-into Viewer Authentication.
+into Authentication.
 
 It must not own HTTP transport, token/session persistence, authentication UI,
 viewer lifecycle, browser transport, development viewer context, report
@@ -24,7 +24,7 @@ package metadata and registry ownership entry synchronized when changing it.
 - API owns HTTP transport, bearer-header formatting, and structured results.
 - Session owns token state and lifecycle.
 - Session API Integration owns credential-safe configurable token exchanges.
-- Viewer Authentication owns the generic viewer-facing token workflow and UI.
+- Authentication owns the generic viewer-facing token workflow and UI.
 - Newtonsoft JSON maps the documented snake_case API responses.
 
 ## Policies

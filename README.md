@@ -10,13 +10,12 @@ typed source for environments, routes, lookup DTOs, and token acquisition.
 This package owns:
 
 - canonical Development, Testing, Acceptance, and Production descriptors;
-- a safe package fallback that knows the standard environments but contains
-  no deployment host;
-- credential-free custom environment profiles;
+- a package-owned, credential-free API service definition with no deployment
+  host or active environment;
 - typed endpoints for login, validation, projects, project models, model
   versions, downloads, activities, and Unity build environment discovery;
 - typed read-only project/model/version/activity lookup services; and
-- an injected provider that implements Viewer Authentication acquisition and
+- an injected provider that implements Authentication acquisition and
   server validation through the Simultria login and validation routes.
 
 It does not own token storage, bearer-header formatting, authentication UI,
@@ -32,13 +31,12 @@ Simultria defines four known environments in a stable order:
 4. Production (`simultria.production`)
 
 The descriptors contain only a typed ID, lifecycle stage, and safe display
-name. They never imply a host. Create a generic project-owned connection
-profile from:
+name. They never imply a host. Create project-owned settings from:
 
-`Assets > Create > Deucarian > Simultria > API Profile`
+`Assets > Create > Deucarian > Connections > Simultria Connection Settings`
 
-The created `ApiConnectionProfile` contains four editable environment
-sub-assets.
+The created `ApiConnectionSettings` contains four managed environment
+sub-assets and references the package's read-only `ApiServiceDefinition`.
 Each has the fixed `simultria.primary` client and an empty base URL. The custom
 inspector keeps the everyday view to four URL/status cards. An empty slot is
 **Not configured**. A valid absolute HTTP(S) URL changes it to **Configured**;
@@ -48,35 +46,32 @@ Configuring one slot never causes another slot to fall back to that host.
 You can also import **Simultria API Starter Assets** from Package Manager. It
 contains the same four blank slots and is already wired to the package-managed
 contract. IDs, request policies, and explicit project-owned contract overrides
-remain available through the profile's **Advanced** details and the single
-Simultria **Advanced** creation submenu. Existing
-`SimultriaApiProfile` references continue to work; an Advanced compatibility
-menu can still create that legacy wrapper when migration is not yet possible.
+remain available through the settings asset's **Advanced** details. An
+explicit advanced action can fork the service definition after warning that
+package contract updates no longer apply automatically.
 
-Project profiles should be referenced explicitly and must not be placed at the
-same Resources path as the package fallback profile.
+Project settings must be referenced or bound explicitly. The package does not
+ship connection settings or a fallback environment selection.
 
-## Package fallback profile
+## Package service definition
 
-The package fallback contains no deployment URL. It exists so consumers can
-discover the four known environment states safely even before a project-owned
-profile is assigned:
+The package definition contains contract metadata but no deployment URL. A
+consumer must supply project-owned settings before composition:
 
 ```csharp
-ApiEnvironmentId environmentId = SimultriaEnvironmentIds.Development;
-SimultriaApiProfile simultriaApiProfile =
-    SimultriaApiProfileDefaults.Load();
-ApiComposition composition = simultriaApiProfile.CreateComposition();
+ApiConnectionSettings settings = projectConfiguration.ConnectionSettings;
+ApiEnvironmentId environmentId = explicitEnvironmentId;
+ApiComposition composition =
+    SimultriaApiConnectionSettingsAdapter.CreateComposition(settings);
 ApiEnvironmentStatus status =
     composition.GetEnvironmentStatus(environmentId);
 ```
 
-The packaged Development slot keeps its existing asset identity for migration
-safety; Testing, Acceptance, and Production now accompany it as equally blank
-slots. No deployment URL is shipped. New projects should use the project-owned
-four-slot workflow above. Unknown and unconfigured IDs fail closed instead of
-guessing a deployment URL. Profiles never contain credentials or tokens, and
-sanitized `ApiEnvironmentStatus` values do not expose base URLs.
+The definition declares Development, Testing, Acceptance, and Production plus
+the required `simultria.primary` named client. Unknown, blank, and unconfigured
+IDs fail closed instead of guessing Development or Production. Settings never
+contain credentials or tokens, and sanitized `ApiEnvironmentStatus` values do
+not expose base URLs.
 
 ## Lookup services
 
@@ -122,18 +117,18 @@ ApiResult<SimultriaCollectionResponse<ReportActivityDto>> result =
 
 Every lookup sends an API request with authentication explicitly required.
 
-## Viewer Authentication
+## Authentication
 
 Create one concrete provider and register it in both generic provider slots:
 
 ```csharp
-SimultriaViewerAuthenticationProvider provider =
-    SimultriaViewerAuthenticationProviderFactory.Create(
+SimultriaAuthenticationProvider provider =
+    SimultriaAuthenticationProviderFactory.Create(
         simultriaApiProfile,
         environmentId,
         apiClient);
 
-IDisposable registration = ViewerAuthenticationTargetRegistry.Register(
+IDisposable registration = AuthenticationTargetRegistry.Register(
     "viewer",
     "Viewer",
     authenticationSession,
@@ -141,7 +136,7 @@ IDisposable registration = ViewerAuthenticationTargetRegistry.Register(
     provider);
 ```
 
-The shared Viewer Authentication UI renders the provider's transient
+The shared Authentication UI renders the provider's transient
 `identity` and masked `password` fields. The package delegates the exchange to
 Session API Integration, clears transient values after the operation, and
 returns only sanitized lifecycle/validation results. API continues to own the
