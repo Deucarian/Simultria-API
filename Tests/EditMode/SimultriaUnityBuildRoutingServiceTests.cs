@@ -132,6 +132,37 @@ namespace Deucarian.Simultria.API.Tests.EditMode
             }
         }
 
+        [Test]
+        public void EvaluatesTransportIndependentResponseWithSameRoutingPolicy()
+        {
+            using (var fixture = new SimultriaTestComposition())
+            {
+                ApiEnvironmentId production =
+                    SimultriaEnvironmentIds.Production;
+                fixture.ConfigureEnvironment(
+                    production,
+                    "https://target.example.invalid");
+                var service = new SimultriaUnityBuildRoutingService(
+                    null,
+                    fixture.Settings.CreateComposition(),
+                    SimultriaEnvironmentIds.Development);
+
+                SimultriaUnityBuildRoutingResult result =
+                    service.EvaluateResponse(
+                        "1.1",
+                        "holo_helmet",
+                        new SimultriaUnityBuildVersionDto
+                        {
+                            Version = "1.1",
+                            Product = "holo_helmet",
+                            Environment = "production"
+                        });
+
+                Assert.That(result.Succeeded, Is.True, result.Message);
+                Assert.That(result.EnvironmentId, Is.EqualTo(production));
+            }
+        }
+
         private static SimultriaResourceResponse<
             SimultriaUnityBuildVersionDto> Response(
                 string version,

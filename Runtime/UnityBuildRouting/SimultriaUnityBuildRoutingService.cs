@@ -126,6 +126,50 @@ namespace Deucarian.Simultria.UnityBuildRouting
             }
 
             SimultriaUnityBuildVersionDto response = lookup.Data.Data;
+            return EvaluateResponse(buildVersion, product, response);
+        }
+
+        /// <summary>
+        /// Validates a build-directory response obtained by a caller-specific
+        /// transport. Editor build hooks can use a bounded synchronous HTTP
+        /// transport without blocking UnityWebRequest's main-thread
+        /// continuation, while sharing the same fail-closed routing policy.
+        /// </summary>
+        public SimultriaUnityBuildRoutingResult EvaluateResponse(
+            string buildVersionValue,
+            string productValue,
+            SimultriaUnityBuildVersionDto response)
+        {
+            string buildVersion = (buildVersionValue ?? string.Empty).Trim();
+            string product = (productValue ?? string.Empty).Trim();
+            if (buildVersion.Length == 0)
+            {
+                return Failure(
+                    buildVersion,
+                    product,
+                    "build_version_missing",
+                    "Build routing requires a Unity build version.");
+            }
+
+            if (product.Length == 0)
+            {
+                return Failure(
+                    buildVersion,
+                    product,
+                    "build_product_missing",
+                    "Build routing requires a canonical Simultria product.");
+            }
+
+            if (response == null)
+            {
+                return Failure(
+                    buildVersion,
+                    product,
+                    "build_directory_lookup_failed",
+                    "The Simultria Unity build directory did not return a " +
+                    "usable response.");
+            }
+
             if (!string.Equals(
                     response.Version?.Trim(),
                     buildVersion,
