@@ -34,6 +34,60 @@ UNITY_ASSET = Path(
     "Runtime/Resources/Deucarian/Simultria/API/"
     "SimultriaApiV2EndpointCatalog.asset"
 )
+SERVICE_DEFINITION_ASSET = Path(
+    "Runtime/Resources/Deucarian/Simultria/API/"
+    "SimultriaApiV2Definition.asset"
+)
+
+
+def service_definition_asset(manifest: Mapping[str, Any]) -> str:
+    source = manifest.get("source")
+    if not isinstance(source, Mapping):
+        raise generate_contract.ContractError(
+            "Generated manifest requires source metadata."
+        )
+    revision = require_source_revision(str(source.get("backendRevision", "")))
+    fingerprint = str(source.get("sha256", "")).strip().lower()
+    if len(fingerprint) != 64:
+        raise generate_contract.ContractError(
+            "Generated manifest requires a SHA-256 source fingerprint."
+        )
+    return f"""%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {{fileID: 0}}
+  m_PrefabInstance: {{fileID: 0}}
+  m_PrefabAsset: {{fileID: 0}}
+  m_GameObject: {{fileID: 0}}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {{fileID: 11500000, guid: 863d2f1eaec64cac8e6cd2abaa856dfe, type: 3}}
+  m_Name: SimultriaApiV2Definition
+  m_EditorClassIdentifier: Deucarian.API::Deucarian.API.Configuration.ApiServiceDefinition
+  serviceId: simultria.api-v2
+  displayName: Simultria API v2
+  endpointCatalog: {{fileID: 11400000, guid: 5f65e932f762430bbb9132a72ba857d4, type: 2}}
+  knownEnvironments:
+  - environmentId: simultria.development
+    stage: 1
+    displayName: Development
+  - environmentId: simultria.testing
+    stage: 2
+    displayName: Testing
+  - environmentId: simultria.acceptance
+    stage: 3
+    displayName: Acceptance
+  - environmentId: simultria.production
+    stage: 4
+    displayName: Production
+  requiredClients:
+  - clientId: simultria.primary
+    displayName: Simultria API
+  sourceVersion: {revision}
+  sourceFingerprint: sha256:{fingerprint}
+"""
 
 
 def parse_args() -> argparse.Namespace:
@@ -117,6 +171,7 @@ def validate_generated(root: Path) -> None:
     manifest_path = output_path(root, MANIFEST)
     documentation_path = output_path(root, DOCUMENTATION)
     unity_asset_path = output_path(root, UNITY_ASSET)
+    service_definition_path = output_path(root, SERVICE_DEFINITION_ASSET)
 
     catalog = read_json(catalog_path, "Generated catalog")
     coverage = read_json(coverage_path, "Generated coverage")
@@ -152,6 +207,11 @@ def validate_generated(root: Path) -> None:
         unity_asset_path,
         generate_contract.unity_asset(catalog),
         "Unity catalog asset",
+    )
+    check_text(
+        service_definition_path,
+        service_definition_asset(expected_manifest),
+        "Unity service definition asset",
     )
 
     catalog_source = catalog.get("source")
@@ -198,6 +258,10 @@ def refresh_review_files(root: Path, source_revision: str) -> None:
             coverage,
             manifest,
         ),
+    )
+    generate_contract.write_output(
+        output_path(root, SERVICE_DEFINITION_ASSET),
+        service_definition_asset(manifest),
     )
 
 
@@ -246,7 +310,27 @@ def run_generation(args: argparse.Namespace, source_revision: str) -> int:
     if args.check:
         command.append("--check")
     completed = subprocess.run(command, cwd=PACKAGE_ROOT, check=False)
-    return completed.returncode
+    if completed.returncode != 0:
+        return completed.returncode
+
+    manifest = read_json(
+        output_path(output_root, MANIFEST),
+        "Generated manifest",
+    )
+    expected_definition = service_definition_asset(manifest)
+    definition_path = output_path(output_root, SERVICE_DEFINITION_ASSET)
+    if args.check:
+        check_text(
+            definition_path,
+            expected_definition,
+            "Unity service definition asset",
+        )
+    else:
+        generate_contract.write_output(
+            definition_path,
+            expected_definition,
+        )
+    return 0
 
 
 def main() -> int:

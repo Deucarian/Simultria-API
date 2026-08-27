@@ -13,6 +13,8 @@ namespace Deucarian.Simultria.API.Tests.EditMode
 
         internal ApiRequest LastRequest { get; private set; }
 
+        internal object ResponseData { get; set; }
+
         public Task<ApiResult<TResponse>> SendAsync<TResponse>(
             ApiRequest request,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -76,12 +78,15 @@ namespace Deucarian.Simultria.API.Tests.EditMode
             throw new NotSupportedException();
         }
 
-        private static Task<ApiResult<TResponse>> Success<TResponse>(
+        private Task<ApiResult<TResponse>> Success<TResponse>(
             HttpMethod method)
         {
+            TResponse response = ResponseData is TResponse typed
+                ? typed
+                : default(TResponse);
             return Task.FromResult(
                 ApiResult<TResponse>.Success(
-                    default(TResponse),
+                    response,
                     method,
                     200,
                     null,

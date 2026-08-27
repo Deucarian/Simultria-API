@@ -37,6 +37,12 @@ jobs:
         shell: bash
         run: python "Tools~/update_contract.py" --validate-generated
 
+      - name: Describe authoritative source gate
+        shell: bash
+        run: |
+          test -f "Documentation~/CONTRACT_AUTOMATION.md"
+          grep -q "Simultria API Contract Compatibility" "Documentation~/CONTRACT_AUTOMATION.md"
+
       - name: Check whitespace
         shell: bash
         run: git diff --check

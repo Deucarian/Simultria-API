@@ -5,8 +5,9 @@
     "Deucarian.API",
     "Deucarian.Session",
     "Deucarian.Session.APIIntegration",
-    "Deucarian.ViewerAuthentication",
+    "Deucarian.Authentication",
     "Deucarian.Simultria.API",
+    "Deucarian.Simultria.UnityBuildRouting",
     "Deucarian.Simultria.API.Editor",
     "Newtonsoft.Json"
   ],

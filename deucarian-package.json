@@ -4,10 +4,12 @@
   "samplePolicy": "tool",
   "operationalPackage": false,
   "ownedCapabilities": [
-    "simultria-api-integration"
+    "simultria-api-integration",
+    "simultria-unity-build-routing"
   ],
   "runtimeAssemblies": [
-    "Deucarian.Simultria.API"
+    "Deucarian.Simultria.API",
+    "Deucarian.Simultria.UnityBuildRouting"
   ],
   "editorAssemblies": [
     "Deucarian.Simultria.API.Editor"
@@ -23,7 +25,7 @@
     "com.deucarian.editor",
     "com.deucarian.session",
     "com.deucarian.session.api-integration",
-    "com.deucarian.viewer-authentication",
+    "com.deucarian.authentication",
     "com.unity.nuget.newtonsoft-json"
   ],
   "optionalVersionDefinedDependencies": [],
