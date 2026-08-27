@@ -24,6 +24,18 @@ All notable changes to this package are documented here.
   advanced service-definition fork workflow.
 - Added static tests rejecting the removed script GUID, field name, and assets.
 
+## [0.5.1] - 2026-08-26
+
+### Added
+
+- Added a Unity-first developer guide with setup, lookup-service, direct
+  endpoint, generated endpoint, authentication, package-boundary, and
+  third-party integration guidance.
+- Added a task-oriented public C# API map that distinguishes recommended,
+  advanced, and serialized-compatibility surfaces.
+- Added Unity menu commands for opening the installed developer guide and
+  generated endpoint reference, with package-path and traversal tests.
+
 ## [0.5.0] - 2026-08-26
 
 ### Added
