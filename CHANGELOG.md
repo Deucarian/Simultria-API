@@ -2,6 +2,13 @@
 
 All notable changes to this package are documented here.
 
+## [1.0.1] - 2026-08-27
+
+### Fixed
+
+- Updated the public API guide and Unity developer guide to use the canonical
+  connection-settings and generic Authentication APIs introduced in 1.0.0.
+
 ## [1.0.0] - 2026-08-26
 
 ### Breaking

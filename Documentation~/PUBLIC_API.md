@@ -6,12 +6,12 @@ their menus and command-line entry points are the supported authoring surface.
 
 ## Quick start
 
-New projects should use the generic `ApiConnectionProfile` created from:
+New projects should use generic `ApiConnectionSettings` created from:
 
-`Assets > Create > Deucarian > Simultria > API Profile`
+`Assets > Create > Deucarian > Connections > Simultria Connection Settings`
 
 Validate it with
-`SimultriaApiConnectionProfileAdapter.TryCreateComposition`, choose one of the
+`SimultriaApiConnectionSettingsAdapter.TryCreateComposition`, choose one of the
 explicit `SimultriaEnvironmentIds`, and inject the application's `IApiClient`
 into a lookup service.
 
@@ -21,13 +21,13 @@ See the [Unity developer guide](index.md) for complete examples.
 
 | Task | Recommended public API |
 | --- | --- |
-| Validate/compose a project profile | `SimultriaApiConnectionProfileAdapter` |
+| Validate/compose project settings | `SimultriaApiConnectionSettingsAdapter` |
 | List/load projects and project models | `SimultriaProjectLookupService` |
 | Load models and versions | `SimultriaModelLookupService` |
 | Load activity metadata | `SimultriaActivityLookupService` |
 | Resolve viewer model download metadata | `SimultriaViewerModelResolver` |
 | Discover/map a build environment | `SimultriaUnityBuildVersionLookupService`, `SimultriaBuildEnvironmentNameMapper` |
-| Connect Viewer Authentication | `SimultriaViewerAuthenticationProviderFactory` |
+| Connect Authentication | `SimultriaAuthenticationProviderFactory` |
 | Resolve a reviewed route | `SimultriaEndpointCatalog` |
 | Resolve another snapshot route | `ApiComposition.ResolveEndpoint` plus an ID from the [endpoint reference](Generated/API-Endpoints.md) |
 
@@ -37,13 +37,13 @@ Namespace: `Deucarian.Simultria.API.Configuration`
 
 ### Recommended
 
-- `SimultriaApiConnectionProfileAdapter`
-  - `CreateComposition(ApiConnectionProfile)` validates a project profile and
+- `SimultriaApiConnectionSettingsAdapter`
+  - `CreateComposition(ApiConnectionSettings)` validates project settings and
     returns its `ApiComposition`, or throws with a configuration error.
-  - `TryCreateComposition(ApiConnectionProfile, out ApiComposition, out string)`
+  - `TryCreateComposition(ApiConnectionSettings, out ApiComposition, out string)`
     is the non-throwing application startup path.
-  - `IsCompatibleProfile(...)` and `IsCompatibleCatalog(...)` support setup and
-    validation tooling.
+  - `IsCompatibleSettings(...)`, `IsCompatibleDefinition(...)`, and
+    `IsCompatibleCatalog(...)` support setup and validation tooling.
 - `SimultriaEnvironmentIds`
   - `Development`, `Testing`, `Acceptance`, and `Production` are stable
     `ApiEnvironmentId` values. Select one explicitly.
@@ -60,18 +60,12 @@ Namespace: `Deucarian.Simultria.API.Configuration`
 - `SimultriaEndpointIds` exposes the 13 reviewed endpoint IDs through named
   fields and the ordered `Stable` list.
 
-### Compatibility
+### Definition overrides
 
-- `SimultriaApiProfile` is the serialized compatibility wrapper for older
-  projects. New authoring should use `ApiConnectionProfile`.
-- `SimultriaApiProfileDefaults` loads the package fallback profile/catalog. The
-  fallback knows the standard environments but has no deployment URLs; it is a
-  discovery/migration helper, not normal production configuration.
-- `SimultriaApiProfile.CreateTransient(...)` is intended for tooling, tests, and
-  advanced migration code.
-
-No compatibility member is currently marked obsolete, so existing serialized
-references continue to compile.
+Normal projects own only `ApiConnectionSettings`; the package owns the
+credential-free Simultria service definition and endpoint catalog. Use the
+Advanced definition-override asset only when intentionally forking that
+contract for a custom deployment.
 
 ## Lookup services
 
@@ -146,25 +140,24 @@ then uses a deterministic latest-version fallback.
 for cached data, custom integrations, and tests. `SimultriaViewerModelErrorCodes`
 contains the stable error-code constants.
 
-## Viewer Authentication
+## Authentication
 
 Namespace: `Deucarian.Simultria.API.Authentication`
 
-Prefer `SimultriaViewerAuthenticationProviderFactory`:
+Prefer `SimultriaAuthenticationProviderFactory`:
 
-- `Create(ApiConnectionProfile, ApiEnvironmentId, IApiClient)` for normal
+- `Create(ApiConnectionSettings, ApiEnvironmentId, IApiClient)` for normal
   project configuration;
 - `Create(ApiComposition, ApiEnvironmentId, IApiClient)` when the composition
   is already validated;
 - matching `TryCreate(...)` overloads when startup should return status and a
   message instead of throwing;
-- `SimultriaApiProfile` overloads for serialized compatibility.
 
-The resulting `SimultriaViewerAuthenticationProvider` implements Viewer
-Authentication acquisition and validation interfaces. It exposes input
+The resulting `SimultriaAuthenticationProvider` implements Authentication
+acquisition and validation interfaces. It exposes input
 descriptors, sanitized environment state, endpoint templates, `AcquireAsync`,
-and `ValidateAsync`. Normal applications should register it with Viewer
-Authentication and let that package drive the lifecycle instead of invoking
+and `ValidateAsync`. Normal applications should register it with Authentication
+and let that package drive the lifecycle instead of invoking
 those methods directly.
 
 ## Typed endpoint facade
@@ -235,23 +228,23 @@ an integration-owned response type.
 
 Use these deliberately rather than as the default application path:
 
-- direct `SimultriaViewerAuthenticationProvider` construction or lifecycle
+- direct `SimultriaAuthenticationProvider` construction or lifecycle
   calls;
 - `SimultriaLookupServiceBase` as an extension base;
 - direct `SimultriaEndpointCatalog` and stable identifier use;
 - `SimultriaViewerModelResolver` pure selection helpers;
 - generic activity DTO overloads;
-- package fallback/profile-default loading;
-- project-owned catalog overrides exposed by the profile inspector's Advanced
-  section;
+- project-owned service-definition overrides exposed by the creation menu's
+  Advanced section;
 - generated endpoint IDs.
 
 ## Package boundaries and third-party APIs
 
 - `com.deucarian.simultria-api` owns Simultria-specific environments, IDs,
   generated asset, DTOs, services, endpoint facade, and auth adapter.
-- `com.deucarian.api` owns `ApiConnectionProfile`, `ApiEndpointCatalog`,
-  `ApiComposition`, `ApiEndpoint`, `IApiClient`, `ApiResult<T>`, and transport.
+- `com.deucarian.api` owns `ApiConnectionSettings`, `ApiServiceDefinition`,
+  `ApiEndpointCatalog`, `ApiComposition`, `ApiEndpoint`, `IApiClient`,
+  `ApiResult<T>`, and transport.
 - Product bridges such as `SimultriaApiActivityMetadataSource` live in their
   integration packages, not here.
 

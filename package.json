@@ -1,6 +1,6 @@
 {
   "name": "com.deucarian.simultria-api",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "displayName": "Deucarian Simultria API",
   "description": "Generated Simultria API definition, typed endpoints, project connection setup, authentication adapters, and reusable Unity build routing.",
   "unity": "2021.3",

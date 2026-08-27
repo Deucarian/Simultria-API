@@ -13,13 +13,13 @@ In Unity, this page is available from:
 
 | Task | Start with |
 | --- | --- |
-| Configure Development, Testing, Acceptance, and Production | `ApiConnectionProfile` and `SimultriaApiConnectionProfileAdapter` |
+| Configure Development, Testing, Acceptance, and Production | `ApiConnectionSettings` and `SimultriaApiConnectionSettingsAdapter` |
 | List or load projects | `SimultriaProjectLookupService` |
 | Load models or model versions | `SimultriaModelLookupService` |
 | Load activity metadata | `SimultriaActivityLookupService` |
 | Resolve a viewer model to its download URL | `SimultriaViewerModelResolver` |
 | Discover a build's backend environment | `SimultriaUnityBuildVersionLookupService` |
-| Connect Viewer Authentication | `SimultriaViewerAuthenticationProviderFactory` |
+| Connect Authentication | `SimultriaAuthenticationProviderFactory` |
 | Call a reviewed route without a service | `SimultriaEndpointCatalog` |
 | Find any route in the current backend snapshot | [Generated endpoint reference](Generated/API-Endpoints.md) |
 | See the supported C# surface | [Public API](PUBLIC_API.md) |
@@ -54,24 +54,23 @@ directly.
 1. Install `com.deucarian.simultria-api`. Its generic API and authentication
    dependencies are installed with it.
 2. In Unity, choose
-   `Assets > Create > Deucarian > Simultria > API Profile`.
-3. Enter the base URL for each environment the project uses. The profile stores
+   `Assets > Create > Deucarian > Connections > Simultria Connection Settings`.
+3. Enter the base URL for each environment the project uses. The settings store
    no credentials or tokens.
-4. Reference that project-owned `ApiConnectionProfile` from the application's
+4. Reference those project-owned `ApiConnectionSettings` from the application's
    composition root.
 5. Select an environment explicitly with `SimultriaEnvironmentIds`. There is
    no implicit Production fallback.
 6. Inject the application's Session-backed `IApiClient` into the service that
    needs it.
 
-The package fallback profile is intentionally blank. It is useful for discovery
-and migration, but a real project should own and reference its configured
-profile.
+The package owns the credential-free service definition and endpoint catalog;
+the project-owned settings supply deployment URLs.
 
 ## Make a normal request
 
-The application owns the API client and profile. The package turns those into a
-validated composition and typed service:
+The application owns the API client and connection settings. The package turns
+those into a validated composition and typed service:
 
 ```csharp
 using System;
@@ -89,12 +88,12 @@ public static class ProjectLoader
     public static async Task<
         ApiResult<SimultriaResourceResponse<SimultriaProjectDto>>> LoadAsync(
             IApiClient apiClient,
-            ApiConnectionProfile profile,
+            ApiConnectionSettings connectionSettings,
             int projectId,
             CancellationToken cancellationToken)
     {
-        if (!SimultriaApiConnectionProfileAdapter.TryCreateComposition(
-                profile,
+        if (!SimultriaApiConnectionSettingsAdapter.TryCreateComposition(
+                connectionSettings,
                 out ApiComposition composition,
                 out string message))
         {
@@ -200,20 +199,20 @@ until reviewed. If an operation becomes a normal dependency, add a stable ID,
 typed accessor, DTO/service, tests, and documentation to this package instead
 of spreading the generated string across product code.
 
-## Viewer Authentication
+## Authentication
 
-Create the Simultria provider from the same project profile, selected
+Create the Simultria provider from the same project settings, selected
 environment, and API client, then register it as both the acquisition and
 validation provider:
 
 ```csharp
-SimultriaViewerAuthenticationProvider provider =
-    SimultriaViewerAuthenticationProviderFactory.Create(
-        connectionProfile,
+SimultriaAuthenticationProvider provider =
+    SimultriaAuthenticationProviderFactory.Create(
+        connectionSettings,
         environmentId,
         apiClient);
 
-IDisposable registration = ViewerAuthenticationTargetRegistry.Register(
+IDisposable registration = AuthenticationTargetRegistry.Register(
     "viewer",
     "Viewer",
     authenticationSession,
@@ -221,8 +220,8 @@ IDisposable registration = ViewerAuthenticationTargetRegistry.Register(
     provider);
 ```
 
-Let Viewer Authentication drive `AcquireAsync` and `ValidateAsync`. The API
-package owns bearer-header formatting; neither the profile nor this package
+Let Authentication drive `AcquireAsync` and `ValidateAsync`. The API
+package owns bearer-header formatting; neither the settings nor this package
 stores tokens.
 
 ## Add a third-party API
@@ -231,14 +230,15 @@ Third-party endpoints are easy to add at the generic `com.deucarian.api` layer,
 but they should not be added to the Simultria catalog:
 
 - For a small project-only integration, create a project-owned
-  `ApiConnectionProfile` and `ApiEndpointCatalog`.
+  `ApiConnectionSettings` plus a project-owned `ApiServiceDefinition` and
+  `ApiEndpointCatalog`.
 - For a reusable provider integration, create a package such as
   `com.deucarian.<provider>-api` that owns its IDs, catalog, DTOs, typed
   services, authentication adapter, and documentation.
 - Reuse `ApiComposition` and `IApiClient` for both approaches.
 
-`SimultriaApiConnectionProfileAdapter` intentionally rejects non-Simultria
-catalogs. The current OpenAPI generator is also Simultria-specific; it can be
+`SimultriaApiConnectionSettingsAdapter` intentionally rejects non-Simultria
+definitions. The current OpenAPI generator is also Simultria-specific; it can be
 extracted into generic tooling later without mixing providers today.
 
 ## When the backend contract changes
