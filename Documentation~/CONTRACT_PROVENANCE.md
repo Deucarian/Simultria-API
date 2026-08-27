@@ -10,9 +10,9 @@ this local Scribe OpenAPI extraction:
   worktree;
 - backend source: `Building-Virtuality-Backend` `origin/development` commit
   `53f2ee778c5ec3d22763c86537850061642317cb`;
-- size: 2,336,763 bytes;
-- SHA-256:
-  `7955245F18E5CAA09429D84DBC706680BAA97A5E8DC6883B03C2DE7E552A5F1B`;
+- canonical source SHA-256 (mapping keys sorted; volatile `example` and
+  `examples` values excluded):
+  `2283E2AD99C8D42F4ED400F763F08C53DB5730459CF32E0087849344F710E8E8`;
 - parsed surface: 232 paths and 351 HTTP operations; and
 - runtime catalog coverage: all 351 operations in that exact snapshot;
 - hand-curated compatibility mappings: 13 stable IDs described by
@@ -32,7 +32,10 @@ extraction worktree, the only tracked source change set Scribe
 `response_calls.methods` from `['GET']` to `[]`; that guarantees contract
 generation did not invoke a live application route. The snapshot is not
 committed here because it is a large backend-generated artifact; the backend
-commit and SHA-256 pin the exact review trail.
+commit and canonical SHA-256 pin the exact review trail. Excluding response
+examples prevents Scribe-generated sample values from creating false drift;
+paths, methods, authentication, schemas, parameters, and other contract fields
+remain fingerprinted.
 
 Environment base URLs are deliberately excluded from the contract. They are
 project-owned values entered in `ApiConnectionSettings` assets that reference
@@ -108,8 +111,8 @@ Unmapped operations receive deterministic
 `simultria.generated.<method>.<route>` IDs. The overlay preserves reviewed IDs
 and settings where package APIs already depend on them. `--require-complete`
 checks that every operation is emitted and that every overlay entry matches.
-That result proves coverage only for the exact file hash, never for a live
-service. Add `--check` in CI to compare existing generated files without
+That result proves coverage only for the exact canonical contract fingerprint,
+never for a live service. Add `--check` in CI to compare existing generated files without
 rewriting them.
 
 Every derived/unreviewed operation suppresses API request, response, and error
@@ -119,7 +122,7 @@ routes from becoming loggable merely because they appeared in a new snapshot.
 
 Before updating the Unity asset, review:
 
-1. the snapshot source, approval, version, and SHA-256;
+1. the snapshot source, approval, version, and canonical SHA-256;
 2. every unmapped operation and unused overlay key in the coverage output;
 3. authentication and logging suppression for credential-bearing routes;
 4. relative route templates only (never deployment URLs); and

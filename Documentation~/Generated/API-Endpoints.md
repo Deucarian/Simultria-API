@@ -6,7 +6,8 @@
 
 - Source file: `openapi.yaml`
 - OpenAPI version: `3.0.3`
-- Source SHA-256: `7955245f18e5caa09429d84dbc706680baa97a5e8dc6883b03c2de7e552a5f1b`
+- Canonical source SHA-256: `2283e2ad99c8d42f4ed400f763f08c53db5730459cf32e0087849344f710e8e8`
+- Fingerprint format: `canonical-json-without-examples-v1`
 - Backend revision: `53f2ee778c5ec3d22763c86537850061642317cb`
 - Snapshot coverage: `351/351`
 - Total operations: 351

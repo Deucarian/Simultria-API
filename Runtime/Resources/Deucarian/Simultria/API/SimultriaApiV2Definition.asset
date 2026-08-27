@@ -32,4 +32,4 @@ MonoBehaviour:
   - clientId: simultria.primary
     displayName: Simultria API
   sourceVersion: 53f2ee778c5ec3d22763c86537850061642317cb
-  sourceFingerprint: sha256:7955245f18e5caa09429d84dbc706680baa97a5e8dc6883b03c2de7e552a5f1b
+  sourceFingerprint: sha256:2283e2ad99c8d42f4ed400f763f08c53db5730459cf32e0087849344f710e8e8

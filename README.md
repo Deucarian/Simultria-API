@@ -149,7 +149,8 @@ Scribe OpenAPI snapshot identified in
 [`Documentation~/CONTRACT_PROVENANCE.md`](Documentation~/CONTRACT_PROVENANCE.md).
 This is 351/351 coverage of that exact extracted file, not a claim that the
 snapshot completely describes every live backend deployment. Extraction
-warnings and the source discrepancy are recorded with the pinned SHA-256.
+warnings and the source discrepancy are recorded with the pinned canonical
+SHA-256, which excludes volatile OpenAPI response examples.
 
 Existing package services keep these 13 hand-curated stable mappings:
 

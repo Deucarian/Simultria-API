@@ -120,6 +120,24 @@ class GenerateContractTests(unittest.TestCase):
             generate_contract.normalized_source_revision("53F2EE7"),
         )
 
+    def test_source_fingerprint_ignores_volatile_examples_only(self):
+        baseline = generate_contract.contract_source_hash(self.spec)
+        self.spec["paths"]["/api/v2/login"]["post"]["example"] = {
+            "token": "generated-value"
+        }
+        self.assertEqual(
+            baseline,
+            generate_contract.contract_source_hash(self.spec),
+        )
+
+        self.spec["paths"]["/api/v2/login"]["post"]["security"] = [
+            {"passport": []}
+        ]
+        self.assertNotEqual(
+            baseline,
+            generate_contract.contract_source_hash(self.spec),
+        )
+
     def test_unsupported_openapi_method_fails_closed(self):
         self.spec["paths"]["/api/v2/projects"]["head"] = {
             "operationId": "headProjects"

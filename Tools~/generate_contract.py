@@ -324,6 +324,29 @@ def build_endpoint(
     }
 
 
+def contract_source_hash(spec: Mapping[str, Any]) -> str:
+    """Hash contract semantics while excluding volatile documentation examples."""
+
+    def normalize(value: Any) -> Any:
+        if isinstance(value, Mapping):
+            return {
+                str(key): normalize(child)
+                for key, child in sorted(value.items(), key=lambda item: str(item[0]))
+                if str(key) not in {"example", "examples"}
+            }
+        if isinstance(value, list):
+            return [normalize(child) for child in value]
+        return value
+
+    canonical = json.dumps(
+        normalize(spec),
+        ensure_ascii=False,
+        separators=(",", ":"),
+        sort_keys=True,
+    ).encode("utf-8")
+    return hashlib.sha256(canonical).hexdigest()
+
+
 def generate(
     spec: Mapping[str, Any],
     overlay: Mapping[str, Any],
@@ -390,7 +413,7 @@ def generate(
         )
 
     unused_overlay = sorted(set(operations) - used_overlay_keys)
-    source_hash = hashlib.sha256(spec_path.read_bytes()).hexdigest()
+    source_hash = contract_source_hash(spec)
     catalog = {
         "schemaVersion": 1,
         "catalogId": catalog_id,
@@ -399,6 +422,7 @@ def generate(
             "fileName": spec_path.name,
             "openapiVersion": openapi_version,
             "sha256": source_hash,
+            "fingerprintFormat": "canonical-json-without-examples-v1",
         },
         "endpoints": sorted(
             endpoints,
@@ -480,6 +504,7 @@ def contract_manifest(
             "fileName": source.get("fileName", ""),
             "openapiVersion": source.get("openapiVersion", ""),
             "sha256": source.get("sha256", ""),
+            "fingerprintFormat": source.get("fingerprintFormat", ""),
             "backendRevision": source_revision,
         },
         "catalog": {
@@ -548,7 +573,11 @@ def contract_documentation(
         "",
         f"- Source file: {markdown_code(source['fileName'])}",
         f"- OpenAPI version: {markdown_code(source['openapiVersion'])}",
-        f"- Source SHA-256: {markdown_code(source['sha256'])}",
+        f"- Canonical source SHA-256: {markdown_code(source['sha256'])}",
+        (
+            "- Fingerprint format: "
+            f"{markdown_code(source.get('fingerprintFormat', ''))}"
+        ),
         (
             "- Backend revision: "
             + (
