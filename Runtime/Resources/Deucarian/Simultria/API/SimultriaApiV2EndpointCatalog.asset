@@ -3619,23 +3619,6 @@ MonoBehaviour:
       rateLimitRequestCountHint: -1
       rateLimitWindowSecondsHint: -1
     suppressLogging: 1
-  - endpointId: simultria.unity-builds.version
-    clientId: simultria.primary
-    routeTemplate: api/v2/unity/builds/versions/{id}/{product}
-    method: 0
-    authentication: 3
-    responseFormat: 0
-    defaultHeaders: []
-    defaultQueryParameters: []
-    requestPolicy:
-      timeoutSeconds: -1
-      maxRetryAttempts: -1
-      initialRetryBackoffMilliseconds: -1
-      retryBackoffMultiplier: 0
-      maximumRetryBackoffMilliseconds: -1
-      rateLimitRequestCountHint: -1
-      rateLimitWindowSecondsHint: -1
-    suppressLogging: 1
   - endpointId: simultria.generated.get.api.v2.unity.builds.versions.by-version.by-product.installer
     clientId: simultria.primary
     routeTemplate: api/v2/unity/builds/versions/{version}/{product}/installer
@@ -5982,3 +5965,20 @@ MonoBehaviour:
       rateLimitRequestCountHint: -1
       rateLimitWindowSecondsHint: -1
     suppressLogging: 0
+  - endpointId: simultria.unity-builds.version
+    clientId: simultria.primary
+    routeTemplate: api/v2/unity/builds/versions/{id}/{product}
+    method: 0
+    authentication: 3
+    responseFormat: 0
+    defaultHeaders: []
+    defaultQueryParameters: []
+    requestPolicy:
+      timeoutSeconds: -1
+      maxRetryAttempts: -1
+      initialRetryBackoffMilliseconds: -1
+      retryBackoffMultiplier: 0
+      maximumRetryBackoffMilliseconds: -1
+      rateLimitRequestCountHint: -1
+      rateLimitWindowSecondsHint: -1
+    suppressLogging: 1

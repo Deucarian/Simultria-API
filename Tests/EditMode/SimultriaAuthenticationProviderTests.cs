@@ -5,20 +5,20 @@ using Deucarian.API.Models;
 using Deucarian.Session.APIIntegration;
 using Deucarian.Simultria.API.Authentication;
 using Deucarian.Simultria.API.Configuration;
-using Deucarian.ViewerAuthentication;
+using Deucarian.Authentication;
 using NUnit.Framework;
 using UnityEngine;
 
 namespace Deucarian.Simultria.API.Tests.EditMode
 {
-    public sealed class SimultriaViewerAuthenticationProviderTests
+    public sealed class SimultriaAuthenticationProviderTests
     {
         [Test]
         public void ProviderOwnsOnlySimultriaEndpointAndInputSemantics()
         {
             using (var fixture = new SimultriaTestComposition())
             {
-                var provider = new SimultriaViewerAuthenticationProvider(
+                var provider = new SimultriaAuthenticationProvider(
                     new ApiClientSpy(),
                     fixture.Composition,
                     SimultriaEnvironmentIds.Development);
@@ -38,9 +38,9 @@ namespace Deucarian.Simultria.API.Tests.EditMode
                     Is.EqualTo("password"));
                 Assert.That(provider.InputDescriptors[1].IsSecret, Is.True);
                 Assert.That(provider,
-                    Is.InstanceOf<IInteractiveViewerAuthenticationAcquisitionProvider>());
+                    Is.InstanceOf<IInteractiveAuthenticationAcquisitionProvider>());
                 Assert.That(provider,
-                    Is.InstanceOf<IViewerAuthenticationValidationProvider>());
+                    Is.InstanceOf<IAuthenticationValidationProvider>());
             }
         }
 
@@ -49,12 +49,12 @@ namespace Deucarian.Simultria.API.Tests.EditMode
         {
             using (var fixture = new SimultriaTestComposition())
             {
-                bool created = SimultriaViewerAuthenticationProviderFactory
+                bool created = SimultriaAuthenticationProviderFactory
                     .TryCreate(
-                        fixture.Profile,
+                        fixture.Settings,
                         SimultriaEnvironmentIds.Development,
                         new ApiClientSpy(),
-                        out SimultriaViewerAuthenticationProvider provider,
+                        out SimultriaAuthenticationProvider provider,
                         out Deucarian.API.Core.ApiEnvironmentStatus status,
                         out string message);
 
@@ -147,7 +147,7 @@ namespace Deucarian.Simultria.API.Tests.EditMode
         }
 
         [Test]
-        public void FactoryAcceptsCompatibleGenericConnectionProfile()
+        public void FactoryAcceptsCompatibleConnectionSettings()
         {
             using (var fixture = new SimultriaTestComposition())
             {
@@ -160,8 +160,8 @@ namespace Deucarian.Simultria.API.Tests.EditMode
                 ApiEnvironmentProfile production = CreateBlankEnvironment(
                     SimultriaEnvironmentIds.Production,
                     "Production");
-                ApiConnectionProfile profile =
-                    ApiConnectionProfile.CreateTransient(
+                ApiConnectionSettings settings =
+                    ApiConnectionSettings.CreateTransient(
                         new[]
                         {
                             fixture.Environment,
@@ -169,16 +169,15 @@ namespace Deucarian.Simultria.API.Tests.EditMode
                             acceptance,
                             production
                         },
-                        fixture.Catalog,
-                        SimultriaEnvironmentDescriptors.Standard);
+                        fixture.Definition);
                 try
                 {
                     bool created =
-                        SimultriaViewerAuthenticationProviderFactory.TryCreate(
-                            profile,
+                        SimultriaAuthenticationProviderFactory.TryCreate(
+                            settings,
                             SimultriaEnvironmentIds.Development,
                             new ApiClientSpy(),
-                            out SimultriaViewerAuthenticationProvider provider,
+                            out SimultriaAuthenticationProvider provider,
                             out Deucarian.API.Core.ApiEnvironmentStatus status,
                             out string message);
 
@@ -188,7 +187,7 @@ namespace Deucarian.Simultria.API.Tests.EditMode
                 }
                 finally
                 {
-                    UnityEngine.Object.DestroyImmediate(profile);
+                    UnityEngine.Object.DestroyImmediate(settings);
                     UnityEngine.Object.DestroyImmediate(testing);
                     UnityEngine.Object.DestroyImmediate(acceptance);
                     UnityEngine.Object.DestroyImmediate(production);

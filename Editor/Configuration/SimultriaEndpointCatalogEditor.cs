@@ -128,7 +128,7 @@ namespace Deucarian.Simultria.API.Editor
                 ?.Replace('\\', '/');
             return string.Equals(
                 path,
-                SimultriaApiProfileDefaults.DefaultEndpointCatalogAssetPath,
+                SimultriaApiDefinitionDefaults.EndpointCatalogAssetPath,
                 StringComparison.Ordinal);
         }
     }

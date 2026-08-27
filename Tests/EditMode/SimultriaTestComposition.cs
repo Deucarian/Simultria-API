@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Deucarian.API;
 using Deucarian.API.Configuration;
 using Deucarian.API.Core;
@@ -10,19 +11,11 @@ namespace Deucarian.Simultria.API.Tests.EditMode
 {
     internal sealed class SimultriaTestComposition : IDisposable
     {
+        private readonly List<ApiEnvironmentProfile> environments =
+            new List<ApiEnvironmentProfile>();
+
         internal SimultriaTestComposition()
         {
-            Environment = ScriptableObject.CreateInstance<ApiEnvironmentProfile>();
-            Environment.EnvironmentId = SimultriaEnvironmentIds.Development.Value;
-            Environment.DisplayName = "Simultria Development";
-            Environment.Clients.Add(
-                new ApiNamedClientDefinition
-                {
-                    ClientId = SimultriaClientIds.Primary.Value,
-                    BaseUrl =
-                        "https://api.example.invalid"
-                });
-
             Catalog = ScriptableObject.CreateInstance<ApiEndpointCatalog>();
             Catalog.CatalogId = SimultriaCatalogIds.ApiV2.Value;
             Catalog.DisplayName = "Simultria API v2";
@@ -68,25 +61,79 @@ namespace Deucarian.Simultria.API.Tests.EditMode
                 authentication: ApiAuthenticationRequirement.Disabled,
                 suppressLogging: true);
 
-            Profile = SimultriaApiProfile.CreateTransient(
-                new[] { Environment },
-                Catalog);
-            Composition = Profile.CreateComposition();
+            Definition = ApiServiceDefinition.CreateTransient(
+                SimultriaServiceIds.ApiV2.Value,
+                "Simultria API v2",
+                Catalog,
+                SimultriaEnvironmentDescriptors.Standard,
+                new[] { SimultriaClientIds.Primary },
+                "test",
+                "sha256:test");
+
+            foreach (ApiEnvironmentDescriptor descriptor in
+                SimultriaEnvironmentDescriptors.Standard)
+            {
+                ApiEnvironmentProfile environment =
+                    ScriptableObject.CreateInstance<ApiEnvironmentProfile>();
+                environment.EnvironmentId = descriptor.EnvironmentId.Value;
+                environment.DisplayName = descriptor.DisplayName;
+                environment.Clients.Add(
+                    new ApiNamedClientDefinition
+                    {
+                        ClientId = SimultriaClientIds.Primary.Value,
+                        BaseUrl = descriptor.EnvironmentId ==
+                            SimultriaEnvironmentIds.Development
+                            ? "https://api.example.invalid"
+                            : string.Empty
+                    });
+                environments.Add(environment);
+            }
+
+            Environment = environments[0];
+            Settings = ApiConnectionSettings.CreateTransient(
+                environments,
+                Definition);
+            Composition = Settings.CreateComposition();
         }
 
         internal ApiEnvironmentProfile Environment { get; }
 
         internal ApiEndpointCatalog Catalog { get; }
 
-        internal SimultriaApiProfile Profile { get; }
+        internal ApiServiceDefinition Definition { get; }
+
+        internal ApiConnectionSettings Settings { get; }
 
         internal ApiComposition Composition { get; }
 
+        internal void ConfigureEnvironment(
+            ApiEnvironmentId environmentId,
+            string baseUrl)
+        {
+            foreach (ApiEnvironmentProfile environment in environments)
+            {
+                if (environment.TryGetId(out ApiEnvironmentId candidateId) &&
+                    candidateId == environmentId)
+                {
+                    environment.Clients[0].BaseUrl = baseUrl;
+                    return;
+                }
+            }
+
+            throw new ArgumentException(
+                "Unknown test environment: " + environmentId,
+                nameof(environmentId));
+        }
+
         public void Dispose()
         {
-            UnityEngine.Object.DestroyImmediate(Profile);
+            UnityEngine.Object.DestroyImmediate(Settings);
+            UnityEngine.Object.DestroyImmediate(Definition);
             UnityEngine.Object.DestroyImmediate(Catalog);
-            UnityEngine.Object.DestroyImmediate(Environment);
+            foreach (ApiEnvironmentProfile environment in environments)
+            {
+                UnityEngine.Object.DestroyImmediate(environment);
+            }
         }
 
         private void Add(

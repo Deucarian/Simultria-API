@@ -2,6 +2,35 @@
 
 All notable changes to this package are documented here.
 
+## [1.0.1] - 2026-08-27
+
+### Fixed
+
+- Updated the public API guide and Unity developer guide to use the canonical
+  connection-settings and generic Authentication APIs introduced in 1.0.0.
+
+## [1.0.0] - 2026-08-26
+
+### Breaking
+
+- Removed `SimultriaApiProfile`, its defaults loader, package resource,
+  environment assets, factory, inspector, fallback paths, and compatibility
+  overloads.
+- Replaced generic connection profiles with project-owned
+  `ApiConnectionSettings` referencing the package-owned
+  `SimultriaApiV2Definition`.
+- Missing project settings are now a hard configuration error; no package
+  connection fallback or implicit environment selection remains.
+
+### Added
+
+- Updated the exact Session API Integration dependency to 1.2.0 for API 2.0
+  compatibility.
+
+- Added a complete Simultria connection-settings creation action and explicit
+  advanced service-definition fork workflow.
+- Added static tests rejecting the removed script GUID, field name, and assets.
+
 ## [0.5.1] - 2026-08-26
 
 ### Added
