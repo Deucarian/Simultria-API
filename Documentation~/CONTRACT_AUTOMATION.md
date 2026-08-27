@@ -16,15 +16,19 @@ executes:
 ```text
 python Tools~/update_contract.py \
   --spec <backend>/storage/app/scribe/openapi.yaml \
-  --source-revision <BITBUCKET_COMMIT> \
+  --source-revision <package-manifest-backendRevision> \
   --check \
   --change-report-out <artifact.json> \
   --change-report-markdown-out <artifact.md>
 ```
 
 Any source-to-generated drift or breaking/security-sensitive change is visible
-as a CI failure with JSON and Markdown artifacts. This is credential-safe: the
-backend uses no Scribe authentication key, makes no response calls, and passes
+as a CI failure with JSON and Markdown artifacts. The current backend commit is
+recorded separately as CI provenance; it is not substituted into generated
+package artifacts, because unrelated backend commits must not create false
+contract drift. This is credential-safe: the authoritative backend repository
+generates Scribe OpenAPI locally instead of retrieving an authenticated deployed
+document, uses no Scribe authentication key, makes no response calls, and passes
 the spec to this local-file-only tool. CI never pushes, merges, publishes, or
 deploys a contract change.
 
