@@ -1,7 +1,8 @@
 using System;
 using Deucarian.API.Models;
+using Deucarian.Simultria.API.Configuration;
 
-namespace Deucarian.Simultria.API.Configuration
+namespace Deucarian.Simultria.UnityBuildRouting
 {
     /// <summary>
     /// Maps the environment names returned by the Simultria Unity build

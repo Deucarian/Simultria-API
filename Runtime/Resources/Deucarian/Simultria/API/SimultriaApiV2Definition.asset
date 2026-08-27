@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 863d2f1eaec64cac8e6cd2abaa856dfe, type: 3}
+  m_Name: SimultriaApiV2Definition
+  m_EditorClassIdentifier: Deucarian.API::Deucarian.API.Configuration.ApiServiceDefinition
+  serviceId: simultria.api-v2
+  displayName: Simultria API v2
+  endpointCatalog: {fileID: 11400000, guid: 5f65e932f762430bbb9132a72ba857d4, type: 2}
+  knownEnvironments:
+  - environmentId: simultria.development
+    stage: 1
+    displayName: Development
+  - environmentId: simultria.testing
+    stage: 2
+    displayName: Testing
+  - environmentId: simultria.acceptance
+    stage: 3
+    displayName: Acceptance
+  - environmentId: simultria.production
+    stage: 4
+    displayName: Production
+  requiredClients:
+  - clientId: simultria.primary
+    displayName: Simultria API
+  sourceVersion: 53f2ee778c5ec3d22763c86537850061642317cb
+  sourceFingerprint: sha256:2283e2ad99c8d42f4ed400f763f08c53db5730459cf32e0087849344f710e8e8

@@ -1,12 +1,9 @@
 {
-  "name": "Deucarian.Simultria.API",
-  "rootNamespace": "Deucarian.Simultria.API",
+  "name": "Deucarian.Simultria.UnityBuildRouting",
+  "rootNamespace": "Deucarian.Simultria.UnityBuildRouting",
   "references": [
     "Deucarian.API",
-    "Deucarian.Session",
-    "Deucarian.Session.APIIntegration",
-    "Deucarian.Authentication",
-    "Newtonsoft.Json"
+    "Deucarian.Simultria.API"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

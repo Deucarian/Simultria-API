@@ -3,6 +3,7 @@
   "rootNamespace": "Deucarian.Simultria.API.Editor",
   "references": [
     "Deucarian.API",
+    "Deucarian.API.Editor",
     "Deucarian.Editor",
     "Deucarian.Simultria.API"
   ],

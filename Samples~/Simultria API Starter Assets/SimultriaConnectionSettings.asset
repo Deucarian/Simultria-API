@@ -10,27 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 119c368720444e1caa48e69a65d040c7, type: 3}
-  m_Name: SimultriaApiConnectionProfile
-  m_EditorClassIdentifier: Deucarian.API::Deucarian.API.Configuration.ApiConnectionProfile
+  m_Name: SimultriaConnectionSettings
+  m_EditorClassIdentifier: Deucarian.API::Deucarian.API.Configuration.ApiConnectionSettings
+  serviceDefinition: {fileID: 11400000, guid: 1dcd8039d5b34b12bdec9f43873348a6, type: 2}
   environments:
   - {fileID: 11400001}
   - {fileID: 11400002}
   - {fileID: 11400003}
   - {fileID: 11400004}
-  endpointCatalog: {fileID: 11400000, guid: 5f65e932f762430bbb9132a72ba857d4, type: 2}
-  knownEnvironmentDefinitions:
-  - environmentId: simultria.development
-    stage: 1
-    displayName: Development
-  - environmentId: simultria.testing
-    stage: 2
-    displayName: Testing
-  - environmentId: simultria.acceptance
-    stage: 3
-    displayName: Acceptance
-  - environmentId: simultria.production
-    stage: 4
-    displayName: Production
 --- !u!114 &11400001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45,26 +32,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Deucarian.API::Deucarian.API.Configuration.ApiEnvironmentProfile
   environmentId: simultria.development
   displayName: Development
-  defaultRequestPolicy:
-    timeoutSeconds: -1
-    maxRetryAttempts: -1
-    initialRetryBackoffMilliseconds: -1
-    retryBackoffMultiplier: 0
-    maximumRetryBackoffMilliseconds: -1
-    rateLimitRequestCountHint: -1
-    rateLimitWindowSecondsHint: -1
+  defaultRequestPolicy: {timeoutSeconds: -1, maxRetryAttempts: -1, initialRetryBackoffMilliseconds: -1, retryBackoffMultiplier: 0, maximumRetryBackoffMilliseconds: -1, rateLimitRequestCountHint: -1, rateLimitWindowSecondsHint: -1}
   clients:
   - clientId: simultria.primary
     baseUrl:
     defaultHeaders: []
-    requestPolicy:
-      timeoutSeconds: -1
-      maxRetryAttempts: -1
-      initialRetryBackoffMilliseconds: -1
-      retryBackoffMultiplier: 0
-      maximumRetryBackoffMilliseconds: -1
-      rateLimitRequestCountHint: -1
-      rateLimitWindowSecondsHint: -1
+    requestPolicy: {timeoutSeconds: -1, maxRetryAttempts: -1, initialRetryBackoffMilliseconds: -1, retryBackoffMultiplier: 0, maximumRetryBackoffMilliseconds: -1, rateLimitRequestCountHint: -1, rateLimitWindowSecondsHint: -1}
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79,26 +52,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Deucarian.API::Deucarian.API.Configuration.ApiEnvironmentProfile
   environmentId: simultria.testing
   displayName: Testing
-  defaultRequestPolicy:
-    timeoutSeconds: -1
-    maxRetryAttempts: -1
-    initialRetryBackoffMilliseconds: -1
-    retryBackoffMultiplier: 0
-    maximumRetryBackoffMilliseconds: -1
-    rateLimitRequestCountHint: -1
-    rateLimitWindowSecondsHint: -1
+  defaultRequestPolicy: {timeoutSeconds: -1, maxRetryAttempts: -1, initialRetryBackoffMilliseconds: -1, retryBackoffMultiplier: 0, maximumRetryBackoffMilliseconds: -1, rateLimitRequestCountHint: -1, rateLimitWindowSecondsHint: -1}
   clients:
   - clientId: simultria.primary
     baseUrl:
     defaultHeaders: []
-    requestPolicy:
-      timeoutSeconds: -1
-      maxRetryAttempts: -1
-      initialRetryBackoffMilliseconds: -1
-      retryBackoffMultiplier: 0
-      maximumRetryBackoffMilliseconds: -1
-      rateLimitRequestCountHint: -1
-      rateLimitWindowSecondsHint: -1
+    requestPolicy: {timeoutSeconds: -1, maxRetryAttempts: -1, initialRetryBackoffMilliseconds: -1, retryBackoffMultiplier: 0, maximumRetryBackoffMilliseconds: -1, rateLimitRequestCountHint: -1, rateLimitWindowSecondsHint: -1}
 --- !u!114 &11400003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,26 +72,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Deucarian.API::Deucarian.API.Configuration.ApiEnvironmentProfile
   environmentId: simultria.acceptance
   displayName: Acceptance
-  defaultRequestPolicy:
-    timeoutSeconds: -1
-    maxRetryAttempts: -1
-    initialRetryBackoffMilliseconds: -1
-    retryBackoffMultiplier: 0
-    maximumRetryBackoffMilliseconds: -1
-    rateLimitRequestCountHint: -1
-    rateLimitWindowSecondsHint: -1
+  defaultRequestPolicy: {timeoutSeconds: -1, maxRetryAttempts: -1, initialRetryBackoffMilliseconds: -1, retryBackoffMultiplier: 0, maximumRetryBackoffMilliseconds: -1, rateLimitRequestCountHint: -1, rateLimitWindowSecondsHint: -1}
   clients:
   - clientId: simultria.primary
     baseUrl:
     defaultHeaders: []
-    requestPolicy:
-      timeoutSeconds: -1
-      maxRetryAttempts: -1
-      initialRetryBackoffMilliseconds: -1
-      retryBackoffMultiplier: 0
-      maximumRetryBackoffMilliseconds: -1
-      rateLimitRequestCountHint: -1
-      rateLimitWindowSecondsHint: -1
+    requestPolicy: {timeoutSeconds: -1, maxRetryAttempts: -1, initialRetryBackoffMilliseconds: -1, retryBackoffMultiplier: 0, maximumRetryBackoffMilliseconds: -1, rateLimitRequestCountHint: -1, rateLimitWindowSecondsHint: -1}
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,23 +92,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Deucarian.API::Deucarian.API.Configuration.ApiEnvironmentProfile
   environmentId: simultria.production
   displayName: Production
-  defaultRequestPolicy:
-    timeoutSeconds: -1
-    maxRetryAttempts: -1
-    initialRetryBackoffMilliseconds: -1
-    retryBackoffMultiplier: 0
-    maximumRetryBackoffMilliseconds: -1
-    rateLimitRequestCountHint: -1
-    rateLimitWindowSecondsHint: -1
+  defaultRequestPolicy: {timeoutSeconds: -1, maxRetryAttempts: -1, initialRetryBackoffMilliseconds: -1, retryBackoffMultiplier: 0, maximumRetryBackoffMilliseconds: -1, rateLimitRequestCountHint: -1, rateLimitWindowSecondsHint: -1}
   clients:
   - clientId: simultria.primary
     baseUrl:
     defaultHeaders: []
-    requestPolicy:
-      timeoutSeconds: -1
-      maxRetryAttempts: -1
-      initialRetryBackoffMilliseconds: -1
-      retryBackoffMultiplier: 0
-      maximumRetryBackoffMilliseconds: -1
-      rateLimitRequestCountHint: -1
-      rateLimitWindowSecondsHint: -1
+    requestPolicy: {timeoutSeconds: -1, maxRetryAttempts: -1, initialRetryBackoffMilliseconds: -1, retryBackoffMultiplier: 0, maximumRetryBackoffMilliseconds: -1, rateLimitRequestCountHint: -1, rateLimitWindowSecondsHint: -1}

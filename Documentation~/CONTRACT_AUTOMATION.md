@@ -1,12 +1,41 @@
 # Simultria contract update automation
 
-The package side is designed around one invariant: the backend supplies a local
-OpenAPI snapshot and its exact Git commit; everything after that handoff is
-deterministic and can run without Unity, a backend login, or network access.
+The package side is designed around one invariant: the authoritative backend
+supplies a locally generated OpenAPI snapshot and its exact Git commit;
+everything after that handoff is deterministic and runs without Unity, a
+backend login, or deployment access.
 
-## Manual handoff today
+## Automated backend gate
 
-The backend author runs Scribe and hands over:
+`Building-Virtuality-Backend` runs its `Simultria API Contract Compatibility`
+Bitbucket step on every pull request and before every `development` deployment.
+That job generates Scribe OpenAPI with live response calls disabled, checks out
+this package's generator at an immutable commit, runs the generator tests, and
+executes:
+
+```text
+python Tools~/update_contract.py \
+  --spec <backend>/storage/app/scribe/openapi.yaml \
+  --source-revision <package-manifest-backendRevision> \
+  --check \
+  --change-report-out <artifact.json> \
+  --change-report-markdown-out <artifact.md>
+```
+
+Any source-to-generated drift or breaking/security-sensitive change is visible
+as a CI failure with JSON and Markdown artifacts. The current backend commit is
+recorded separately as CI provenance; it is not substituted into generated
+package artifacts, because unrelated backend commits must not create false
+contract drift. This is credential-safe: the authoritative backend repository
+generates Scribe OpenAPI locally instead of retrieving an authenticated deployed
+document, uses no Scribe authentication key, makes no response calls, and passes
+the spec to this local-file-only tool. CI never pushes, merges, publishes, or
+deploys a contract change.
+
+## Manual author handoff
+
+For an intentional package update, a backend author can also run Scribe and
+hand over:
 
 - `storage/app/scribe/openapi.yaml`; and
 - the hexadecimal backend Git commit that generated it.
@@ -20,7 +49,9 @@ The Editor always previews first. Applying regenerates:
 
 - the runtime `ApiEndpointCatalog` asset;
 - catalog and coverage JSON;
-- the deterministic provenance manifest; and
+- the deterministic provenance manifest;
+- the package-owned `SimultriaApiV2Definition.asset` source version and
+  fingerprint; and
 - `Documentation~/Generated/API-Endpoints.md`.
 
 The original OpenAPI file is not copied into package runtime content.
@@ -61,20 +92,10 @@ That check proves the catalog JSON, Unity asset, coverage, manifest and Markdown
 reference agree. Only an update/check with the source OpenAPI file proves that
 all supported operations in that supplied snapshot were regenerated.
 
-## Future backend pipeline handoff
-
-The later backend job only needs to:
-
-1. Generate Scribe OpenAPI in its contract-safe environment.
-2. Check out a bot branch of `Deucarian/Simultria-API`.
-3. Run `update_contract.py` with the OpenAPI artifact and backend commit.
-4. Use the Markdown change report as the pull-request summary.
-5. Commit the generated package files and open or update a review PR.
-
-No further Unity generator or Editor redesign is required for that transition.
 The package command returns non-zero for invalid OpenAPI, unsupported HTTP
 methods, stale overlay keys, duplicate IDs, incomplete snapshot coverage, or
-stale `--check` output.
+stale `--check` output. The CI-generated Markdown report is the review input for
+the intentional package feature branch.
 
 ## Deliberate review boundary
 

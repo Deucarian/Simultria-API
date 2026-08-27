@@ -4,6 +4,13 @@ using Deucarian.API.Models;
 
 namespace Deucarian.Simultria.API.Configuration
 {
+    /// <summary>Stable service IDs shipped by this integration.</summary>
+    public static class SimultriaServiceIds
+    {
+        public static readonly ApiServiceId ApiV2 =
+            new ApiServiceId("simultria.api-v2");
+    }
+
     /// <summary>Stable environment IDs shipped by this integration.</summary>
     public static class SimultriaEnvironmentIds
     {
