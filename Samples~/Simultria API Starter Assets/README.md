@@ -12,7 +12,7 @@ package-managed, read-only Simultria API v2 contract.
 4. Select the imported `SimultriaConnectionSettings` asset and enter only
    the base URLs
    this project is permitted to use. Leave every other environment blank.
-5. Bind those settings through Project Setup or assign them to the integration.
+5. Bind those settings through Deucarian Control Center or assign them to the integration.
 
 The imported asset stores no credentials or access tokens. A blank URL is an
 intentional disabled state, not a fallback to another environment.

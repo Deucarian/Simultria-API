@@ -8,9 +8,6 @@ namespace Deucarian.Simultria.API.Editor
 {
     internal sealed class SimultriaContractUpdateWindow : EditorWindow
     {
-        internal const string MenuPath =
-            "Tools/Deucarian/Simultria API/Open Contract Updater";
-
         private const string SpecPathPreference =
             "Deucarian.Simultria.API.Contract.SpecPath";
         private const string RevisionPreference =
@@ -25,7 +22,6 @@ namespace Deucarian.Simultria.API.Editor
         private string previewRevision;
         private bool showChangeDetails;
 
-        [MenuItem(MenuPath, false, 210)]
         internal static SimultriaContractUpdateWindow OpenWindow()
         {
             var window = GetWindow<SimultriaContractUpdateWindow>();
