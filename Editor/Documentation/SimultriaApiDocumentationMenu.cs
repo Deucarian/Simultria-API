@@ -9,18 +9,12 @@ namespace Deucarian.Simultria.API.Editor
 {
     internal static class SimultriaApiDocumentationMenu
     {
-        internal const string DocumentationMenuPath =
-            "Tools/Deucarian/Simultria API/Open Documentation";
-        internal const string EndpointReferenceMenuPath =
-            "Tools/Deucarian/Simultria API/Open Endpoint Reference";
-
         private const string DeveloperGuideRelativePath =
             "Documentation~/index.md";
         private const string ReadmeRelativePath = "README.md";
         private const string EndpointReferenceRelativePath =
             "Documentation~/Generated/API-Endpoints.md";
 
-        [MenuItem(DocumentationMenuPath, false, 220)]
         internal static void OpenDocumentation()
         {
             if (!TryFindDocumentation(out string path))
@@ -32,7 +26,6 @@ namespace Deucarian.Simultria.API.Editor
             Application.OpenURL(new Uri(path).AbsoluteUri);
         }
 
-        [MenuItem(EndpointReferenceMenuPath, false, 221)]
         internal static void OpenEndpointReference()
         {
             OpenDocumentationFile(

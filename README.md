@@ -9,7 +9,7 @@ Unity developers should start with the
 [`Documentation~/index.md`](Documentation~/index.md) guide and the
 [`Documentation~/PUBLIC_API.md`](Documentation~/PUBLIC_API.md) API map. They
 are also available in Unity from
-`Tools > Deucarian > Simultria API > Open Documentation`; the adjacent
+**Deucarian Control Center > Developer > Simultria API > Open Documentation**; the adjacent
 **Open Endpoint Reference** command opens the generated backend route index.
 
 ## Boundary
@@ -192,7 +192,7 @@ The backend does not need a Unity-specific endpoint. A backend author generates
 Scribe OpenAPI, then supplies the local `openapi.yaml` file and its exact Git
 commit. Open the package-author workflow from:
 
-`Tools > Deucarian > Simultria API > Open Contract Updater`
+**Deucarian Control Center > Developer > Simultria API Contract > Open Contract Updater**
 
 The updater previews semantic endpoint changes before it regenerates the
 runtime catalog, coverage JSON, deterministic provenance manifest, and the
