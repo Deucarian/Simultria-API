@@ -1,6 +1,6 @@
 {
   "name": "com.deucarian.simultria-api",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "displayName": "Deucarian Simultria API",
   "description": "Generated Simultria API definition, typed endpoints, project connection setup, authentication adapters, and reusable Unity build routing.",
   "unity": "2021.3",
@@ -19,11 +19,11 @@
     "authentication"
   ],
   "dependencies": {
-    "com.deucarian.api": "2.0.0",
-    "com.deucarian.editor": "1.1.0",
+    "com.deucarian.api": "2.0.1",
+    "com.deucarian.editor": "1.2.0",
     "com.deucarian.session": "1.0.6",
     "com.deucarian.session.api-integration": "1.2.0",
-    "com.deucarian.authentication": "1.0.0",
+    "com.deucarian.authentication": "1.0.1",
     "com.unity.nuget.newtonsoft-json": "3.2.2"
   },
   "samples": [

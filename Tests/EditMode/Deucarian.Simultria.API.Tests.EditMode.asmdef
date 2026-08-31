@@ -2,6 +2,7 @@
   "name": "Deucarian.Simultria.API.Tests.EditMode",
   "rootNamespace": "Deucarian.Simultria.API.Tests.EditMode",
   "references": [
+    "Deucarian.Editor",
     "Deucarian.API",
     "Deucarian.Session",
     "Deucarian.Session.APIIntegration",
