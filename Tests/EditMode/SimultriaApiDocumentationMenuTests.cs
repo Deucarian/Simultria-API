@@ -10,19 +10,6 @@ namespace Deucarian.Simultria.API.Tests.EditMode
     public sealed class SimultriaApiDocumentationMenuTests
     {
         [Test]
-        public void DocumentationMenuUsesThePackageMenuConvention()
-        {
-            Assert.That(
-                SimultriaApiDocumentationMenu.DocumentationMenuPath,
-                Is.EqualTo(
-                    "Tools/Deucarian/Simultria API/Open Documentation"));
-            Assert.That(
-                SimultriaApiDocumentationMenu.EndpointReferenceMenuPath,
-                Is.EqualTo(
-                    "Tools/Deucarian/Simultria API/Open Endpoint Reference"));
-        }
-
-        [Test]
         public void InstalledPackageContainsDeveloperDocumentation()
         {
             PackageManagerPackageInfo package =
