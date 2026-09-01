@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.0.3] - 2026-09-01
+
+### Fixed
+
+- Restored Local as a separate built-in selectable environment instead of
+  requiring consumers to alias local development to Development.
+
+### Added
+
+- Added stable `simultria.local` ID and descriptor, a blank Local slot in
+  generated and sample settings, and explicit backend-name mapping.
+- Local remains credential-free and has no implied URL; projects may configure
+  it or leave it intentionally unconfigured.
+
 ## [1.0.2] - 2026-08-31
 
 - Registered the package workflow and a bounded, sanitized local-state card with Deucarian Control Center.

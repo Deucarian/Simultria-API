@@ -14,6 +14,13 @@ namespace Deucarian.Simultria.API.Configuration
     /// <summary>Stable environment IDs shipped by this integration.</summary>
     public static class SimultriaEnvironmentIds
     {
+        /// <summary>
+        /// Stable local-development ID. No host is implied or configured by
+        /// this identifier.
+        /// </summary>
+        public static readonly ApiEnvironmentId Local =
+            new ApiEnvironmentId("simultria.local");
+
         public static readonly ApiEnvironmentId Development =
             new ApiEnvironmentId("simultria.development");
 

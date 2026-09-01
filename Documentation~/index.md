@@ -13,7 +13,7 @@ In Unity, this page is available from:
 
 | Task | Start with |
 | --- | --- |
-| Configure Development, Testing, Acceptance, and Production | `ApiConnectionSettings` and `SimultriaApiConnectionSettingsAdapter` |
+| Configure Local, Development, Testing, Acceptance, and Production | `ApiConnectionSettings` and `SimultriaApiConnectionSettingsAdapter` |
 | List or load projects | `SimultriaProjectLookupService` |
 | Load models or model versions | `SimultriaModelLookupService` |
 | Load activity metadata | `SimultriaActivityLookupService` |
