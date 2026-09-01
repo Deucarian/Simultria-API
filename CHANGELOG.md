@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.0.4] - 2026-09-01
+
+### Fixed
+
+- Classified `simultria.local` as the package-defined Local lifecycle stage
+  instead of the Custom/unknown stage in both runtime descriptors and the
+  serialized package service definition.
+
+### Changed
+
+- Updated the exact Deucarian API dependency to 2.0.2 for the additive,
+  serialization-safe `ApiEnvironmentStage.Local` contract.
+
+### Security
+
+- Local remains credential-free and host-free in the package definition. A
+  blank project-owned Local URL stays explicitly unconfigured and never falls
+  back to Development or another deployment.
+
 ## [1.0.3] - 2026-09-01
 
 ### Fixed

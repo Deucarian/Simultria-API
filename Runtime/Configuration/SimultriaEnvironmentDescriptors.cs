@@ -13,7 +13,7 @@ namespace Deucarian.Simultria.API.Configuration
         public static readonly ApiEnvironmentDescriptor Local =
             new ApiEnvironmentDescriptor(
                 SimultriaEnvironmentIds.Local,
-                ApiEnvironmentStage.Custom,
+                ApiEnvironmentStage.Local,
                 "Local");
 
         public static readonly ApiEnvironmentDescriptor Development =
