@@ -17,6 +17,11 @@ namespace Deucarian.Simultria.API.Tests.EditMode
         public void CanonicalEnvironmentDescriptorsAreStableAndHostFree()
         {
             AssertDescriptor(
+                SimultriaEnvironmentDescriptors.Local,
+                SimultriaEnvironmentIds.Local,
+                ApiEnvironmentStage.Custom,
+                "Local");
+            AssertDescriptor(
                 SimultriaEnvironmentDescriptors.Development,
                 SimultriaEnvironmentIds.Development,
                 ApiEnvironmentStage.Development,
@@ -36,6 +41,19 @@ namespace Deucarian.Simultria.API.Tests.EditMode
                 SimultriaEnvironmentIds.Production,
                 ApiEnvironmentStage.Production,
                 "Production");
+            Assert.That(
+                SimultriaEnvironmentDescriptors.Standard,
+                Has.Count.EqualTo(4));
+            CollectionAssert.AreEqual(
+                new[]
+                {
+                    SimultriaEnvironmentDescriptors.Local,
+                    SimultriaEnvironmentDescriptors.Development,
+                    SimultriaEnvironmentDescriptors.Testing,
+                    SimultriaEnvironmentDescriptors.Acceptance,
+                    SimultriaEnvironmentDescriptors.Production
+                },
+                SimultriaEnvironmentDescriptors.All);
             Assert.That(
                 typeof(ApiEnvironmentDescriptor).GetProperty("BaseUrl"),
                 Is.Null);

@@ -82,7 +82,7 @@ namespace Deucarian.Simultria.API.Configuration
             }
 
             foreach (ApiEnvironmentDescriptor expected in
-                SimultriaEnvironmentDescriptors.Standard)
+                SimultriaEnvironmentDescriptors.All)
             {
                 bool found = false;
                 foreach (ApiEnvironmentDescriptor candidate in descriptors)

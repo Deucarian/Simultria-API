@@ -43,7 +43,7 @@ namespace Deucarian.Simultria.API.Tests.EditMode
 
             Assert.That(created, Is.True, error);
             Assert.That(settings, Is.Not.Null);
-            Assert.That(settings.Environments, Has.Count.EqualTo(4));
+            Assert.That(settings.Environments, Has.Count.EqualTo(5));
             Assert.That(
                 settings.Environments.All(environment =>
                     environment.Clients.Count == 1 &&
@@ -65,6 +65,10 @@ namespace Deucarian.Simultria.API.Tests.EditMode
                 message);
             Assert.That(
                 composition.GetEnvironmentStatus(
+                    SimultriaEnvironmentIds.Local).Availability,
+                Is.EqualTo(ApiEnvironmentAvailability.Unconfigured));
+            Assert.That(
+                composition.GetEnvironmentStatus(
                     SimultriaEnvironmentIds.Development).Availability,
                 Is.EqualTo(ApiEnvironmentAvailability.Unconfigured));
 
@@ -72,7 +76,7 @@ namespace Deucarian.Simultria.API.Tests.EditMode
                 AssetDatabase.LoadAllAssetsAtPath(assetPath);
             Assert.That(
                 assets.OfType<ApiEnvironmentProfile>().Count(),
-                Is.EqualTo(4));
+                Is.EqualTo(5));
         }
 
         [Test]

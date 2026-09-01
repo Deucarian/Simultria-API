@@ -24,6 +24,9 @@ namespace Deucarian.Simultria.UnityBuildRouting
 
             switch (environmentName.Trim().ToLowerInvariant())
             {
+                case "local":
+                    environmentId = SimultriaEnvironmentIds.Local;
+                    break;
                 case "development":
                     environmentId = SimultriaEnvironmentIds.Development;
                     break;

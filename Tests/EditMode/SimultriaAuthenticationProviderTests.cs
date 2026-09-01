@@ -151,6 +151,9 @@ namespace Deucarian.Simultria.API.Tests.EditMode
         {
             using (var fixture = new SimultriaTestComposition())
             {
+                ApiEnvironmentProfile local = CreateBlankEnvironment(
+                    SimultriaEnvironmentIds.Local,
+                    "Local");
                 ApiEnvironmentProfile testing = CreateBlankEnvironment(
                     SimultriaEnvironmentIds.Testing,
                     "Testing");
@@ -164,6 +167,7 @@ namespace Deucarian.Simultria.API.Tests.EditMode
                     ApiConnectionSettings.CreateTransient(
                         new[]
                         {
+                            local,
                             fixture.Environment,
                             testing,
                             acceptance,
@@ -188,6 +192,7 @@ namespace Deucarian.Simultria.API.Tests.EditMode
                 finally
                 {
                     UnityEngine.Object.DestroyImmediate(settings);
+                    UnityEngine.Object.DestroyImmediate(local);
                     UnityEngine.Object.DestroyImmediate(testing);
                     UnityEngine.Object.DestroyImmediate(acceptance);
                     UnityEngine.Object.DestroyImmediate(production);
