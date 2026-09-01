@@ -7,7 +7,7 @@ has not yet been promoted to the stable public API.
 
 In Unity, this page is available from:
 
-`Tools > Deucarian > Simultria API > Open Documentation`
+`Deucarian Control Center > Developer > Simultria API > Open Documentation`
 
 ## Choose what you need
 
@@ -56,7 +56,9 @@ directly.
 2. In Unity, choose
    `Assets > Create > Deucarian > Connections > Simultria Connection Settings`.
 3. Enter the base URL for each environment the project uses. The settings store
-   no credentials or tokens.
+   no credentials or tokens. Local is already a built-in option; leave its URL
+   blank to keep it explicitly unconfigured rather than creating a Custom
+   environment.
 4. Reference those project-owned `ApiConnectionSettings` from the application's
    composition root.
 5. Select an environment explicitly with `SimultriaEnvironmentIds`. There is
@@ -247,7 +249,7 @@ Today, a backend author generates the Scribe OpenAPI file and hands it off with
 the exact backend Git commit. From that point, Unity package authors do not edit
 route assets or endpoint documentation by hand. Use:
 
-`Tools > Deucarian > Simultria API > Open Contract Updater`
+`Deucarian Control Center > Developer > Simultria API Contract > Open Contract Updater`
 
 The updater previews drift and regenerates the catalog asset, coverage,
 provenance, manifest, and endpoint reference together. The same deterministic
