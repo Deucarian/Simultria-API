@@ -17,7 +17,7 @@ MonoBehaviour:
   endpointCatalog: {fileID: 11400000, guid: 5f65e932f762430bbb9132a72ba857d4, type: 2}
   knownEnvironments:
   - environmentId: simultria.local
-    stage: 0
+    stage: 5
     displayName: Local
   - environmentId: simultria.development
     stage: 1

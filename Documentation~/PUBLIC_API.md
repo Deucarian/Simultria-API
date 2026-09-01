@@ -48,7 +48,11 @@ Namespace: `Deucarian.Simultria.API.Configuration`
   - `Local`, `Development`, `Testing`, `Acceptance`, and `Production` are stable
     `ApiEnvironmentId` values. Select one explicitly.
 - `SimultriaEnvironmentDescriptors`
-  - Exposes five individual descriptors, the four-stage `Standard` list, and the ordered five-option `All` list.
+  - Exposes five individual descriptors, the four-stage `Standard` list, and
+    the ordered five-option `All` list.
+  - `Local` is a first-class `ApiEnvironmentStage.Local` descriptor, never
+    `ApiEnvironmentStage.Custom`. It remains selectable when its project-owned
+    URL is blank; its status is then unconfigured and does not fall back.
 - `SimultriaBuildEnvironmentNameMapper.TryMap(...)`
   - Converts backend names such as `local`, `development`, `test`, `accept`, and
     `production` to canonical environment IDs. Unknown names fail closed.
@@ -65,7 +69,8 @@ Namespace: `Deucarian.Simultria.API.Configuration`
 Normal projects own only `ApiConnectionSettings`; the package owns the
 credential-free Simultria service definition and endpoint catalog. Use the
 Advanced definition-override asset only when intentionally forking that
-contract for a custom deployment.
+contract for a genuinely custom deployment. A normal Local connection is a
+built-in package environment and does not require a definition override.
 
 ## Lookup services
 

@@ -19,8 +19,11 @@ namespace Deucarian.Simultria.API.Tests.EditMode
             AssertDescriptor(
                 SimultriaEnvironmentDescriptors.Local,
                 SimultriaEnvironmentIds.Local,
-                ApiEnvironmentStage.Custom,
+                ApiEnvironmentStage.Local,
                 "Local");
+            Assert.That(
+                SimultriaEnvironmentDescriptors.Local.Stage,
+                Is.Not.EqualTo(ApiEnvironmentStage.Custom));
             AssertDescriptor(
                 SimultriaEnvironmentDescriptors.Development,
                 SimultriaEnvironmentIds.Development,
@@ -54,6 +57,14 @@ namespace Deucarian.Simultria.API.Tests.EditMode
                     SimultriaEnvironmentDescriptors.Production
                 },
                 SimultriaEnvironmentDescriptors.All);
+            foreach (ApiEnvironmentDescriptor descriptor in
+                SimultriaEnvironmentDescriptors.All)
+            {
+                Assert.That(
+                    descriptor.Stage,
+                    Is.Not.EqualTo(ApiEnvironmentStage.Custom),
+                    descriptor.EnvironmentId.Value);
+            }
             Assert.That(
                 typeof(ApiEnvironmentDescriptor).GetProperty("BaseUrl"),
                 Is.Null);
@@ -87,6 +98,29 @@ namespace Deucarian.Simultria.API.Tests.EditMode
                 message);
             CollectionAssert.Contains(clients, SimultriaClientIds.Primary);
             Assert.That(
+                definition.TryGetEnvironmentDescriptors(
+                    out IReadOnlyList<ApiEnvironmentDescriptor> environments,
+                    out message),
+                Is.True,
+                message);
+            CollectionAssert.AreEqual(
+                new[]
+                {
+                    SimultriaEnvironmentIds.Local,
+                    SimultriaEnvironmentIds.Development,
+                    SimultriaEnvironmentIds.Testing,
+                    SimultriaEnvironmentIds.Acceptance,
+                    SimultriaEnvironmentIds.Production
+                },
+                GetEnvironmentIds(environments));
+            Assert.That(environments[0].DisplayName, Is.EqualTo("Local"));
+            Assert.That(
+                environments[0].Stage,
+                Is.EqualTo(ApiEnvironmentStage.Local));
+            Assert.That(
+                environments[0].Stage,
+                Is.Not.EqualTo(ApiEnvironmentStage.Custom));
+            Assert.That(
                 typeof(ApiServiceDefinition).GetProperty("BaseUrl"),
                 Is.Null);
         }
@@ -107,6 +141,15 @@ namespace Deucarian.Simultria.API.Tests.EditMode
                     composition.GetEnvironmentStatus(
                         SimultriaEnvironmentIds.Development).Availability,
                     Is.EqualTo(ApiEnvironmentAvailability.Configured));
+                ApiEnvironmentStatus local = composition.GetEnvironmentStatus(
+                    SimultriaEnvironmentIds.Local);
+                Assert.That(
+                    local.Availability,
+                    Is.EqualTo(ApiEnvironmentAvailability.Unconfigured));
+                Assert.That(
+                    local.Stage,
+                    Is.EqualTo(ApiEnvironmentStage.Local));
+                Assert.That(local.DisplayName, Is.EqualTo("Local"));
                 Assert.That(
                     composition.GetEnvironmentStatus(
                         SimultriaEnvironmentIds.Testing).Availability,
@@ -243,6 +286,18 @@ namespace Deucarian.Simultria.API.Tests.EditMode
             Assert.That(descriptor.EnvironmentId, Is.EqualTo(environmentId));
             Assert.That(descriptor.Stage, Is.EqualTo(stage));
             Assert.That(descriptor.DisplayName, Is.EqualTo(displayName));
+        }
+
+        private static ApiEnvironmentId[] GetEnvironmentIds(
+            IReadOnlyList<ApiEnvironmentDescriptor> descriptors)
+        {
+            var ids = new ApiEnvironmentId[descriptors.Count];
+            for (int index = 0; index < descriptors.Count; index++)
+            {
+                ids[index] = descriptors[index].EnvironmentId;
+            }
+
+            return ids;
         }
     }
 }
