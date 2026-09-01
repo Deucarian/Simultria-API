@@ -39,7 +39,9 @@ Simultria defines five built-in environments in a stable order:
 5. Production (`simultria.production`)
 
 The descriptors contain only a typed ID, lifecycle stage, and safe display
-name. They never imply a host. Create project-owned settings from:
+name. Local uses the first-class package-defined Local lifecycle stage; it is
+never classified as Custom. The descriptors never imply a host. Create
+project-owned settings from:
 
 `Assets > Create > Deucarian > Connections > Simultria Connection Settings`
 
@@ -50,6 +52,8 @@ inspector keeps the everyday view to five URL/status cards. An empty slot is
 **Not configured**. A valid absolute HTTP(S) URL changes it to **Configured**;
 malformed or partial configuration is **Invalid** and fails closed.
 Configuring one slot never causes another slot to fall back to that host.
+In particular, Local remains a built-in selectable environment when its URL is
+blank; blank means **Not configured**, not Development and not Custom.
 
 You can also import **Simultria API Starter Assets** from Package Manager. It
 contains the same five blank slots and is already wired to the package-managed
@@ -79,7 +83,9 @@ The definition declares Local, Development, Testing, Acceptance, and Production 
 the required `simultria.primary` named client. Unknown, blank, and unconfigured
 IDs fail closed instead of guessing Development or Production. Settings never
 contain credentials or tokens, and sanitized `ApiEnvironmentStatus` values do
-not expose base URLs.
+not expose base URLs. `simultria.local` is serialized with the Local lifecycle
+stage while Custom remains reserved for genuinely unknown or project-defined
+environments.
 
 ## Lookup services
 

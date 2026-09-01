@@ -40,8 +40,8 @@ hand over:
 - `storage/app/scribe/openapi.yaml`; and
 - the hexadecimal backend Git commit that generated it.
 
-Package authors can select that file from **Tools > Deucarian > Simultria API >
-Open Contract Updater**. Alternatively, copy it to the ignored package-author
+Package authors can select that file from **Deucarian Control Center > Developer >
+Simultria API Contract > Open Contract Updater**. Alternatively, copy it to the ignored package-author
 inbox at `ContractSource~/openapi.yaml`. Unity notices a different inbox hash
 once per session and opens the updater.
 

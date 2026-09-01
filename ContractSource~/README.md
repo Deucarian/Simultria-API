@@ -8,7 +8,7 @@ Manual handoff:
 
 1. Generate `storage/app/scribe/openapi.yaml` in the backend checkout.
 2. Copy it here as `openapi.yaml`.
-3. Open **Tools > Deucarian > Simultria API > Open Contract Updater**.
+3. Open **Deucarian Control Center > Developer > Simultria API Contract > Open Contract Updater**.
 4. Enter the backend Git commit, preview, and apply the generated update.
 
 The Editor detects when the inbox hash differs from the installed manifest and

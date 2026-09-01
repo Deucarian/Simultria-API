@@ -11,6 +11,7 @@ TOOLS_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(TOOLS_ROOT))
 
 import generate_contract  # noqa: E402
+import update_contract  # noqa: E402
 
 
 class GenerateContractTests(unittest.TestCase):
@@ -89,6 +90,25 @@ class GenerateContractTests(unittest.TestCase):
             if endpoint["endpointId"].startswith("simultria.generated.")
         )
         self.assertTrue(generated["suppressLogging"])
+
+    def test_service_definition_uses_first_class_local_stage(self):
+        manifest = {
+            "source": {
+                "backendRevision": "53f2ee778c5ec3d22763c86537850061642317cb",
+                "sha256": "0" * 64,
+            }
+        }
+
+        asset = update_contract.service_definition_asset(manifest)
+
+        self.assertIn(
+            "environmentId: simultria.local\n    stage: 5",
+            asset,
+        )
+        self.assertNotIn(
+            "environmentId: simultria.local\n    stage: 0",
+            asset,
+        )
 
     def test_change_report_separates_additions_from_sensitive_changes(self):
         baseline, _ = self.generate()
