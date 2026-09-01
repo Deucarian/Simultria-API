@@ -65,13 +65,13 @@ namespace Deucarian.Simultria.API.Tests.EditMode
                 SimultriaServiceIds.ApiV2.Value,
                 "Simultria API v2",
                 Catalog,
-                SimultriaEnvironmentDescriptors.Standard,
+                SimultriaEnvironmentDescriptors.All,
                 new[] { SimultriaClientIds.Primary },
                 "test",
                 "sha256:test");
 
             foreach (ApiEnvironmentDescriptor descriptor in
-                SimultriaEnvironmentDescriptors.Standard)
+                SimultriaEnvironmentDescriptors.All)
             {
                 ApiEnvironmentProfile environment =
                     ScriptableObject.CreateInstance<ApiEnvironmentProfile>();
@@ -89,7 +89,9 @@ namespace Deucarian.Simultria.API.Tests.EditMode
                 environments.Add(environment);
             }
 
-            Environment = environments[0];
+            Environment = environments.Find(environment =>
+                environment.EnvironmentId ==
+                    SimultriaEnvironmentIds.Development.Value);
             Settings = ApiConnectionSettings.CreateTransient(
                 environments,
                 Definition);

@@ -39,6 +39,7 @@ namespace Deucarian.Simultria.API.Tests.EditMode
             }
         }
 
+        [TestCase("local", "simultria.local")]
         [TestCase("development", "simultria.development")]
         [TestCase("test", "simultria.testing")]
         [TestCase("testing", "simultria.testing")]

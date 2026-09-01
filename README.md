@@ -16,7 +16,7 @@ are also available in Unity from
 
 This package owns:
 
-- canonical Development, Testing, Acceptance, and Production descriptors;
+- a built-in Local descriptor plus canonical Development, Testing, Acceptance, and Production descriptors;
 - a package-owned, credential-free API service definition with no deployment
   host or active environment;
 - typed endpoints for login, validation, projects, project models, model
@@ -30,28 +30,29 @@ viewer auto-load context, browser commands, report issues, media, or markers.
 
 ## Environments
 
-Simultria defines four known environments in a stable order:
+Simultria defines five built-in environments in a stable order:
 
-1. Development (`simultria.development`)
-2. Testing (`simultria.testing`)
-3. Acceptance (`simultria.acceptance`)
-4. Production (`simultria.production`)
+1. Local (`simultria.local`)
+2. Development (`simultria.development`)
+3. Testing (`simultria.testing`)
+4. Acceptance (`simultria.acceptance`)
+5. Production (`simultria.production`)
 
 The descriptors contain only a typed ID, lifecycle stage, and safe display
 name. They never imply a host. Create project-owned settings from:
 
 `Assets > Create > Deucarian > Connections > Simultria Connection Settings`
 
-The created `ApiConnectionSettings` contains four managed environment
+The created `ApiConnectionSettings` contains five managed environment
 sub-assets and references the package's read-only `ApiServiceDefinition`.
 Each has the fixed `simultria.primary` client and an empty base URL. The custom
-inspector keeps the everyday view to four URL/status cards. An empty slot is
+inspector keeps the everyday view to five URL/status cards. An empty slot is
 **Not configured**. A valid absolute HTTP(S) URL changes it to **Configured**;
 malformed or partial configuration is **Invalid** and fails closed.
 Configuring one slot never causes another slot to fall back to that host.
 
 You can also import **Simultria API Starter Assets** from Package Manager. It
-contains the same four blank slots and is already wired to the package-managed
+contains the same five blank slots and is already wired to the package-managed
 contract. IDs, request policies, and explicit project-owned contract overrides
 remain available through the settings asset's **Advanced** details. An
 explicit advanced action can fork the service definition after warning that
@@ -74,7 +75,7 @@ ApiEnvironmentStatus status =
     composition.GetEnvironmentStatus(environmentId);
 ```
 
-The definition declares Development, Testing, Acceptance, and Production plus
+The definition declares Local, Development, Testing, Acceptance, and Production plus
 the required `simultria.primary` named client. Unknown, blank, and unconfigured
 IDs fail closed instead of guessing Development or Production. Settings never
 contain credentials or tokens, and sanitized `ApiEnvironmentStatus` values do
@@ -102,8 +103,8 @@ issue/media payloads intentionally remain in the Report integration.
 build directory through an explicitly configured environment profile. It uses
 `Application.version` only when a viewer integration deliberately supplies it;
 the API package itself does not choose a build version, product, host, or
-fallback environment. The backend names `development`, `test`/`testing`,
-`accept`/`acceptance`, and `production` map to the four canonical Simultria
+fallback environment. The backend names `local`, `development`, `test`/`testing`,
+`accept`/`acceptance`, and `production` map to the five built-in Simultria
 environment IDs. Missing, deprecated, and unknown values fail closed.
 
 `SimultriaViewerModelResolver` accepts a project ID, model ID, and optional

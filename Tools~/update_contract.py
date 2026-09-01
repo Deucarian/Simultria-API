@@ -70,6 +70,9 @@ MonoBehaviour:
   displayName: Simultria API v2
   endpointCatalog: {{fileID: 11400000, guid: 5f65e932f762430bbb9132a72ba857d4, type: 2}}
   knownEnvironments:
+  - environmentId: simultria.local
+    stage: 0
+    displayName: Local
   - environmentId: simultria.development
     stage: 1
     displayName: Development

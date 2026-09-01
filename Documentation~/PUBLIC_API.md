@@ -45,12 +45,12 @@ Namespace: `Deucarian.Simultria.API.Configuration`
   - `IsCompatibleSettings(...)`, `IsCompatibleDefinition(...)`, and
     `IsCompatibleCatalog(...)` support setup and validation tooling.
 - `SimultriaEnvironmentIds`
-  - `Development`, `Testing`, `Acceptance`, and `Production` are stable
+  - `Local`, `Development`, `Testing`, `Acceptance`, and `Production` are stable
     `ApiEnvironmentId` values. Select one explicitly.
 - `SimultriaEnvironmentDescriptors`
-  - Exposes the four individual descriptors and the ordered `Standard` list.
+  - Exposes five individual descriptors, the four-stage `Standard` list, and the ordered five-option `All` list.
 - `SimultriaBuildEnvironmentNameMapper.TryMap(...)`
-  - Converts backend names such as `development`, `test`, `accept`, and
+  - Converts backend names such as `local`, `development`, `test`, `accept`, and
     `production` to canonical environment IDs. Unknown names fail closed.
 
 ### Stable integration IDs
