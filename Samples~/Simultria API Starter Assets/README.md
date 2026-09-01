@@ -1,7 +1,7 @@
 # Simultria API Starter Assets
 
 This sample provides one project-owned `ApiConnectionSettings` asset with blank
-Development, Testing, Acceptance, and Production URL slots. It references the
+Local, Development, Testing, Acceptance, and Production URL slots. It references the
 package-managed, read-only Simultria API v2 contract.
 
 ## Import
@@ -21,7 +21,7 @@ intentional disabled state, not a fallback to another environment.
 
 Use **Assets > Create > Deucarian > Connections > Simultria Connection
 Settings** to create the
-same four-slot project asset anywhere under `Assets`.
+same five-slot project asset anywhere under `Assets`.
 
 Most projects should keep the package contract. If a project genuinely needs
 different routes or request policies, use **Assets > Create > Deucarian >

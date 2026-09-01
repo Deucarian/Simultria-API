@@ -14,10 +14,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: Deucarian.API::Deucarian.API.Configuration.ApiConnectionSettings
   serviceDefinition: {fileID: 11400000, guid: 1dcd8039d5b34b12bdec9f43873348a6, type: 2}
   environments:
+  - {fileID: 11400005}
   - {fileID: 11400001}
   - {fileID: 11400002}
   - {fileID: 11400003}
   - {fileID: 11400004}
+--- !u!114 &11400005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cfc08330bb04e0b900e8d8e8620ef0a, type: 3}
+  m_Name: Local
+  m_EditorClassIdentifier: Deucarian.API::Deucarian.API.Configuration.ApiEnvironmentProfile
+  environmentId: simultria.local
+  displayName: Local
+  defaultRequestPolicy: {timeoutSeconds: -1, maxRetryAttempts: -1, initialRetryBackoffMilliseconds: -1, retryBackoffMultiplier: 0, maximumRetryBackoffMilliseconds: -1, rateLimitRequestCountHint: -1, rateLimitWindowSecondsHint: -1}
+  clients:
+  - clientId: simultria.primary
+    baseUrl:
+    defaultHeaders: []
+    requestPolicy: {timeoutSeconds: -1, maxRetryAttempts: -1, initialRetryBackoffMilliseconds: -1, retryBackoffMultiplier: 0, maximumRetryBackoffMilliseconds: -1, rateLimitRequestCountHint: -1, rateLimitWindowSecondsHint: -1}
 --- !u!114 &11400001
 MonoBehaviour:
   m_ObjectHideFlags: 0

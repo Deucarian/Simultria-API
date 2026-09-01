@@ -10,6 +10,12 @@ namespace Deucarian.Simultria.API.Configuration
     /// </summary>
     public static class SimultriaEnvironmentDescriptors
     {
+        public static readonly ApiEnvironmentDescriptor Local =
+            new ApiEnvironmentDescriptor(
+                SimultriaEnvironmentIds.Local,
+                ApiEnvironmentStage.Custom,
+                "Local");
+
         public static readonly ApiEnvironmentDescriptor Development =
             new ApiEnvironmentDescriptor(
                 SimultriaEnvironmentIds.Development,
@@ -43,11 +49,27 @@ namespace Deucarian.Simultria.API.Configuration
                 Production
             });
 
+        private static readonly IReadOnlyList<ApiEnvironmentDescriptor>
+            all = Array.AsReadOnly(new[]
+            {
+                Local,
+                Development,
+                Testing,
+                Acceptance,
+                Production
+            });
+
         /// <summary>
         /// Development, Testing, Acceptance, and Production in canonical
         /// presentation order.
         /// </summary>
         public static IReadOnlyList<ApiEnvironmentDescriptor> Standard =>
             standard;
+
+        /// <summary>
+        /// Local plus the four conventional deployment stages in selectable
+        /// presentation order.
+        /// </summary>
+        public static IReadOnlyList<ApiEnvironmentDescriptor> All => all;
     }
 }
