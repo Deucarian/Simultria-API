@@ -14,12 +14,19 @@ namespace Deucarian.Simultria.API.Services
     public sealed class SimultriaUnityBuildVersionLookupService :
         SimultriaLookupServiceBase
     {
+        private readonly SimultriaLookupContext _lookup;
+
         public SimultriaUnityBuildVersionLookupService(
             IApiClient apiClient,
             ApiComposition composition,
             ApiEnvironmentId directoryEnvironmentId)
-            : base(apiClient, composition, directoryEnvironmentId)
+            : this(new SimultriaLookupContext(apiClient, composition, directoryEnvironmentId))
         {
+        }
+
+        public SimultriaUnityBuildVersionLookupService(SimultriaLookupContext context) : base(context)
+        {
+            _lookup = context;
         }
 
         public Task<ApiResult<
@@ -30,11 +37,11 @@ namespace Deucarian.Simultria.API.Services
                 CancellationToken cancellationToken =
                     default(CancellationToken))
         {
-            return SendAsync<SimultriaResourceResponse<
+            return _lookup.SendAsync<SimultriaResourceResponse<
                     SimultriaUnityBuildVersionDto>>(
                 SimultriaEndpointCatalog.UnityBuildVersion(
-                    Composition,
-                    EnvironmentId,
+                    _lookup.Composition,
+                    _lookup.EnvironmentId,
                     buildVersion,
                     product),
                 cancellationToken);
