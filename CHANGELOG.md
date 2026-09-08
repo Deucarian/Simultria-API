@@ -1,5 +1,35 @@
 # Changelog
 
+## [1.1.0] - 2026-09-08
+
+### Fixed
+
+- Pin normal Unity build-version lookup to the central Production directory,
+  independent of runtime backend profiles, custom catalogs, and Editor Local
+  selection. Discovery disables authentication and request logging.
+- Preserve exact product/version validation and fail closed for unsupported,
+  mismatched, unknown/deprecated, unconfigured, and transport-error results.
+
+### Added
+
+- Preferred client-only build lookup, two-argument routing constructor, fixed
+  endpoint accessor, and transport-independent full-result evaluation.
+- `IsVersionMissing` / `build_version_not_found` classification for only HTTP
+  404 JSON with the exact top-level missing-record code. Legacy message-only
+  errors never authorize fallback. Viewer Connection owns any
+  captured build-profile fallback; this package selects none.
+- Deterministic fixed-directory, compatibility, failure-classification, and
+  normal-service regression tests plus the backend handoff contract.
+
+### Changed
+
+- Keep obsolete directory-taking constructors/accessor as ignored-selection
+  compatibility overloads. The build lookup no longer inherits the
+  environment-bound lookup base; old context properties remain obsolete and
+  callers relying on base assignability must migrate to the concrete service.
+- Generated API contract artifacts are unchanged; live backend product support
+  is a separate Ticket 2 dependency, not silently bypassed by fallback.
+
 ## [1.0.4] - 2026-09-01
 
 ### Fixed

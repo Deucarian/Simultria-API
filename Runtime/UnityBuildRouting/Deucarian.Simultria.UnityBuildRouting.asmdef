@@ -3,7 +3,8 @@
   "rootNamespace": "Deucarian.Simultria.UnityBuildRouting",
   "references": [
     "Deucarian.API",
-    "Deucarian.Simultria.API"
+    "Deucarian.Simultria.API",
+    "Newtonsoft.Json"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

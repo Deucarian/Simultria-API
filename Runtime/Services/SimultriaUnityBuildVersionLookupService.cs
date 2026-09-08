@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Deucarian.API.Core;
@@ -8,19 +9,42 @@ using Deucarian.Simultria.API.Models;
 namespace Deucarian.Simultria.API.Services
 {
     /// <summary>
-    /// Reads the public Simultria Unity build directory through an explicitly
-    /// configured API environment. The returned environment is not defaulted.
+    /// Reads the fixed central Production directory without a session or a
+    /// project-owned directory profile. The returned environment is not defaulted.
     /// </summary>
-    public sealed class SimultriaUnityBuildVersionLookupService :
-        SimultriaLookupServiceBase
+    public sealed class SimultriaUnityBuildVersionLookupService
     {
+        private readonly IApiClient apiClient;
+
+        public SimultriaUnityBuildVersionLookupService(IApiClient apiClient)
+        {
+            this.apiClient = apiClient ??
+                throw new ArgumentNullException(nameof(apiClient));
+        }
+
+        [Obsolete("The build directory is fixed. Use the IApiClient-only constructor.")]
         public SimultriaUnityBuildVersionLookupService(
             IApiClient apiClient,
             ApiComposition composition,
             ApiEnvironmentId directoryEnvironmentId)
-            : base(apiClient, composition, directoryEnvironmentId)
+            : this(apiClient)
         {
+            legacyComposition = composition;
+            legacyEnvironmentId = directoryEnvironmentId;
         }
+
+        private readonly ApiComposition legacyComposition;
+        private readonly ApiEnvironmentId legacyEnvironmentId;
+
+        [Obsolete("Legacy caller context only; not used for central discovery.")]
+        public ApiComposition Composition => legacyComposition;
+
+        [Obsolete("Legacy caller context only; not used for central discovery.")]
+        public ApiEnvironmentId EnvironmentId => legacyEnvironmentId;
+
+        [Obsolete("Legacy caller context only; not used for central discovery.")]
+        public ApiEnvironmentStatus EnvironmentStatus =>
+            legacyComposition?.GetEnvironmentStatus(legacyEnvironmentId);
 
         public Task<ApiResult<
             SimultriaResourceResponse<SimultriaUnityBuildVersionDto>>>
@@ -30,11 +54,9 @@ namespace Deucarian.Simultria.API.Services
                 CancellationToken cancellationToken =
                     default(CancellationToken))
         {
-            return SendAsync<SimultriaResourceResponse<
+            return apiClient.SendAsync<SimultriaResourceResponse<
                     SimultriaUnityBuildVersionDto>>(
                 SimultriaEndpointCatalog.UnityBuildVersion(
-                    Composition,
-                    EnvironmentId,
                     buildVersion,
                     product),
                 cancellationToken);

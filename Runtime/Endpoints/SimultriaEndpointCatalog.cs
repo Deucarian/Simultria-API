@@ -6,8 +6,8 @@ using Deucarian.Simultria.API.Configuration;
 namespace Deucarian.Simultria.API.Endpoints
 {
     /// <summary>
-    /// Typed accessors over the package-provided API v2 catalog. Route and host
-    /// ownership remain in API composition assets.
+    /// Typed API v2 accessors. Normal backend hosts come from composition;
+    /// public Unity build discovery always uses the central Production host.
     /// </summary>
     public static class SimultriaEndpointCatalog
     {
@@ -164,21 +164,35 @@ namespace Deucarian.Simultria.API.Endpoints
         /// backend-selected environment for one Unity build.
         /// </summary>
         public static ApiEndpoint UnityBuildVersion(
-            ApiComposition composition,
-            ApiEnvironmentId directoryEnvironmentId,
             string buildVersion,
             string product)
         {
-            return Resolve(
-                    composition,
-                    directoryEnvironmentId,
-                    SimultriaEndpointIds.UnityBuildVersion)
+            return new ApiEndpoint(
+                    SimultriaUnityBuildDirectory.BaseUrl +
+                    SimultriaUnityBuildDirectory.VersionRoute,
+                    authentication: ApiAuthenticationRequirement.Disabled,
+                    timeoutSeconds: 30,
+                    suppressLogging: true)
                 .WithPathParameter(
                     "id",
                     RequireSegment(buildVersion, nameof(buildVersion)))
                 .WithPathParameter(
                     "product",
                     RequireSegment(product, nameof(product)));
+        }
+
+        /// <summary>
+        /// Compatibility overload. Directory selection and custom catalogs
+        /// cannot redirect central discovery. Use the two-argument overload.
+        /// </summary>
+        [Obsolete("The build directory is fixed. Use UnityBuildVersion(buildVersion, product).")]
+        public static ApiEndpoint UnityBuildVersion(
+            ApiComposition composition,
+            ApiEnvironmentId directoryEnvironmentId,
+            string buildVersion,
+            string product)
+        {
+            return UnityBuildVersion(buildVersion, product);
         }
 
         private static ApiEndpoint Resolve(

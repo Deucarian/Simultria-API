@@ -15,6 +15,10 @@ namespace Deucarian.Simultria.API.Tests.EditMode
 
         internal object ResponseData { get; set; }
 
+        internal ApiError ResponseError { get; set; }
+
+        internal Exception ThrownException { get; set; }
+
         public Task<ApiResult<TResponse>> SendAsync<TResponse>(
             ApiRequest request,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -81,6 +85,16 @@ namespace Deucarian.Simultria.API.Tests.EditMode
         private Task<ApiResult<TResponse>> Success<TResponse>(
             HttpMethod method)
         {
+            if (ThrownException != null)
+            {
+                throw ThrownException;
+            }
+
+            if (ResponseError != null)
+            {
+                return Task.FromResult(ApiResult<TResponse>.Failure(ResponseError, method));
+            }
+
             TResponse response = ResponseData is TResponse typed
                 ? typed
                 : default(TResponse);
