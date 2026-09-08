@@ -10,12 +10,19 @@ namespace Deucarian.Simultria.API.Services
     /// <summary>Read-only model and model-version lookup operations.</summary>
     public sealed class SimultriaModelLookupService : SimultriaLookupServiceBase
     {
+        private readonly SimultriaLookupContext _lookup;
+
         public SimultriaModelLookupService(
             IApiClient apiClient,
             ApiComposition composition,
             ApiEnvironmentId environmentId)
-            : base(apiClient, composition, environmentId)
+            : this(new SimultriaLookupContext(apiClient, composition, environmentId))
         {
+        }
+
+        public SimultriaModelLookupService(SimultriaLookupContext context) : base(context)
+        {
+            _lookup = context;
         }
 
         public Task<ApiResult<SimultriaResourceResponse<SimultriaModelDto>>>
@@ -24,10 +31,10 @@ namespace Deucarian.Simultria.API.Services
                 CancellationToken cancellationToken =
                     default(CancellationToken))
         {
-            return SendAsync<SimultriaResourceResponse<SimultriaModelDto>>(
+            return _lookup.SendAsync<SimultriaResourceResponse<SimultriaModelDto>>(
                 SimultriaEndpointCatalog.Model(
-                    Composition,
-                    EnvironmentId,
+                    _lookup.Composition,
+                    _lookup.EnvironmentId,
                     modelId),
                 cancellationToken);
         }
@@ -39,11 +46,11 @@ namespace Deucarian.Simultria.API.Services
                 CancellationToken cancellationToken =
                     default(CancellationToken))
         {
-            return SendAsync<
+            return _lookup.SendAsync<
                 SimultriaResourceResponse<SimultriaModelVersionDto>>(
                 SimultriaEndpointCatalog.ModelVersion(
-                    Composition,
-                    EnvironmentId,
+                    _lookup.Composition,
+                    _lookup.EnvironmentId,
                     versionId),
                 cancellationToken);
         }
@@ -55,11 +62,11 @@ namespace Deucarian.Simultria.API.Services
                 CancellationToken cancellationToken =
                     default(CancellationToken))
         {
-            return SendAsync<
+            return _lookup.SendAsync<
                 SimultriaResourceResponse<SimultriaModelVersionDto>>(
                 SimultriaEndpointCatalog.ActiveModelVersion(
-                    Composition,
-                    EnvironmentId,
+                    _lookup.Composition,
+                    _lookup.EnvironmentId,
                     modelId),
                 cancellationToken);
         }
@@ -71,11 +78,11 @@ namespace Deucarian.Simultria.API.Services
                 CancellationToken cancellationToken =
                     default(CancellationToken))
         {
-            return SendAsync<
+            return _lookup.SendAsync<
                 SimultriaResourceResponse<SimultriaModelVersionDto>>(
                 SimultriaEndpointCatalog.FrozenModelVersion(
-                    Composition,
-                    EnvironmentId,
+                    _lookup.Composition,
+                    _lookup.EnvironmentId,
                     modelId),
                 cancellationToken);
         }

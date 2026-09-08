@@ -13,6 +13,8 @@ namespace Deucarian.Simultria.API.Tests.EditMode
 
         internal ApiRequest LastRequest { get; private set; }
 
+        internal CancellationToken LastCancellationToken { get; private set; }
+
         internal object ResponseData { get; set; }
 
         internal ApiError ResponseError { get; set; }
@@ -24,6 +26,7 @@ namespace Deucarian.Simultria.API.Tests.EditMode
             CancellationToken cancellationToken = default(CancellationToken))
         {
             LastRequest = request;
+            LastCancellationToken = cancellationToken;
             return Success<TResponse>(request?.Method ?? HttpMethod.GET);
         }
 
@@ -32,6 +35,7 @@ namespace Deucarian.Simultria.API.Tests.EditMode
             CancellationToken cancellationToken = default(CancellationToken))
         {
             LastEndpoint = endpoint;
+            LastCancellationToken = cancellationToken;
             return Success<TResponse>(endpoint?.Method ?? HttpMethod.GET);
         }
 
@@ -41,6 +45,7 @@ namespace Deucarian.Simultria.API.Tests.EditMode
             CancellationToken cancellationToken = default(CancellationToken))
         {
             LastEndpoint = endpoint;
+            LastCancellationToken = cancellationToken;
             return Success<TResponse>(endpoint?.Method ?? HttpMethod.POST);
         }
 

@@ -72,6 +72,10 @@ raw response body or exception message.
 
 ## Migration and compatibility
 
+- Version 1.1.1 reconciles fixed central discovery with development's distinct
+  1.1.0 shared lookup-context API, retaining Editor 1.3.0 and Session 1.0.7 minima.
+  Normal project/model/activity services still compose a validated
+  `SimultriaLookupContext` and retain their existing base-type compatibility.
 - The old endpoint accessor and three-argument lookup/router constructors remain
   source-compatible obsolete overloads. Their directory selection cannot
   redirect discovery and is not validated.
@@ -82,6 +86,15 @@ raw response body or exception message.
 - Its obsolete `Composition`, `EnvironmentId`, and `EnvironmentStatus` properties
   represent the old caller context only, never the directory. They are empty
   or null when the preferred constructor is used.
+- The context-taking build lookup constructor introduced in development remains
+  as an obsolete transport-only compatibility adapter. It neither builds nor
+  revalidates a runtime context; its supplied context sends the fixed endpoint
+  directly, without copying the context's backend route, auth requirement or
+  profile headers. The context's client must still be credential-free for this
+  public request. New discovery code should use the client-only constructor,
+  which needs no configured runtime environment. Typed null arguments distinguish
+  the two one-argument overloads: `(IApiClient)null` or `(SimultriaLookupContext)null`;
+  both are rejected rather than selecting another source.
 - No generated contract snapshot has been regenerated for this host-selection
   policy change; the HTTP route is unchanged.
 - Live rollout still requires Ticket 2 backend support. The inspected central
@@ -91,7 +104,8 @@ raw response body or exception message.
 ## Validation
 
 Use `SimultriaCentralBuildDirectoryTests`,
-`SimultriaUnityBuildMissingRecordTests`, and the existing lookup/routing tests
+`SimultriaUnityBuildMissingRecordTests`, `SimultriaLookupReconciliationTests`,
+and the existing lookup/routing tests
 in Unity EditMode. They inject an API spy and make no external requests.
 The normal-service regression verifies explicit backend routing and Local's
 unconfigured fail-closed behavior are unchanged. Also run the Package Registry

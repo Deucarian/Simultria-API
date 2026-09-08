@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.1.0] - 2026-09-08
+## [1.1.1] - 2026-09-09
 
 ### Fixed
 
@@ -29,6 +29,16 @@
   callers relying on base assignability must migrate to the concrete service.
 - Generated API contract artifacts are unchanged; live backend product support
   is a separate Ticket 2 dependency, not silently bypassed by fallback.
+- Reconcile central discovery with development's 1.1.0 lookup-context API.
+  Preserve its context constructor as an obsolete transport-only adapter,
+  without requiring a configured runtime context for client-only discovery.
+  Normal project/model/activity contexts remain validated and fail closed.
+- Retain development's Editor 1.3.0 and Session 1.0.7 dependency minima. Use
+  patch version 1.1.1 to avoid colliding with its distinct 1.1.0 contract.
+
+## 1.1.0 - Unreleased
+
+- Compose lookup services from an explicit shared context while retaining existing constructors and base-type compatibility.
 
 ## [1.0.4] - 2026-09-01
 

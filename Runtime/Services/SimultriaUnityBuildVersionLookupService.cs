@@ -14,12 +14,14 @@ namespace Deucarian.Simultria.API.Services
     /// </summary>
     public sealed class SimultriaUnityBuildVersionLookupService
     {
-        private readonly IApiClient apiClient;
+        private readonly Func<ApiEndpoint, CancellationToken, Task<ApiResult<
+            SimultriaResourceResponse<SimultriaUnityBuildVersionDto>>>> sendAsync;
 
         public SimultriaUnityBuildVersionLookupService(IApiClient apiClient)
         {
-            this.apiClient = apiClient ??
-                throw new ArgumentNullException(nameof(apiClient));
+            if (apiClient == null) throw new ArgumentNullException(nameof(apiClient));
+            sendAsync = apiClient.SendAsync<
+                SimultriaResourceResponse<SimultriaUnityBuildVersionDto>>;
         }
 
         [Obsolete("The build directory is fixed. Use the IApiClient-only constructor.")]
@@ -31,6 +33,20 @@ namespace Deucarian.Simultria.API.Services
         {
             legacyComposition = composition;
             legacyEnvironmentId = directoryEnvironmentId;
+        }
+
+        /// <summary>
+        /// Adapts an existing context's transport only. Runtime composition and
+        /// environment selection never participate in central discovery.
+        /// </summary>
+        [Obsolete("The build directory needs no runtime context. Use the IApiClient-only constructor.")]
+        public SimultriaUnityBuildVersionLookupService(SimultriaLookupContext context)
+        {
+            if (context == null) throw new ArgumentNullException(nameof(context));
+            sendAsync = context.SendAsync<
+                SimultriaResourceResponse<SimultriaUnityBuildVersionDto>>;
+            legacyComposition = context.Composition;
+            legacyEnvironmentId = context.EnvironmentId;
         }
 
         private readonly ApiComposition legacyComposition;
@@ -54,8 +70,7 @@ namespace Deucarian.Simultria.API.Services
                 CancellationToken cancellationToken =
                     default(CancellationToken))
         {
-            return apiClient.SendAsync<SimultriaResourceResponse<
-                    SimultriaUnityBuildVersionDto>>(
+            return sendAsync(
                 SimultriaEndpointCatalog.UnityBuildVersion(
                     buildVersion,
                     product),

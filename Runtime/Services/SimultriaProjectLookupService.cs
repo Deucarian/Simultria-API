@@ -11,12 +11,19 @@ namespace Deucarian.Simultria.API.Services
     public sealed class SimultriaProjectLookupService :
         SimultriaLookupServiceBase
     {
+        private readonly SimultriaLookupContext _lookup;
+
         public SimultriaProjectLookupService(
             IApiClient apiClient,
             ApiComposition composition,
             ApiEnvironmentId environmentId)
-            : base(apiClient, composition, environmentId)
+            : this(new SimultriaLookupContext(apiClient, composition, environmentId))
         {
+        }
+
+        public SimultriaProjectLookupService(SimultriaLookupContext context) : base(context)
+        {
+            _lookup = context;
         }
 
         public Task<ApiResult<SimultriaCollectionResponse<SimultriaProjectDto>>>
@@ -24,11 +31,11 @@ namespace Deucarian.Simultria.API.Services
                 CancellationToken cancellationToken =
                     default(CancellationToken))
         {
-            return SendAsync<
+            return _lookup.SendAsync<
                 SimultriaCollectionResponse<SimultriaProjectDto>>(
                 SimultriaEndpointCatalog.Projects(
-                    Composition,
-                    EnvironmentId),
+                    _lookup.Composition,
+                    _lookup.EnvironmentId),
                 cancellationToken);
         }
 
@@ -38,10 +45,10 @@ namespace Deucarian.Simultria.API.Services
                 CancellationToken cancellationToken =
                     default(CancellationToken))
         {
-            return SendAsync<SimultriaResourceResponse<SimultriaProjectDto>>(
+            return _lookup.SendAsync<SimultriaResourceResponse<SimultriaProjectDto>>(
                 SimultriaEndpointCatalog.Project(
-                    Composition,
-                    EnvironmentId,
+                    _lookup.Composition,
+                    _lookup.EnvironmentId,
                     projectId),
                 cancellationToken);
         }
@@ -52,11 +59,11 @@ namespace Deucarian.Simultria.API.Services
                 CancellationToken cancellationToken =
                     default(CancellationToken))
         {
-            return SendAsync<
+            return _lookup.SendAsync<
                 SimultriaCollectionResponse<SimultriaModelDto>>(
                 SimultriaEndpointCatalog.ProjectModels(
-                    Composition,
-                    EnvironmentId,
+                    _lookup.Composition,
+                    _lookup.EnvironmentId,
                     projectId),
                 cancellationToken);
         }

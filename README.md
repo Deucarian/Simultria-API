@@ -105,6 +105,12 @@ ApiResult<SimultriaResourceResponse<SimultriaProjectDto>> result =
 `SimultriaActivityLookupService` returns activity metadata. Report-specific
 issue/media payloads intentionally remain in the Report integration.
 
+Normal project/model/activity services also accept a shared
+`SimultriaLookupContext(apiClient, composition, environmentId)`. It validates
+the explicit runtime environment once and preserves the existing constructors
+and `SimultriaLookupServiceBase` compatibility. Unconfigured environments still
+fail closed; the context never selects a default backend.
+
 `SimultriaUnityBuildVersionLookupService(apiClient)` always calls the public
 Production directory at `https://buildingvirtualitysuite.com`, independently
 of project-owned runtime backend URLs, Editor selection, and legacy directory
@@ -122,6 +128,13 @@ environment. Viewer Connection owns the decision to use a captured build-profile
 environment in that case. Legacy message-only errors, network/authentication failures, blank/HTML 404s,
 unsupported products, identity mismatches, and unknown/deprecated environments
 never authorize fallback. See the [routing contract](UNITY_BUILD_ROUTING.md).
+
+Version 1.1.1 reconciles this fixed-directory policy with development's 1.1.0
+normal lookup-context API and retains Editor 1.3.0 / Session 1.0.7 minima. The
+build lookup's obsolete context constructor adapts only an already-supplied
+context's transport; it cannot inherit runtime URLs, endpoint overrides or
+composition headers. Prefer its client-only constructor with a dedicated
+credential-free client instead of configuring a runtime context for discovery.
 
 `SimultriaViewerModelResolver` accepts a project ID, model ID, and optional
 version ID. It fetches project detail and returns the resolved project/model/

@@ -88,6 +88,11 @@ Every async operation accepts an optional `CancellationToken` and returns an
 `ApiResult<T>`. Services inherit the sanitized `Composition`, `EnvironmentId`,
 and `EnvironmentStatus` properties from `SimultriaLookupServiceBase`.
 
+The normal services also accept one shared `SimultriaLookupContext` constructed
+from those three arguments. The context validates its explicit environment
+and forwards requests through the injected client. It preserves normal-service
+base-type compatibility and does not default an unconfigured environment.
+
 ### `SimultriaProjectLookupService`
 
 - `GetProjectsAsync(...)` returns
@@ -129,6 +134,16 @@ authentication or a directory profile. The old three-argument constructor is
 obsolete and ignores directory selection. Its old context properties remain
 obsolete compatibility values only; the service no longer inherits the
 environment-bound `SimultriaLookupServiceBase`.
+
+The development 1.1.0 context-taking constructor remains as an obsolete
+transport-only compatibility adapter in 1.1.1. It forwards the fixed central
+endpoint through an already-supplied `SimultriaLookupContext`, without using
+that context's environment, catalog or profile headers for discovery. Prefer
+the client-only overload: central discovery must not require a configured
+runtime context. Both forms require a credential-free injected client; no
+arbitrary client-global authentication headers can be made safe by the adapter.
+When testing null arguments, explicitly cast to `IApiClient` or
+`SimultriaLookupContext` to distinguish the two overloads.
 
 ### `SimultriaUnityBuildRoutingService`
 
