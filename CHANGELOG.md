@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0 - Unreleased
+
+- Compose lookup services from an explicit shared context while retaining existing constructors and base-type compatibility.
+
 ## [1.0.4] - 2026-09-01
 
 ### Fixed

@@ -11,12 +11,19 @@ namespace Deucarian.Simultria.API.Services
     public sealed class SimultriaActivityLookupService :
         SimultriaLookupServiceBase
     {
+        private readonly SimultriaLookupContext _lookup;
+
         public SimultriaActivityLookupService(
             IApiClient apiClient,
             ApiComposition composition,
             ApiEnvironmentId environmentId)
-            : base(apiClient, composition, environmentId)
+            : this(new SimultriaLookupContext(apiClient, composition, environmentId))
         {
+        }
+
+        public SimultriaActivityLookupService(SimultriaLookupContext context) : base(context)
+        {
+            _lookup = context;
         }
 
         public Task<ApiResult<SimultriaCollectionResponse<SimultriaActivityDto>>>
@@ -40,10 +47,10 @@ namespace Deucarian.Simultria.API.Services
                 CancellationToken cancellationToken =
                     default(CancellationToken))
         {
-            return SendAsync<SimultriaCollectionResponse<TActivity>>(
+            return _lookup.SendAsync<SimultriaCollectionResponse<TActivity>>(
                 SimultriaEndpointCatalog.ModelVersionActivities(
-                    Composition,
-                    EnvironmentId,
+                    _lookup.Composition,
+                    _lookup.EnvironmentId,
                     versionId),
                 cancellationToken);
         }
@@ -68,10 +75,10 @@ namespace Deucarian.Simultria.API.Services
                 CancellationToken cancellationToken =
                     default(CancellationToken))
         {
-            return SendAsync<SimultriaResourceResponse<TActivity>>(
+            return _lookup.SendAsync<SimultriaResourceResponse<TActivity>>(
                 SimultriaEndpointCatalog.ModelVersionActivity(
-                    Composition,
-                    EnvironmentId,
+                    _lookup.Composition,
+                    _lookup.EnvironmentId,
                     versionId,
                     activityId),
                 cancellationToken);
