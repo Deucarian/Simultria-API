@@ -6,39 +6,35 @@ using Deucarian.API.Models;
 
 namespace Deucarian.Simultria.API.Services
 {
-    /// <summary>Shared injected transport/environment base for lookup services.</summary>
+    /// <summary>Compatibility facade. New lookup behavior belongs to a composed SimultriaLookupContext.</summary>
     public abstract class SimultriaLookupServiceBase
     {
-        private readonly IApiClient apiClient;
+        private readonly SimultriaLookupContext context;
 
         protected SimultriaLookupServiceBase(
             IApiClient client,
             ApiComposition composition,
             ApiEnvironmentId environmentId)
+            : this(new SimultriaLookupContext(client, composition, environmentId))
         {
-            apiClient = client ?? throw new ArgumentNullException(nameof(client));
-            Composition = composition ??
-                throw new ArgumentNullException(nameof(composition));
-            EnvironmentStatus = composition.GetEnvironmentStatus(environmentId);
-            if (!EnvironmentStatus.IsResolved)
-            {
-                throw new InvalidOperationException(EnvironmentStatus.Message);
-            }
-
-            EnvironmentId = environmentId;
         }
 
-        public ApiComposition Composition { get; }
+        protected SimultriaLookupServiceBase(SimultriaLookupContext lookupContext)
+        {
+            context = lookupContext ?? throw new ArgumentNullException(nameof(lookupContext));
+        }
 
-        public ApiEnvironmentId EnvironmentId { get; }
+        public ApiComposition Composition => context.Composition;
 
-        public ApiEnvironmentStatus EnvironmentStatus { get; }
+        public ApiEnvironmentId EnvironmentId => context.EnvironmentId;
+
+        public ApiEnvironmentStatus EnvironmentStatus => context.EnvironmentStatus;
 
         protected Task<ApiResult<T>> SendAsync<T>(
             ApiEndpoint endpoint,
             CancellationToken cancellationToken)
         {
-            return apiClient.SendAsync<T>(endpoint, cancellationToken);
+            return context.SendAsync<T>(endpoint, cancellationToken);
         }
     }
 }
