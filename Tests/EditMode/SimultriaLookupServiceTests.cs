@@ -25,6 +25,21 @@ namespace Deucarian.Simultria.API.Tests.EditMode
         }
 
         [Test]
+        public async Task ComposedContextIsReusableAndLegacyBaseRemainsCompatible()
+        {
+            var context = new SimultriaLookupContext(apiClient, fixture.Composition, SimultriaEnvironmentIds.Development);
+            var projects = new SimultriaProjectLookupService(context);
+            var models = new SimultriaModelLookupService(context);
+            SimultriaLookupServiceBase compatibility = projects;
+            Assert.That(compatibility.Composition, Is.SameAs(context.Composition));
+            Assert.That(models.EnvironmentId, Is.EqualTo(context.EnvironmentId));
+            await projects.GetProjectAsync(12);
+            Assert.That(apiClient.LastEndpoint.Path, Does.EndWith("/api/v2/projects/12"));
+            await models.GetModelVersionAsync(34);
+            Assert.That(apiClient.LastEndpoint.Path, Does.EndWith("/api/v2/projects/models/versions/34"));
+        }
+
+        [Test]
         public async Task ProjectLookupSendsTypedAuthenticatedEndpoint()
         {
             var service = new SimultriaProjectLookupService(
