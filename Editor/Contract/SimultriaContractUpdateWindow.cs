@@ -24,7 +24,7 @@ namespace Deucarian.Simultria.API.Editor
 
         internal static SimultriaContractUpdateWindow OpenWindow()
         {
-            var window = GetWindow<SimultriaContractUpdateWindow>();
+            var window = DeucarianEditorWindowPages.GetStandalone<SimultriaContractUpdateWindow>();
             window.titleContent = new GUIContent("Simultria API Contract");
             window.minSize = new Vector2(620f, 540f);
             window.Show();
@@ -54,6 +54,9 @@ namespace Deucarian.Simultria.API.Editor
         {
             SavePreferences();
         }
+
+        public static IDeucarianEditorPage CreatePage() =>
+            DeucarianEditorImGuiPage.Create<SimultriaContractUpdateWindow>(DeucarianToolIds.SimultriaContractUpdater, window => window.OnGUI());
 
         private void OnGUI()
         {

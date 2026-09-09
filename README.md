@@ -129,7 +129,7 @@ environment in that case. Legacy message-only errors, network/authentication fai
 unsupported products, identity mismatches, and unknown/deprecated environments
 never authorize fallback. See the [routing contract](UNITY_BUILD_ROUTING.md).
 
-Version 1.1.1 reconciles this fixed-directory policy with development's 1.1.0
+Version 1.1.2 reconciles this fixed-directory policy with development's 1.1.0
 normal lookup-context API and retains Editor 1.3.0 / Session 1.0.7 minima. The
 build lookup's obsolete context constructor adapts only an already-supplied
 context's transport; it cannot inherit runtime URLs, endpoint overrides or
