@@ -41,15 +41,15 @@ namespace Deucarian.Simultria.API.Editor
                 return;
             }
 
-            EditorGUILayout.LabelField(heading, EditorStyles.boldLabel);
+            DeucarianEditorTextGUI.LabelField(heading, DeucarianEditorWorkbenchGUI.BoldLabelStyle);
             int visibleCount = Math.Min(endpoints.Length, 12);
             for (int index = 0; index < visibleCount; index++)
             {
                 SimultriaContractEndpointChange endpoint = endpoints[index];
-                EditorGUILayout.LabelField(
+                DeucarianEditorTextGUI.LabelField(
                     endpoint.method + " " + endpoint.routeTemplate,
                     endpoint.endpointId,
-                    EditorStyles.miniLabel);
+                    DeucarianEditorWorkbenchGUI.MiniLabelStyle);
             }
 
             DrawRemainingCount(endpoints.Length, visibleCount);
@@ -63,7 +63,7 @@ namespace Deucarian.Simultria.API.Editor
                 return;
             }
 
-            EditorGUILayout.LabelField("Changed", EditorStyles.boldLabel);
+            DeucarianEditorTextGUI.LabelField("Changed", DeucarianEditorWorkbenchGUI.BoldLabelStyle);
             int visibleCount = Math.Min(endpoints.Length, 12);
             for (int index = 0; index < visibleCount; index++)
             {
@@ -75,10 +75,10 @@ namespace Deucarian.Simultria.API.Editor
                         Array.ConvertAll(
                             endpoint.changes,
                             change => change.field));
-                EditorGUILayout.LabelField(
+                DeucarianEditorTextGUI.LabelField(
                     endpoint.endpointId,
                     fields,
-                    EditorStyles.miniLabel);
+                    DeucarianEditorWorkbenchGUI.MiniLabelStyle);
             }
 
             DrawRemainingCount(endpoints.Length, visibleCount);
@@ -91,10 +91,10 @@ namespace Deucarian.Simultria.API.Editor
                 return;
             }
 
-            EditorGUILayout.LabelField(
+            DeucarianEditorTextGUI.LabelField(
                 "+ " + (total - visible) +
                 " more in the generated change report",
-                EditorStyles.miniLabel);
+                DeucarianEditorWorkbenchGUI.MiniLabelStyle);
         }
     }
 }
