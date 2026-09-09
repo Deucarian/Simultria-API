@@ -42,7 +42,7 @@ namespace Deucarian.Simultria.API.Editor
                     SimultriaApiEditorTools.OpenContractUpdater,
                     PackageId,
                     searchTerms: new[] { "simultria", "api", "contract", "endpoints" },
-                    order: 100));
+                    order: 100, createPage: SimultriaContractUpdateWindow.CreatePage));
 
             CardRegistration = DeucarianControlCenterRegistry.RegisterCardProvider(
                 new SimultriaApiDeveloperCardProvider());
@@ -119,7 +119,7 @@ namespace Deucarian.Simultria.API.Editor
                     new DeucarianControlCenterAction(
                         PackageId + ".open-updater",
                         "Open Contract Updater",
-                        SimultriaApiEditorTools.OpenContractUpdater),
+                        SimultriaApiEditorTools.OpenContractUpdater, navigationToolId: DeucarianToolIds.SimultriaContractUpdater),
                     new DeucarianControlCenterAction(
                         PackageId + ".open-docs",
                         "Open Documentation",
