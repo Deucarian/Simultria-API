@@ -122,21 +122,21 @@ namespace Deucarian.Simultria.API.Editor
                                 : DeucarianEditorStatus.Error,
                             GUILayout.Width(140f));
                         GUILayout.Space(6f);
-                        EditorGUILayout.LabelField(
+                        DeucarianEditorTextGUI.LabelField(
                             currentManifest.catalog.operationCount +
                             " operations · " +
                             currentManifest.catalog.reviewedStableOperationCount +
                             " stable",
-                            EditorStyles.miniLabel);
+                            DeucarianEditorWorkbenchGUI.MiniLabelStyle);
                     }
 
-                    EditorGUILayout.LabelField(
+                    DeucarianEditorTextGUI.LabelField(
                         "Backend commit",
                         ShortValue(currentManifest.source.backendRevision, 16));
-                    EditorGUILayout.LabelField(
+                    DeucarianEditorTextGUI.LabelField(
                         "Contract SHA-256",
                         ShortValue(currentManifest.source.sha256, 20));
-                    EditorGUILayout.LabelField(
+                    DeucarianEditorTextGUI.LabelField(
                         "OpenAPI",
                         currentManifest.source.openapiVersion ?? "Unknown");
                     string incomingPath =
@@ -164,7 +164,7 @@ namespace Deucarian.Simultria.API.Editor
                     EditorGUI.BeginChangeCheck();
                     using (new EditorGUILayout.HorizontalScope())
                     {
-                        specPath = EditorGUILayout.TextField(
+                        specPath = DeucarianEditorInputGUI.TextField(
                             "OpenAPI file",
                             specPath ?? string.Empty);
                         if (DeucarianEditorButtons.Secondary(
@@ -183,7 +183,7 @@ namespace Deucarian.Simultria.API.Editor
                         }
                     }
 
-                    sourceRevision = EditorGUILayout.TextField(
+                    sourceRevision = DeucarianEditorInputGUI.TextField(
                         "Backend commit",
                         sourceRevision ?? string.Empty);
                     if (EditorGUI.EndChangeCheck())
@@ -196,12 +196,12 @@ namespace Deucarian.Simultria.API.Editor
                         !SimultriaContractUpdateService.IsValidSourceRevision(
                             sourceRevision))
                     {
-                        EditorGUILayout.HelpBox(
+                        DeucarianEditorTextGUI.HelpBox(
                             "Use the hexadecimal Git commit that generated the " +
                             "specification, not a branch name.",
                             MessageType.Warning);
                     }
-                    EditorGUILayout.HelpBox(
+                    DeucarianEditorTextGUI.HelpBox(
                         "Scribe output is read locally. The original OpenAPI " +
                         "file is not copied into runtime assets and no backend " +
                         "login is performed.",
@@ -242,14 +242,14 @@ namespace Deucarian.Simultria.API.Editor
 
                     if (!SimultriaContractUpdateService.IsEditablePackage)
                     {
-                        EditorGUILayout.HelpBox(
+                        DeucarianEditorTextGUI.HelpBox(
                             "Preview is available, but package files can only be " +
                             "updated from a local or embedded package checkout.",
                             MessageType.Info);
                     }
                     else if (lastResult == null || !IsPreviewCurrent())
                     {
-                        EditorGUILayout.HelpBox(
+                        DeucarianEditorTextGUI.HelpBox(
                             "Preview the exact file and backend commit before " +
                             "applying generated changes.",
                             MessageType.Info);
@@ -278,7 +278,7 @@ namespace Deucarian.Simultria.API.Editor
                     {
                         if (!string.IsNullOrWhiteSpace(lastResult.ProcessOutput))
                         {
-                            EditorGUILayout.TextArea(
+                            DeucarianEditorInputGUI.TextArea(
                                 lastResult.ProcessOutput,
                                 GUILayout.MinHeight(70f));
                         }
@@ -317,13 +317,13 @@ namespace Deucarian.Simultria.API.Editor
 
                     if (report.breakingOrSecurityReviewRequired)
                     {
-                        EditorGUILayout.HelpBox(
+                        DeucarianEditorTextGUI.HelpBox(
                             "A route, method, authentication, logging rule, or " +
                             "existing endpoint was changed or removed. Review " +
                             "the package diff before merging.",
                             MessageType.Warning);
                     }
-                    showChangeDetails = EditorGUILayout.Foldout(
+                    showChangeDetails = DeucarianEditorInputGUI.Foldout(
                         showChangeDetails,
                         "Endpoint change details",
                         true);

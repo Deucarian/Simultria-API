@@ -12,6 +12,11 @@ namespace Deucarian.Simultria.API.Editor
     {
         private bool showPackageDetails;
 
+        public override UnityEngine.UIElements.VisualElement CreateInspectorGUI() =>
+
+            DeucarianEditorInspector.Create(OnInspectorGUI);
+
+
         public override void OnInspectorGUI()
         {
             var catalog = (ApiEndpointCatalog)target;
@@ -27,7 +32,7 @@ namespace Deucarian.Simultria.API.Editor
                     path.StartsWith("Assets/", StringComparison.Ordinal);
                 if (simultriaOverride)
                 {
-                    EditorGUILayout.HelpBox(
+                    DeucarianEditorTextGUI.HelpBox(
                         "Project-owned Simultria contract override. Changes " +
                         "apply only to profiles that explicitly reference it.",
                         MessageType.Warning);
@@ -37,14 +42,14 @@ namespace Deucarian.Simultria.API.Editor
                 return;
             }
 
-            EditorGUILayout.LabelField(
+            DeucarianEditorTextGUI.LabelField(
                 "Simultria API v2 · package managed · read-only",
-                EditorStyles.boldLabel);
-            EditorGUILayout.LabelField(
+                DeucarianEditorWorkbenchGUI.BoldLabelStyle);
+            DeucarianEditorTextGUI.LabelField(
                 catalog.Endpoints.Count +
                 " contract operations · no deployment URLs",
-                EditorStyles.miniLabel);
-            EditorGUILayout.HelpBox(
+                DeucarianEditorWorkbenchGUI.MiniLabelStyle);
+            DeucarianEditorTextGUI.HelpBox(
                 "Configure environment URLs on a project-owned Simultria API " +
                 "Profile. To customize routes or policies, create an explicit " +
                 "project catalog override from that profile's Advanced section.",
@@ -52,7 +57,7 @@ namespace Deucarian.Simultria.API.Editor
 
             DrawGeneratedContractStatus();
 
-            showPackageDetails = EditorGUILayout.Foldout(
+            showPackageDetails = DeucarianEditorInputGUI.Foldout(
                 showPackageDetails,
                 "Contract details",
                 true);
@@ -73,25 +78,25 @@ namespace Deucarian.Simultria.API.Editor
                 manifest.source != null &&
                 manifest.coverage != null)
             {
-                using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
+                using (new EditorGUILayout.VerticalScope(DeucarianEditorStyles.SectionBox))
                 {
-                    EditorGUILayout.LabelField(
+                    DeucarianEditorTextGUI.LabelField(
                         "Generated contract provenance",
-                        EditorStyles.boldLabel);
-                    EditorGUILayout.LabelField(
+                        DeucarianEditorWorkbenchGUI.BoldLabelStyle);
+                    DeucarianEditorTextGUI.LabelField(
                         "Backend commit",
                         ShortValue(manifest.source.backendRevision, 16));
-                    EditorGUILayout.LabelField(
+                    DeucarianEditorTextGUI.LabelField(
                         "Source SHA-256",
                         ShortValue(manifest.source.sha256, 20));
-                    EditorGUILayout.LabelField(
+                    DeucarianEditorTextGUI.LabelField(
                         "Snapshot coverage",
                         manifest.coverage.snapshotCoverage ?? "Unknown");
                 }
             }
             else
             {
-                EditorGUILayout.HelpBox(
+                DeucarianEditorTextGUI.HelpBox(
                     "Generated contract provenance is missing. Validate the " +
                     "package before release.",
                     MessageType.Warning);
