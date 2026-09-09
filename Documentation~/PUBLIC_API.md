@@ -76,7 +76,7 @@ built-in package environment and does not require a definition override.
 
 Namespace: `Deucarian.Simultria.API.Services`
 
-Every lookup service constructor accepts:
+Normal project/model/activity lookup service constructors accept:
 
 ```csharp
 IApiClient apiClient,
@@ -87,6 +87,11 @@ ApiEnvironmentId environmentId
 Every async operation accepts an optional `CancellationToken` and returns an
 `ApiResult<T>`. Services inherit the sanitized `Composition`, `EnvironmentId`,
 and `EnvironmentStatus` properties from `SimultriaLookupServiceBase`.
+
+The normal services also accept one shared `SimultriaLookupContext` constructed
+from those three arguments. The context validates its explicit environment
+and forwards requests through the injected client. It preserves normal-service
+base-type compatibility and does not default an unconfigured environment.
 
 ### `SimultriaProjectLookupService`
 
@@ -118,12 +123,46 @@ Each operation returns the corresponding `SimultriaResourceResponse<T>`.
 
 ### `SimultriaUnityBuildVersionLookupService`
 
+- Preferred constructor: `SimultriaUnityBuildVersionLookupService(IApiClient)`.
+
 - `GetBuildVersionAsync(string buildVersion, string product, ...)` returns
   `SimultriaResourceResponse<SimultriaUnityBuildVersionDto>` from the public
   build-directory route.
 
-The service still requires an explicitly configured directory environment; it
-does not choose a host or fallback environment.
+The service always uses the fixed central Production directory without
+authentication or a directory profile. The old three-argument constructor is
+obsolete and ignores directory selection. Its old context properties remain
+obsolete compatibility values only; the service no longer inherits the
+environment-bound `SimultriaLookupServiceBase`.
+
+The development 1.1.0 context-taking constructor remains as an obsolete
+transport-only compatibility adapter in 1.1.1. It forwards the fixed central
+endpoint through an already-supplied `SimultriaLookupContext`, without using
+that context's environment, catalog or profile headers for discovery. Prefer
+the client-only overload: central discovery must not require a configured
+runtime context. Both forms require a credential-free injected client; no
+arbitrary client-global authentication headers can be made safe by the adapter.
+When testing null arguments, explicitly cast to `IApiClient` or
+`SimultriaLookupContext` to distinguish the two overloads.
+
+### `SimultriaUnityBuildRoutingService`
+
+Namespace: `Deucarian.Simultria.UnityBuildRouting`
+
+- Preferred constructor: `(IApiClient, ApiComposition targetComposition)`.
+- `ResolveAsync(version, product, cancellationToken)` validates exact identity
+  and the assigned runtime environment against the target composition.
+- `EvaluateResponse(version, product, dto)` evaluates a successful DTO.
+- `EvaluateLookupResult(version, product, apiResult)` also classifies explicit
+  missing-record HTTP failures for transports outside the injected client.
+- `SimultriaUnityBuildRoutingResult.IsVersionMissing` and stable error code
+  `build_version_not_found` identify only HTTP 404 JSON with the exact top-level
+  `code: build_version_not_found`. Legacy message-only errors are rejected.
+  The result does not itself choose a fallback environment.
+
+The obsolete three-argument router constructor ignores directory selection.
+See [central build routing](../UNITY_BUILD_ROUTING.md) for response semantics,
+failure exclusions, and the Viewer Connection ownership boundary.
 
 ## Viewer model resolution
 
@@ -186,7 +225,10 @@ composition. These accessors are the reviewed stable route surface:
 - `ModelVersionActivity(..., int versionId, int activityId)`
 - `UnityBuildVersion(..., string buildVersion, string product)`
 
-Each accessor requires `ApiComposition` and `ApiEnvironmentId`. ID values must
+Each normal backend accessor requires `ApiComposition` and `ApiEnvironmentId`.
+`UnityBuildVersion(buildVersion, product)` instead uses the fixed central
+directory; its obsolete four-argument overload ignores composition/selection.
+ID values must
 be positive; text path segments must be non-empty. The returned endpoint can be
 extended with query/path values and passed to `IApiClient.SendAsync<T>`.
 

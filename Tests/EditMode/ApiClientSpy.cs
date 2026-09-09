@@ -13,13 +13,20 @@ namespace Deucarian.Simultria.API.Tests.EditMode
 
         internal ApiRequest LastRequest { get; private set; }
 
+        internal CancellationToken LastCancellationToken { get; private set; }
+
         internal object ResponseData { get; set; }
+
+        internal ApiError ResponseError { get; set; }
+
+        internal Exception ThrownException { get; set; }
 
         public Task<ApiResult<TResponse>> SendAsync<TResponse>(
             ApiRequest request,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             LastRequest = request;
+            LastCancellationToken = cancellationToken;
             return Success<TResponse>(request?.Method ?? HttpMethod.GET);
         }
 
@@ -28,6 +35,7 @@ namespace Deucarian.Simultria.API.Tests.EditMode
             CancellationToken cancellationToken = default(CancellationToken))
         {
             LastEndpoint = endpoint;
+            LastCancellationToken = cancellationToken;
             return Success<TResponse>(endpoint?.Method ?? HttpMethod.GET);
         }
 
@@ -37,6 +45,7 @@ namespace Deucarian.Simultria.API.Tests.EditMode
             CancellationToken cancellationToken = default(CancellationToken))
         {
             LastEndpoint = endpoint;
+            LastCancellationToken = cancellationToken;
             return Success<TResponse>(endpoint?.Method ?? HttpMethod.POST);
         }
 
@@ -81,6 +90,16 @@ namespace Deucarian.Simultria.API.Tests.EditMode
         private Task<ApiResult<TResponse>> Success<TResponse>(
             HttpMethod method)
         {
+            if (ThrownException != null)
+            {
+                throw ThrownException;
+            }
+
+            if (ResponseError != null)
+            {
+                return Task.FromResult(ApiResult<TResponse>.Failure(ResponseError, method));
+            }
+
             TResponse response = ResponseData is TResponse typed
                 ? typed
                 : default(TResponse);

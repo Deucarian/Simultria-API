@@ -1,3 +1,4 @@
+using System;
 using Deucarian.API.Models;
 
 namespace Deucarian.Simultria.UnityBuildRouting
@@ -27,6 +28,15 @@ namespace Deucarian.Simultria.UnityBuildRouting
         public string Product { get; }
         public string ErrorCode { get; }
         public string Message { get; }
+
+        /// <summary>
+        /// Only an explicit missing record permits the viewer integration to
+        /// consider its captured build-profile fallback. Other failures do not.
+        /// </summary>
+        public bool IsVersionMissing => string.Equals(
+            ErrorCode,
+            "build_version_not_found",
+            StringComparison.Ordinal);
 
         internal static SimultriaUnityBuildRoutingResult Success(
             ApiEnvironmentId environmentId,

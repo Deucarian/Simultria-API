@@ -67,7 +67,10 @@ directly.
    needs it.
 
 The package owns the credential-free service definition and endpoint catalog;
-the project-owned settings supply deployment URLs.
+the project-owned settings supply runtime backend URLs. Public Unity build
+discovery is separate: its fixed central Production address cannot be selected
+from an environment dropdown. See [central build routing](../UNITY_BUILD_ROUTING.md)
+for the exact-record and explicit-missing-record contract.
 
 ## Make a normal request
 
