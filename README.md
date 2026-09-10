@@ -105,13 +105,47 @@ ApiResult<SimultriaResourceResponse<SimultriaProjectDto>> result =
 `SimultriaActivityLookupService` returns activity metadata. Report-specific
 issue/media payloads intentionally remain in the Report integration.
 
-`SimultriaUnityBuildVersionLookupService` calls the documented public Unity
-build directory through an explicitly configured environment profile. It uses
-`Application.version` only when a viewer integration deliberately supplies it;
-the API package itself does not choose a build version, product, host, or
-fallback environment. The backend names `local`, `development`, `test`/`testing`,
+Normal project/model/activity services also accept a shared
+`SimultriaLookupContext(apiClient, composition, environmentId)`. It validates
+the explicit runtime environment once and preserves the existing constructors
+and `SimultriaLookupServiceBase` compatibility. Unconfigured environments still
+fail closed; the context never selects a default backend.
+
+`SimultriaUnityBuildVersionLookupService(apiClient)` defaults to the public
+Production directory at `https://buildingvirtualitysuite.com`. Its explicit
+`(apiClient, SimultriaUnityBuildLookupEnvironment.Development)` overload uses
+the shared `https://backend.dev-buildingvirtuality.com` directory. The lookup
+choice is independent of project-owned runtime URLs, runtime Editor overrides,
+and legacy directory arguments. These API-owned discovery addresses are the
+sole exception to the project-owned host rule. Unsupported enum values fail
+before transport; there is no automatic cross-environment lookup retry.
+The package itself does not choose a build version,
+product, or fallback environment. The backend names `local`, `development`, `test`/`testing`,
 `accept`/`acceptance`, and `production` map to the five built-in Simultria
-environment IDs. Missing, deprecated, and unknown values fail closed.
+environment IDs. Deprecated and unknown values fail closed.
+
+`SimultriaUnityBuildRoutingService(apiClient, targetComposition)` validates an
+exact product/version response and checks that its assigned runtime backend is
+configured in the target composition. `IsVersionMissing` is true only for an
+HTTP 404 JSON response with top-level `code: build_version_not_found`; it does not select an
+environment. Viewer Connection owns the decision to use a captured build-profile
+environment in that case. Legacy message-only errors, network/authentication failures, blank/HTML 404s,
+unsupported products, identity mismatches, and unknown/deprecated environments
+never authorize fallback. See the [routing contract](UNITY_BUILD_ROUTING.md).
+
+Use `(apiClient, lookupEnvironment, targetComposition)` to explicitly select
+the router's directory. Its returned record still independently assigns the
+runtime: Development lookup can resolve Production runtime, and vice versa.
+Production is enum value zero; legacy overloads continue to use Production and
+ignore their obsolete runtime-directory selection. Do not migrate old ignored
+environment fields into the new lookup choice.
+
+Version 1.2.0 retains the normal lookup-context API and current Editor 1.7.0 /
+Session 1.0.7 minima. The
+build lookup's obsolete context constructor adapts only an already-supplied
+context's transport; it cannot inherit runtime URLs, endpoint overrides or
+composition headers. Prefer its client-based constructors with a dedicated
+credential-free client instead of configuring a runtime context for discovery.
 
 `SimultriaViewerModelResolver` accepts a project ID, model ID, and optional
 version ID. It fetches project detail and returns the resolved project/model/
@@ -129,7 +163,8 @@ ApiResult<SimultriaCollectionResponse<ReportActivityDto>> result =
         cancellationToken);
 ```
 
-Every lookup sends an API request with authentication explicitly required.
+Normal project/model/activity lookups require authentication. Central build
+discovery explicitly disables authentication and suppresses request logging.
 
 ## Authentication
 
@@ -190,8 +225,10 @@ request, response, and error logging because their payloads are sensitive.
 The public Unity build lookup disables bearer authentication and suppresses
 request/response logging so environment discovery cannot depend on a session.
 
-No route contains a deployment host. Every absolute base URL remains in a
-project-owned profile or imported starter asset and is blank by default.
+Generated routes contain no deployment host. Normal backend base URLs remain
+in project-owned profiles or imported starter assets and are blank by default.
+The typed Unity build-directory accessor deliberately bypasses those profiles
+and any custom catalog override to preserve explicit API-owned discovery.
 
 ## Updating the contract
 

@@ -6,8 +6,8 @@ using Deucarian.Simultria.API.Configuration;
 namespace Deucarian.Simultria.API.Endpoints
 {
     /// <summary>
-    /// Typed accessors over the package-provided API v2 catalog. Route and host
-    /// ownership remain in API composition assets.
+    /// Typed API v2 accessors. Normal backend hosts come from composition;
+    /// public Unity build discovery uses an explicit package-owned directory.
     /// </summary>
     public static class SimultriaEndpointCatalog
     {
@@ -164,21 +164,55 @@ namespace Deucarian.Simultria.API.Endpoints
         /// backend-selected environment for one Unity build.
         /// </summary>
         public static ApiEndpoint UnityBuildVersion(
-            ApiComposition composition,
-            ApiEnvironmentId directoryEnvironmentId,
             string buildVersion,
             string product)
         {
-            return Resolve(
-                    composition,
-                    directoryEnvironmentId,
-                    SimultriaEndpointIds.UnityBuildVersion)
+            return UnityBuildVersion(
+                buildVersion, product, SimultriaUnityBuildLookupEnvironment.Production);
+        }
+
+        /// <summary>
+        /// Selects only the lookup directory. The record independently assigns
+        /// the runtime backend. Unsupported selections fail before transport.
+        /// </summary>
+        public static ApiEndpoint UnityBuildVersion(
+            string buildVersion,
+            string product,
+            SimultriaUnityBuildLookupEnvironment lookupEnvironment)
+        {
+            if (!SimultriaUnityBuildDirectory.TryGetBaseUrl(lookupEnvironment, out string baseUrl))
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(lookupEnvironment), "Select a supported Unity build lookup environment.");
+            }
+
+            return new ApiEndpoint(
+                    baseUrl +
+                    SimultriaUnityBuildDirectory.VersionRoute,
+                    authentication: ApiAuthenticationRequirement.Disabled,
+                    timeoutSeconds: 30,
+                    suppressLogging: true)
                 .WithPathParameter(
                     "id",
                     RequireSegment(buildVersion, nameof(buildVersion)))
                 .WithPathParameter(
                     "product",
                     RequireSegment(product, nameof(product)));
+        }
+
+        /// <summary>
+        /// Compatibility overload. Directory selection and custom catalogs
+        /// cannot redirect Production discovery. Use a lookup-environment overload
+        /// to explicitly select a different supported directory.
+        /// </summary>
+        [Obsolete("Runtime directory selection is ignored. Use UnityBuildVersion(buildVersion, product, lookupEnvironment).")]
+        public static ApiEndpoint UnityBuildVersion(
+            ApiComposition composition,
+            ApiEnvironmentId directoryEnvironmentId,
+            string buildVersion,
+            string product)
+        {
+            return UnityBuildVersion(buildVersion, product);
         }
 
         private static ApiEndpoint Resolve(

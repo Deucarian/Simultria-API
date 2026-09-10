@@ -1,5 +1,73 @@
 # Changelog
 
+## [1.2.0] - 2026-09-10
+
+### Added
+
+- Explicit Unity build lookup environment selection: Production (the zero/default
+  value) or the shared Development directory, independent of the runtime
+  environment assigned by the exact product/version record.
+- API-owned host mapping and typed endpoint, lookup and router overloads.
+  Invalid selections fail before transport; requests never retry another directory.
+- Regression coverage for both directories, cross-environment runtime responses,
+  credential-free request policy, invalid values, cancellation and strict missing
+  record classification.
+
+### Changed
+
+- Revise the fixed-Production-only discovery policy to allow explicit Development
+  lookup. Existing overloads and obsolete runtime-context adapters still use
+  Production; they do not reinterpret old environment values.
+- Keep exact identity, typed missing-record semantics and runtime configuration
+  validation unchanged. Preserve Editor 1.7.0 and existing dependency minima.
+
+## [1.1.3] - 2026-09-09
+
+### Changed
+
+- Adopt the shared Editor 1.7 workspace presentation: neutral surfaces, readable typography, consistent actions and aligned controls.
+- Preserve package workflows and native serialized editing; this is an editor-only presentation update.
+
+## [1.1.2] - 2026-09-09
+
+- Register package tooling and navigation actions as shared Control Center pages. Preserve the domain workflow while using Editor-owned submenus, in-window navigation, and UI scaling.
+
+## [1.1.1] - 2026-09-09
+
+### Fixed
+
+- Pin normal Unity build-version lookup to the central Production directory,
+  independent of runtime backend profiles, custom catalogs, and Editor Local
+  selection. Discovery disables authentication and request logging.
+- Preserve exact product/version validation and fail closed for unsupported,
+  mismatched, unknown/deprecated, unconfigured, and transport-error results.
+
+### Added
+
+- Preferred client-only build lookup, two-argument routing constructor, fixed
+  endpoint accessor, and transport-independent full-result evaluation.
+- `IsVersionMissing` / `build_version_not_found` classification for only HTTP
+  404 JSON with the exact top-level missing-record code. Legacy message-only
+  errors never authorize fallback. Viewer Connection owns any
+  captured build-profile fallback; this package selects none.
+- Deterministic fixed-directory, compatibility, failure-classification, and
+  normal-service regression tests plus the backend handoff contract.
+
+### Changed
+
+- Keep obsolete directory-taking constructors/accessor as ignored-selection
+  compatibility overloads. The build lookup no longer inherits the
+  environment-bound lookup base; old context properties remain obsolete and
+  callers relying on base assignability must migrate to the concrete service.
+- Generated API contract artifacts are unchanged; live backend product support
+  is a separate Ticket 2 dependency, not silently bypassed by fallback.
+- Reconcile central discovery with development's 1.1.0 lookup-context API.
+  Preserve its context constructor as an obsolete transport-only adapter,
+  without requiring a configured runtime context for client-only discovery.
+  Normal project/model/activity contexts remain validated and fail closed.
+- Retain development's Editor 1.3.0 and Session 1.0.7 dependency minima. Use
+  patch version 1.1.1 to avoid colliding with its distinct 1.1.0 contract.
+
 ## 1.1.0 - Unreleased
 
 - Compose lookup services from an explicit shared context while retaining existing constructors and base-type compatibility.

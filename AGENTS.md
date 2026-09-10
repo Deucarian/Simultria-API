@@ -36,6 +36,11 @@ package metadata and registry ownership entry synchronized when changing it.
 - Do not add Report Viewer issues, media, markers, or commands.
 - Unknown deployment environments require an explicit profile; do not invent
   production URLs.
+- Unity build discovery is the deliberate Simultria-specific exception: use
+  the explicit supported lookup environment documented in `UNITY_BUILD_ROUTING.md`
+  (Production by default, or Development), independent of runtime profiles.
+  Invalid selections fail closed; never retry another directory automatically.
+  A returned record, not the lookup selection, assigns the runtime environment.
 - Do not add direct Unity `Debug` calls.
 
 ## Validation
