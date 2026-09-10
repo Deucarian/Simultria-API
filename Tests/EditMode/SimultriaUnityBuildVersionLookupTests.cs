@@ -18,10 +18,7 @@ namespace Deucarian.Simultria.API.Tests.EditMode
             using (var fixture = new SimultriaTestComposition())
             {
                 var client = new ApiClientSpy();
-                var service = new SimultriaUnityBuildVersionLookupService(
-                    client,
-                    fixture.Composition,
-                    SimultriaEnvironmentIds.Development);
+                var service = new SimultriaUnityBuildVersionLookupService(client);
 
                 await service.GetBuildVersionAsync(
                     "build 42",
@@ -29,13 +26,14 @@ namespace Deucarian.Simultria.API.Tests.EditMode
 
                 Assert.That(
                     client.LastEndpoint.Path,
-                    Does.EndWith(
-                        "/api/v2/unity/builds/versions/" +
+                    Is.EqualTo(
+                        "https://buildingvirtualitysuite.com/api/v2/unity/builds/versions/" +
                         "build%2042/report_viewer"));
                 Assert.That(
                     client.LastEndpoint.Authentication,
                     Is.EqualTo(ApiAuthenticationRequirement.Disabled));
                 Assert.That(client.LastEndpoint.SuppressLogging, Is.True);
+                Assert.That(client.LastEndpoint.DefaultHeaders, Is.Empty);
             }
         }
 
@@ -100,9 +98,7 @@ namespace Deucarian.Simultria.API.Tests.EditMode
             using (var fixture = new SimultriaTestComposition())
             {
                 var service = new SimultriaUnityBuildVersionLookupService(
-                    new ApiClientSpy(),
-                    fixture.Composition,
-                    SimultriaEnvironmentIds.Development);
+                    new ApiClientSpy());
 
                 Assert.Throws<ArgumentException>(() =>
                     service.GetBuildVersionAsync("", "report_viewer"));
