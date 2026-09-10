@@ -2,14 +2,24 @@ using System;
 using System.Threading.Tasks;
 using Deucarian.API;
 using Deucarian.API.Models;
+using Deucarian.Simultria.API.Configuration;
 using Deucarian.Simultria.API.Models;
 using Deucarian.Simultria.UnityBuildRouting;
 using NUnit.Framework;
 
 namespace Deucarian.Simultria.API.Tests.EditMode
 {
+    [TestFixture(SimultriaUnityBuildLookupEnvironment.Production)]
+    [TestFixture(SimultriaUnityBuildLookupEnvironment.Development)]
     public sealed class SimultriaUnityBuildMissingRecordTests
     {
+        private readonly SimultriaUnityBuildLookupEnvironment lookupEnvironment;
+
+        public SimultriaUnityBuildMissingRecordTests(SimultriaUnityBuildLookupEnvironment lookupEnvironment)
+        {
+            this.lookupEnvironment = lookupEnvironment;
+        }
+
         [TestCase("{\"code\":\"build_version_not_found\"}")]
         [TestCase("{\"code\":\"build_version_not_found\",\"version\":\"1.0\",\"product\":\"activity_viewer\"}")]
         public async Task OnlyExplicitMissingRecordExposesFallbackSignal(string body)
@@ -85,10 +95,11 @@ namespace Deucarian.Simultria.API.Tests.EditMode
             using (var fixture = new SimultriaTestComposition())
             {
                 var client = new ApiClientSpy { ThrownException = new InvalidOperationException("private details") };
-                var result = await new SimultriaUnityBuildRoutingService(client, fixture.Composition)
+                var result = await new SimultriaUnityBuildRoutingService(client, lookupEnvironment, fixture.Composition)
                     .ResolveAsync("1.0", "activity_viewer");
                 Assert.That(result.IsVersionMissing, Is.False);
                 Assert.That(result.Message, Does.Not.Contain("private details"));
+                Assert.That(client.SendCount, Is.EqualTo(1));
             }
         }
 
@@ -101,7 +112,7 @@ namespace Deucarian.Simultria.API.Tests.EditMode
         {
             using (var fixture = new SimultriaTestComposition())
             {
-                var result = new SimultriaUnityBuildRoutingService(null, fixture.Composition)
+                var result = new SimultriaUnityBuildRoutingService(null, lookupEnvironment, fixture.Composition)
                     .EvaluateLookupResult("1.0", "activity_viewer", ApiResult<SimultriaResourceResponse<
                         SimultriaUnityBuildVersionDto>>.Success(
                         new SimultriaResourceResponse<SimultriaUnityBuildVersionDto>
@@ -116,13 +127,16 @@ namespace Deucarian.Simultria.API.Tests.EditMode
             }
         }
 
-        private static async Task<SimultriaUnityBuildRoutingResult> ResolveFailure(ApiError error)
+        private async Task<SimultriaUnityBuildRoutingResult> ResolveFailure(ApiError error)
         {
             using (var fixture = new SimultriaTestComposition())
             {
-                return await new SimultriaUnityBuildRoutingService(
-                        new ApiClientSpy { ResponseError = error }, fixture.Composition)
+                var client = new ApiClientSpy { ResponseError = error };
+                var result = await new SimultriaUnityBuildRoutingService(
+                        client, lookupEnvironment, fixture.Composition)
                     .ResolveAsync("1.0", "activity_viewer");
+                Assert.That(client.SendCount, Is.EqualTo(1), "Failures never trigger cross-directory retries.");
+                return result;
             }
         }
     }

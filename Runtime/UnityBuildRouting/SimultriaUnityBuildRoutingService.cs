@@ -10,25 +10,35 @@ using Deucarian.Simultria.API.Services;
 namespace Deucarian.Simultria.UnityBuildRouting
 {
     /// <summary>
-    /// Reusable product/version-to-environment routing backed exclusively by
-    /// the fixed central Production directory. Only explicit missing records
+    /// Reusable product/version-to-environment routing using one explicitly
+    /// selected directory (Production by default). Only explicit missing records
     /// are classified for an integration-owned build-profile fallback.
     /// </summary>
     public sealed class SimultriaUnityBuildRoutingService
     {
         private readonly IApiClient apiClient;
         private readonly ApiComposition composition;
+        private readonly SimultriaUnityBuildLookupEnvironment lookupEnvironment;
 
         public SimultriaUnityBuildRoutingService(
             IApiClient client,
             ApiComposition targetComposition)
+            : this(client, SimultriaUnityBuildLookupEnvironment.Production, targetComposition)
+        {
+        }
+
+        public SimultriaUnityBuildRoutingService(
+            IApiClient client,
+            SimultriaUnityBuildLookupEnvironment lookupEnvironment,
+            ApiComposition targetComposition)
         {
             apiClient = client;
+            this.lookupEnvironment = lookupEnvironment;
             composition = targetComposition ??
                 throw new ArgumentNullException(nameof(targetComposition));
         }
 
-        [Obsolete("The build directory is fixed. Use (client, targetComposition).")]
+        [Obsolete("Runtime directory selection is ignored. Use (client, lookupEnvironment, targetComposition).")]
         public SimultriaUnityBuildRoutingService(
             IApiClient client,
             ApiComposition apiComposition,
@@ -62,6 +72,15 @@ namespace Deucarian.Simultria.UnityBuildRouting
                     "Build routing requires a canonical Simultria product.");
             }
 
+            if (!SimultriaUnityBuildDirectory.TryGetBaseUrl(lookupEnvironment, out _))
+            {
+                return Failure(
+                    buildVersion,
+                    product,
+                    "build_lookup_environment_invalid",
+                    "Select a supported Unity build lookup environment.");
+            }
+
             if (apiClient == null)
             {
                 return Failure(
@@ -76,7 +95,7 @@ namespace Deucarian.Simultria.UnityBuildRouting
             try
             {
                 lookup = await new SimultriaUnityBuildVersionLookupService(
-                        apiClient)
+                        apiClient, lookupEnvironment)
                     .GetBuildVersionAsync(
                         buildVersion,
                         product,

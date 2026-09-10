@@ -56,6 +56,13 @@ Namespace: `Deucarian.Simultria.API.Configuration`
 - `SimultriaBuildEnvironmentNameMapper.TryMap(...)`
   - Converts backend names such as `local`, `development`, `test`, `accept`, and
     `production` to canonical environment IDs. Unknown names fail closed.
+- `SimultriaUnityBuildLookupEnvironment`
+  - `Production = 0` (default) and `Development = 1` select only the public build
+    directory. The returned record independently assigns the runtime environment.
+- `SimultriaUnityBuildDirectory.TryGetBaseUrl(selection, out baseUrl)`
+  - Maps Production to `https://buildingvirtualitysuite.com` and Development to
+    `https://backend.dev-buildingvirtuality.com`. Unsupported values return false
+    and an empty URL. No Local/custom host or automatic cross-directory retry exists.
 
 ### Stable integration IDs
 
@@ -123,15 +130,17 @@ Each operation returns the corresponding `SimultriaResourceResponse<T>`.
 
 ### `SimultriaUnityBuildVersionLookupService`
 
-- Preferred constructor: `SimultriaUnityBuildVersionLookupService(IApiClient)`.
+- Default Production constructor: `SimultriaUnityBuildVersionLookupService(IApiClient)`.
+- Explicit lookup constructor: `(IApiClient, SimultriaUnityBuildLookupEnvironment)`.
+  Invalid selections throw `ArgumentOutOfRangeException` before transport.
 
 - `GetBuildVersionAsync(string buildVersion, string product, ...)` returns
   `SimultriaResourceResponse<SimultriaUnityBuildVersionDto>` from the public
   build-directory route.
 
-The service always uses the fixed central Production directory without
-authentication or a directory profile. The old three-argument constructor is
-obsolete and ignores directory selection. Its old context properties remain
+The service uses the selected API-owned directory without authentication or a
+runtime profile. The old three-argument constructor is obsolete, always uses
+Production and ignores its runtime-directory selection. Its old context properties remain
 obsolete compatibility values only; the service no longer inherits the
 environment-bound `SimultriaLookupServiceBase`.
 
@@ -139,7 +148,7 @@ The development 1.1.0 context-taking constructor remains as an obsolete
 transport-only compatibility adapter in 1.1.1. It forwards the fixed central
 endpoint through an already-supplied `SimultriaLookupContext`, without using
 that context's environment, catalog or profile headers for discovery. Prefer
-the client-only overload: central discovery must not require a configured
+the client-based overloads: central discovery must not require a configured
 runtime context. Both forms require a credential-free injected client; no
 arbitrary client-global authentication headers can be made safe by the adapter.
 When testing null arguments, explicitly cast to `IApiClient` or
@@ -149,9 +158,12 @@ When testing null arguments, explicitly cast to `IApiClient` or
 
 Namespace: `Deucarian.Simultria.UnityBuildRouting`
 
-- Preferred constructor: `(IApiClient, ApiComposition targetComposition)`.
+- Default Production constructor: `(IApiClient, ApiComposition targetComposition)`.
+- Explicit lookup constructor: `(IApiClient, SimultriaUnityBuildLookupEnvironment, ApiComposition targetComposition)`.
 - `ResolveAsync(version, product, cancellationToken)` validates exact identity
   and the assigned runtime environment against the target composition.
+  Invalid lookup selection returns `build_lookup_environment_invalid` without a
+  request. Development lookup can resolve Production runtime and vice versa.
 - `EvaluateResponse(version, product, dto)` evaluates a successful DTO.
 - `EvaluateLookupResult(version, product, apiResult)` also classifies explicit
   missing-record HTTP failures for transports outside the injected client.
@@ -160,7 +172,10 @@ Namespace: `Deucarian.Simultria.UnityBuildRouting`
   `code: build_version_not_found`. Legacy message-only errors are rejected.
   The result does not itself choose a fallback environment.
 
-The obsolete three-argument router constructor ignores directory selection.
+The obsolete three-argument router constructor ignores its runtime-directory
+selection and always uses Production. Pure `EvaluateResponse` and
+`EvaluateLookupResult` evaluate supplied data only; caller-owned transports must
+validate their lookup selection before obtaining that data.
 See [central build routing](../UNITY_BUILD_ROUTING.md) for response semantics,
 failure exclusions, and the Viewer Connection ownership boundary.
 
@@ -226,8 +241,10 @@ composition. These accessors are the reviewed stable route surface:
 - `UnityBuildVersion(..., string buildVersion, string product)`
 
 Each normal backend accessor requires `ApiComposition` and `ApiEnvironmentId`.
-`UnityBuildVersion(buildVersion, product)` instead uses the fixed central
-directory; its obsolete four-argument overload ignores composition/selection.
+`UnityBuildVersion(buildVersion, product)` instead defaults to Production.
+`UnityBuildVersion(buildVersion, product, lookupEnvironment)` explicitly selects
+one supported API-owned directory and rejects invalid values before transport;
+its obsolete four-argument overload ignores composition/selection and uses Production.
 ID values must
 be positive; text path segments must be non-empty. The returned endpoint can be
 extended with query/path values and passed to `IApiClient.SendAsync<T>`.
