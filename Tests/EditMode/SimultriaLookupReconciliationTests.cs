@@ -136,9 +136,9 @@ namespace Deucarian.Simultria.API.Tests.EditMode
             var package = PackageManagerPackageInfo.FindForAssembly(typeof(SimultriaEndpointCatalog).Assembly);
             Assert.That(package, Is.Not.Null);
             JObject manifest = JObject.Parse(File.ReadAllText(Path.Combine(package.resolvedPath, "package.json")));
-            Assert.That(Version.Parse((string)manifest["version"]), Is.GreaterThanOrEqualTo(new Version(1, 1, 1)));
+            Assert.That(Version.Parse((string)manifest["version"]), Is.GreaterThanOrEqualTo(new Version(1, 2, 0)));
             Assert.That(Version.Parse((string)manifest["dependencies"]["com.deucarian.editor"]),
-                Is.GreaterThanOrEqualTo(new Version(1, 3, 0)));
+                Is.GreaterThanOrEqualTo(new Version(1, 7, 0)));
             Assert.That(Version.Parse((string)manifest["dependencies"]["com.deucarian.session"]),
                 Is.GreaterThanOrEqualTo(new Version(1, 0, 7)));
         }

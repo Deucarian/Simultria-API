@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.2.0] - 2026-09-10
+
+### Added
+
+- Explicit Unity build lookup environment selection: Production (the zero/default
+  value) or the shared Development directory, independent of the runtime
+  environment assigned by the exact product/version record.
+- API-owned host mapping and typed endpoint, lookup and router overloads.
+  Invalid selections fail before transport; requests never retry another directory.
+- Regression coverage for both directories, cross-environment runtime responses,
+  credential-free request policy, invalid values, cancellation and strict missing
+  record classification.
+
+### Changed
+
+- Revise the fixed-Production-only discovery policy to allow explicit Development
+  lookup. Existing overloads and obsolete runtime-context adapters still use
+  Production; they do not reinterpret old environment values.
+- Keep exact identity, typed missing-record semantics and runtime configuration
+  validation unchanged. Preserve Editor 1.7.0 and existing dependency minima.
+
 ## [1.1.3] - 2026-09-09
 
 ### Changed

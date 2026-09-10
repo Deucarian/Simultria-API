@@ -111,11 +111,15 @@ the explicit runtime environment once and preserves the existing constructors
 and `SimultriaLookupServiceBase` compatibility. Unconfigured environments still
 fail closed; the context never selects a default backend.
 
-`SimultriaUnityBuildVersionLookupService(apiClient)` always calls the public
-Production directory at `https://buildingvirtualitysuite.com`, independently
-of project-owned runtime backend URLs, Editor selection, and legacy directory
-arguments. This fixed Simultria discovery address is the sole exception to the
-project-owned host rule. The package itself does not choose a build version,
+`SimultriaUnityBuildVersionLookupService(apiClient)` defaults to the public
+Production directory at `https://buildingvirtualitysuite.com`. Its explicit
+`(apiClient, SimultriaUnityBuildLookupEnvironment.Development)` overload uses
+the shared `https://backend.dev-buildingvirtuality.com` directory. The lookup
+choice is independent of project-owned runtime URLs, runtime Editor overrides,
+and legacy directory arguments. These API-owned discovery addresses are the
+sole exception to the project-owned host rule. Unsupported enum values fail
+before transport; there is no automatic cross-environment lookup retry.
+The package itself does not choose a build version,
 product, or fallback environment. The backend names `local`, `development`, `test`/`testing`,
 `accept`/`acceptance`, and `production` map to the five built-in Simultria
 environment IDs. Deprecated and unknown values fail closed.
@@ -129,11 +133,18 @@ environment in that case. Legacy message-only errors, network/authentication fai
 unsupported products, identity mismatches, and unknown/deprecated environments
 never authorize fallback. See the [routing contract](UNITY_BUILD_ROUTING.md).
 
-Version 1.1.3 reconciles this fixed-directory policy with development's 1.1.0
-normal lookup-context API and retains Editor 1.3.0 / Session 1.0.7 minima. The
+Use `(apiClient, lookupEnvironment, targetComposition)` to explicitly select
+the router's directory. Its returned record still independently assigns the
+runtime: Development lookup can resolve Production runtime, and vice versa.
+Production is enum value zero; legacy overloads continue to use Production and
+ignore their obsolete runtime-directory selection. Do not migrate old ignored
+environment fields into the new lookup choice.
+
+Version 1.2.0 retains the normal lookup-context API and current Editor 1.7.0 /
+Session 1.0.7 minima. The
 build lookup's obsolete context constructor adapts only an already-supplied
 context's transport; it cannot inherit runtime URLs, endpoint overrides or
-composition headers. Prefer its client-only constructor with a dedicated
+composition headers. Prefer its client-based constructors with a dedicated
 credential-free client instead of configuring a runtime context for discovery.
 
 `SimultriaViewerModelResolver` accepts a project ID, model ID, and optional
@@ -217,7 +228,7 @@ request/response logging so environment discovery cannot depend on a session.
 Generated routes contain no deployment host. Normal backend base URLs remain
 in project-owned profiles or imported starter assets and are blank by default.
 The typed Unity build-directory accessor deliberately bypasses those profiles
-and any custom catalog override to preserve fixed central discovery.
+and any custom catalog override to preserve explicit API-owned discovery.
 
 ## Updating the contract
 

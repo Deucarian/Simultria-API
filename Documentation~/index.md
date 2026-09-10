@@ -68,8 +68,11 @@ directly.
 
 The package owns the credential-free service definition and endpoint catalog;
 the project-owned settings supply runtime backend URLs. Public Unity build
-discovery is separate: its fixed central Production address cannot be selected
-from an environment dropdown. See [central build routing](../UNITY_BUILD_ROUTING.md)
+discovery is separate: `SimultriaUnityBuildLookupEnvironment` explicitly selects
+Production (default) or the shared Development directory, not the runtime backend.
+The returned exact record assigns runtime; no automatic cross-directory retry is
+performed. Use a dedicated credential-free client for discovery, not the
+Session-backed client described above. See [central build routing](../UNITY_BUILD_ROUTING.md)
 for the exact-record and explicit-missing-record contract.
 
 ## Make a normal request

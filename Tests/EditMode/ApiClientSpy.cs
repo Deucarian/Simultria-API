@@ -21,6 +21,8 @@ namespace Deucarian.Simultria.API.Tests.EditMode
 
         internal Exception ThrownException { get; set; }
 
+        internal int SendCount { get; private set; }
+
         public Task<ApiResult<TResponse>> SendAsync<TResponse>(
             ApiRequest request,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -90,6 +92,7 @@ namespace Deucarian.Simultria.API.Tests.EditMode
         private Task<ApiResult<TResponse>> Success<TResponse>(
             HttpMethod method)
         {
+            SendCount++;
             if (ThrownException != null)
             {
                 throw ThrownException;
