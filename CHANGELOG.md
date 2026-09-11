@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.2.1] - 2026-09-11
+
+- Use shared native custom Inspectors and a concise contract updater workspace with unchanged contract generation and validation behavior.
+- Require Editor 1.10.6 for the shared native controls, typography, responsive layouts and accessible interaction states.
+
 ## [1.2.0] - 2026-09-10
 
 ### Added
