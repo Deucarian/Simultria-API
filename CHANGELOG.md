@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.2.2] - 2026-09-11
+
+- Clarify package-owned environment definitions versus project-owned deployment addresses, including reserved validation examples and the separate Unity build directory lookup.
+- Adopt API 2.0.6 environment guidance and Editor 1.11.0 shared controls.
+
+## [1.2.1] - 2026-09-11
+
+- Use shared native custom Inspectors and a concise contract updater workspace with unchanged contract generation and validation behavior.
+- Require Editor 1.10.6 for the shared native controls, typography, responsive layouts and accessible interaction states.
+
 ## [1.2.0] - 2026-09-10
 
 ### Added

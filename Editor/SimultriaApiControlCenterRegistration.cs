@@ -41,7 +41,7 @@ namespace Deucarian.Simultria.API.Editor
                     DeucarianControlCenterArea.Developer,
                     SimultriaApiEditorTools.OpenContractUpdater,
                     PackageId,
-                    searchTerms: new[] { "simultria", "api", "contract", "endpoints" },
+                    iconKey: "file-text", searchTerms: new[] { "simultria", "api", "contract", "endpoints" },
                     order: 100, createPage: SimultriaContractUpdateWindow.CreatePage));
 
             CardRegistration = DeucarianControlCenterRegistry.RegisterCardProvider(

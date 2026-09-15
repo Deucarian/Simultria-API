@@ -52,6 +52,13 @@ inspector keeps the everyday view to five URL/status cards. An empty slot is
 **Not configured**. A valid absolute HTTP(S) URL changes it to **Configured**;
 malformed or partial configuration is **Invalid** and fails closed.
 Configuring one slot never causes another slot to fall back to that host.
+The connection editor identifies the selected environment beside its host
+guidance. Example addresses such as `https://development.example.invalid` are
+examples only, never saved defaults. A test project's `validation.localhost` (or
+other validation address) is a fixture value, not a Simultria deployment host.
+Do not infer Development, Testing or Production addresses by replacing a word
+in another environment's URL. Keep confirmed hosts in project-owned settings;
+package updates must not silently redirect requests.
 In particular, Local remains a built-in selectable environment when its URL is
 blank; blank means **Not configured**, not Development and not Custom.
 
