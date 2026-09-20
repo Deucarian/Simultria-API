@@ -1,0 +1,17 @@
+{
+  "githubRepository": "Deucarian/Simultria-API",
+  "committer": {
+    "name": "jhoevenberg",
+    "email": "j.hoevenberg@simultria.nl"
+  },
+  "validationWorkflow": "simultria-contract-validation.yml",
+  "requiredChecks": [
+    "Validate generated contract",
+    "Validate package governance / Validate package"
+  ],
+  "mergeAfterValidation": true,
+  "channels": [
+    "main",
+    "develop"
+  ]
+}
