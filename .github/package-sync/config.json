@@ -13,5 +13,6 @@
   "channels": [
     "main",
     "develop"
-  ]
+  ],
+  "keepScheduleActive": true
 }
