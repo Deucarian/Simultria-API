@@ -16,6 +16,7 @@ import sys
 from typing import Any, Mapping
 
 import generate_contract
+import generate_client
 
 
 PACKAGE_ROOT = Path(__file__).resolve().parent.parent
@@ -240,6 +241,7 @@ def validate_generated(root: Path) -> None:
         raise generate_contract.ContractError(
             "Checked-in coverage is not complete for its supplied snapshot."
         )
+    generate_client.validate(root, catalog)
 
 
 def refresh_review_files(root: Path, source_revision: str) -> None:
@@ -274,6 +276,12 @@ def run_generation(args: argparse.Namespace, source_revision: str) -> int:
             "--spec is required unless validating generated artifacts."
         )
     output_root = args.output_root.resolve()
+    # Validate every typed mapping before the existing generator mutates any output.
+    spec = read_json(args.spec, "OpenAPI snapshot")
+    overlay = read_json(PACKAGE_ROOT / OVERLAY, "Overlay")
+    candidate_catalog, _ = generate_contract.generate(spec, overlay, args.spec)
+    client_contract = generate_client.build(spec, candidate_catalog)
+    generate_client.render(client_contract)
     command = [
         sys.executable,
         str(PACKAGE_ROOT / "Tools~" / "generate_contract.py"),
@@ -333,6 +341,7 @@ def run_generation(args: argparse.Namespace, source_revision: str) -> int:
             definition_path,
             expected_definition,
         )
+    generate_client.sync(output_root, client_contract, check=args.check)
     return 0
 
 

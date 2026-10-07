@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using Deucarian.Simultria.API.Editor;
-using Deucarian.Simultria.API.Endpoints;
 using NUnit.Framework;
 using PackageManagerPackageInfo = UnityEditor.PackageManager.PackageInfo;
 
@@ -14,7 +13,7 @@ namespace Deucarian.Simultria.API.Tests.EditMode
         {
             PackageManagerPackageInfo package =
                 PackageManagerPackageInfo.FindForAssembly(
-                    typeof(SimultriaEndpointCatalog).Assembly);
+                    typeof(SimultriaApi).Assembly);
 
             Assert.That(package, Is.Not.Null);
             Assert.That(
@@ -23,23 +22,16 @@ namespace Deucarian.Simultria.API.Tests.EditMode
                 Is.True);
             Assert.That(
                 Path.GetFileName(installedDocumentation),
-                Is.EqualTo("index.md"));
+                Is.EqualTo("PublicApi.txt"));
             Assert.That(
                 SimultriaApiDocumentationMenu.TryFindDocumentationFile(
                     package.resolvedPath,
-                    "Documentation~/index.md",
+                    "Documentation~/PublicApi.txt",
                     out string developerGuide),
                 Is.True);
             Assert.That(File.ReadAllText(developerGuide),
-                Does.Contain("SimultriaActivityLookupService"));
-            Assert.That(
-                SimultriaApiDocumentationMenu.TryFindDocumentationFile(
-                    package.resolvedPath,
-                    "Documentation~/PUBLIC_API.md",
-                    out string publicApi),
-                Is.True);
-            Assert.That(File.ReadAllText(publicApi),
-                Does.Contain("SimultriaEndpointCatalog"));
+                Does.Contain("api.ModelVersions.GetActivitiesAsync"));
+            Assert.That(File.ReadAllText(developerGuide), Does.Contain("SimultriaEndpoints"));
             Assert.That(
                 SimultriaApiDocumentationMenu.TryFindDocumentationFile(
                     package.resolvedPath,

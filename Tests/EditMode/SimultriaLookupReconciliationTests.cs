@@ -6,7 +6,6 @@ using Deucarian.API.Configuration;
 using Deucarian.API.Core;
 using Deucarian.API.Models;
 using Deucarian.Simultria.API.Configuration;
-using Deucarian.Simultria.API.Endpoints;
 using Deucarian.Simultria.API.Models;
 using Deucarian.Simultria.API.Services;
 using Newtonsoft.Json.Linq;
@@ -133,7 +132,7 @@ namespace Deucarian.Simultria.API.Tests.EditMode
         [Test]
         public void PackageDoesNotReuseTheUpstreamVersionOrLowerItsDependencyMinima()
         {
-            var package = PackageManagerPackageInfo.FindForAssembly(typeof(SimultriaEndpointCatalog).Assembly);
+            var package = PackageManagerPackageInfo.FindForAssembly(typeof(SimultriaApi).Assembly);
             Assert.That(package, Is.Not.Null);
             JObject manifest = JObject.Parse(File.ReadAllText(Path.Combine(package.resolvedPath, "package.json")));
             Assert.That(Version.Parse((string)manifest["version"]), Is.GreaterThanOrEqualTo(new Version(1, 2, 0)));

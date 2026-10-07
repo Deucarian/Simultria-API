@@ -2,13 +2,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Deucarian.API.Core;
 using Deucarian.API.Models;
-using Deucarian.Simultria.API.Endpoints;
+using Deucarian.Simultria.API.Generated;
 using Deucarian.Simultria.API.Models;
 
 namespace Deucarian.Simultria.API.Services
 {
     /// <summary>Read-only project and project-model lookup operations.</summary>
-    public sealed class SimultriaProjectLookupService :
+    public sealed partial class SimultriaProjectLookupService :
         SimultriaLookupServiceBase
     {
         private readonly SimultriaLookupContext _lookup;
@@ -33,9 +33,9 @@ namespace Deucarian.Simultria.API.Services
         {
             return _lookup.SendAsync<
                 SimultriaCollectionResponse<SimultriaProjectDto>>(
-                SimultriaEndpointCatalog.Projects(
-                    _lookup.Composition,
-                    _lookup.EnvironmentId),
+                _lookup.CreateEndpoint(SimultriaEndpoints.Projects.GetProjects,
+                                       new ProjectsGetProjectsRequest()
+                ),
                 cancellationToken);
         }
 
@@ -46,10 +46,9 @@ namespace Deucarian.Simultria.API.Services
                     default(CancellationToken))
         {
             return _lookup.SendAsync<SimultriaResourceResponse<SimultriaProjectDto>>(
-                SimultriaEndpointCatalog.Project(
-                    _lookup.Composition,
-                    _lookup.EnvironmentId,
-                    projectId),
+                _lookup.CreateEndpoint(SimultriaEndpoints.Projects.GetProject,
+                                       new ProjectsGetProjectRequest { Id = projectId }
+                ),
                 cancellationToken);
         }
 
@@ -61,10 +60,9 @@ namespace Deucarian.Simultria.API.Services
         {
             return _lookup.SendAsync<
                 SimultriaCollectionResponse<SimultriaModelDto>>(
-                SimultriaEndpointCatalog.ProjectModels(
-                    _lookup.Composition,
-                    _lookup.EnvironmentId,
-                    projectId),
+                _lookup.CreateEndpoint(SimultriaEndpoints.Projects.GetModels,
+                                       new ProjectsGetModelsRequest { ProjectId = projectId }
+                ),
                 cancellationToken);
         }
     }

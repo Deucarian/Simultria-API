@@ -22,6 +22,7 @@ namespace Deucarian.Simultria.API.Tests.EditMode
         internal Exception ThrownException { get; set; }
 
         internal int SendCount { get; private set; }
+        internal object PendingTask { get; set; }
 
         public Task<ApiResult<TResponse>> SendAsync<TResponse>(
             ApiRequest request,
@@ -93,6 +94,7 @@ namespace Deucarian.Simultria.API.Tests.EditMode
             HttpMethod method)
         {
             SendCount++;
+            if (PendingTask != null) return (Task<ApiResult<TResponse>>)PendingTask;
             if (ThrownException != null)
             {
                 throw ThrownException;
