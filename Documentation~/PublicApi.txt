@@ -1,0 +1,136 @@
+Simultria Backend API - public API
+
+Calling the backend
+
+Normal consumers receive a SimultriaApi through constructor injection. The viewer
+integration owns one instance per connection and supplies it as execution.Api to
+the application initialization callback. No Current, singleton, or service locator
+is needed in the consuming service. Its ordinary call is:
+
+    api.ModelVersions.GetActivities(versionId, OnActivitiesLoaded, OnActivitiesFailed);
+
+OnActivitiesLoaded receives ModelVersionsGetActivitiesResponse; OnActivitiesFailed
+receives the shared ApiError contract. ApiError.IsCancellation identifies cancellation.
+Every generated endpoint provides typed callbacks and an Async alternative.
+
+The generic API package owns main-thread dispatch, automatic Unity initialization,
+and exactly one terminal callback. Completion is posted even for cached results.
+Consumer callback exceptions are contained by that shared dispatcher and never
+invoke the other callback. The backend package retains owner lifetimes until delivery
+so cancellation can suppress a result that completed before its callback ran.
+
+For advanced consumers outside the viewer integration, create a SimultriaApi once
+at your application's connection boundary using the existing authenticated client:
+
+    using Deucarian.Simultria.API;
+
+    SimultriaApi api = new SimultriaApi(client, connectionSettings, environmentId, connectionLifetime);
+
+The package builds the catalog composition. Applications that already have an
+ApiComposition can pass that instead of connectionSettings. An unconfigured
+environment fails with an error; the package does not guess a backend.
+
+Pass the resulting api to the services that use it. Ordinary operations need only
+their operation arguments and optional cancellation:
+
+    using Deucarian.API.Models;
+    using Deucarian.Simultria.API.Generated;
+
+    ApiResult<ModelVersionsGetActivitiesResponse> result =
+        await api.ModelVersions.GetActivitiesAsync(versionId, cancellationToken);
+
+Each generated method fixes its request and response types. Use autocomplete to
+browse the groups and operations. Optional filters use a generated request:
+
+    ApiResult<ProjectsGetProjectsResponse> projects = await api.Projects.GetProjectsAsync(
+        new ProjectsGetProjectsRequest { FilterSearch = "office", PerPage = 25 },
+        cancellationToken
+    );
+
+The client and session remain owned by the application connection. The viewer
+integration cancels its API before retiring that connection. Old references remain
+pinned and reject further requests; they never reroute to another environment.
+New services receive the replacement connection's API at initialization.
+
+Bind an additional owner lifetime once with api.WithLifetime(ownerLifetime).
+The Unity 6 viewer integration adds api.For(component), using that component's
+destroyCancellationToken. This is an INSTANCE extension on the injected API;
+it does not look up a global connection. Destruction cancels; disabling does not.
+The returned view shares the client and context, retaining all earlier lifetimes.
+Optional per-call cancellation is for shorter operations, such as a replaced search.
+
+Cancellation reaches transport and terminates waiting even if transport completes
+late. Late faults are observed and cannot deliver a second callback. Async callers
+should handle both OperationCanceledException (including pre-cancellation) and
+ApiResult.Error.IsCancellation, preserving the existing transport contract.
+The API never owns or disposes the authenticated client or authentication session.
+
+Looking up an endpoint
+
+SimultriaEndpoints contains generated, typed operation definitions:
+
+    SimultriaEndpoints.ModelVersions.GetActivities
+
+Its RouteTemplate and EndpointId identify the route. To inspect the configured
+URL without making a network call:
+
+    ApiRequest request = api.CreateRequest(
+        SimultriaEndpoints.ModelVersions.GetActivities,
+        new ModelVersionsGetActivitiesRequest { VersionId = versionId }
+    );
+    string url = request.Endpoint;
+
+What the catalog names mean
+
+ApiEndpointCatalog is the generic API package's configuration asset type.
+SimultriaApiV2EndpointCatalog.asset is the generated backend catalog data used by
+connection settings. It is still needed to resolve hosts, routes, and policies.
+SimultriaEndpoints is the generated typed index of those operations.
+SimultriaApi is the client you normally call.
+
+The handwritten SimultriaEndpointCatalog helper has been removed. It covered only
+a subset of the generated operations and is no longer a second public entry point.
+Replace calls to it with SimultriaApi methods, or CreateRequest plus the matching
+SimultriaEndpoints operation when inspecting a request. Existing lookup services
+remain supported and use the generated definitions internally.
+
+Model selection
+
+    api.Projects.GetModelTree(projectId, OnProjectLoaded, OnRequestFailed);
+
+GetModelTree uses the generated GetProject route with the backend's existing
+included_fields projection. It returns SimultriaResourceResponse<SimultriaProjectDto>,
+including child projects, model versions and the active version. The package owns
+the wire field names and the existing narrow response DTOs; consumers supply only
+the project ID. GetModelTreeAsync offers the same operation for Task-based workflows.
+This is a typed projection of the existing endpoint, not another backend route.
+
+Model initialization constructs SimultriaViewerModelResolver with the injected API.
+Resolve offers success/failure callbacks; ResolveAsync retains domain error codes
+for readiness pipelines. Both inherit connection/owner cancellation and use the
+same field selection and deterministic model-version rules.
+
+Build discovery
+
+SimultriaUnityBuildVersionLookupService discovers a build before a runtime
+connection exists. Construct it with the transport client and, optionally, an
+explicit SimultriaUnityBuildLookupEnvironment. Production is the documented
+default; Development is the other supported directory. It does not infer the
+runtime environment from the directory selection. The returned build record
+selects the runtime environment. Unsupported selections fail without fallback.
+
+Contract completeness and generation
+
+Known schema fields have generated types. JToken and List<JToken> explicitly mark
+schema information missing or unsupported in the backend contract; they are not
+promises about a payload's structure. AdditionalProperties preserves unknown
+response fields. Do not cast unknown payloads to an invented contract.
+
+Runtime/Generated contains the operation and model source for inspection.
+Tools~/update_contract.py regenerates both catalog data and typed source from the
+same backend OpenAPI snapshot. Tools~/update_contract.py --validate-generated
+checks that the checked-in artifacts agree. Do not hand-edit generated files.
+
+The SimultriaGeneratedClientExample in the starter sample demonstrates this API.
+This guide is the current client reference; older Markdown guides describe the
+previous handwritten endpoint surface.

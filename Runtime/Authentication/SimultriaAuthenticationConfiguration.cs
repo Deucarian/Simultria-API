@@ -3,7 +3,7 @@ using Deucarian.API;
 using Deucarian.API.Core;
 using Deucarian.API.Models;
 using Deucarian.Session.APIIntegration;
-using Deucarian.Simultria.API.Endpoints;
+using Deucarian.Simultria.API.Generated;
 
 namespace Deucarian.Simultria.API.Authentication
 {
@@ -13,9 +13,8 @@ namespace Deucarian.Simultria.API.Authentication
             ApiComposition composition,
             ApiEnvironmentId environmentId)
         {
-            ApiEndpoint endpoint = SimultriaEndpointCatalog.Login(
-                composition,
-                environmentId);
+            ApiEndpoint endpoint = SimultriaEndpoints.Authentication.Login
+                .ResolveEndpoint(composition, environmentId, new AuthenticationLoginRequest());
             return new SessionTokenEndpointConfig(
                 endpoint.Path,
                 new[]
@@ -47,8 +46,8 @@ namespace Deucarian.Simultria.API.Authentication
             ApiComposition composition,
             ApiEnvironmentId environmentId)
         {
-            ApiEndpoint endpoint = SimultriaEndpointCatalog
-                .ValidateAuthentication(composition, environmentId);
+            ApiEndpoint endpoint = SimultriaEndpoints.Authentication.Validate
+                .ResolveEndpoint(composition, environmentId, new AuthenticationValidateRequest());
             return new SessionTokenEndpointConfig(
                 endpoint.Path,
                 null,
