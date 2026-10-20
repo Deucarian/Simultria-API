@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using Deucarian.API.Models;
 using Deucarian.Simultria.API.Configuration;
-using Deucarian.Simultria.API.Endpoints;
 using Deucarian.Simultria.API.Models;
 using Deucarian.Simultria.API.Services;
 using Deucarian.Simultria.UnityBuildRouting;
@@ -25,14 +24,11 @@ namespace Deucarian.Simultria.API.Tests.EditMode
 #pragma warning disable CS0618
                 var lookup = new SimultriaUnityBuildVersionLookupService(
                     client, fixture.Settings.CreateComposition(), environment);
-                ApiEndpoint endpoint = SimultriaEndpointCatalog.UnityBuildVersion(
-                    fixture.Composition, environment, "1.0", "activity_viewer");
 #pragma warning restore CS0618
 
                 await lookup.GetBuildVersionAsync("1.0", "activity_viewer");
 
                 AssertCentralEndpoint(client.LastEndpoint);
-                AssertCentralEndpoint(endpoint);
             }
         }
 

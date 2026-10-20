@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Deucarian.API.Core;
 using Deucarian.API.Models;
 using Deucarian.Simultria.API.Configuration;
-using Deucarian.Simultria.API.Endpoints;
 using Deucarian.Simultria.API.Models;
 
 namespace Deucarian.Simultria.API.Services
@@ -13,7 +12,7 @@ namespace Deucarian.Simultria.API.Services
     /// Reads an explicitly selected public directory without a session or a
     /// runtime profile. Production is the default; the returned environment is not.
     /// </summary>
-    public sealed class SimultriaUnityBuildVersionLookupService
+    public sealed partial class SimultriaUnityBuildVersionLookupService
     {
         private readonly Func<ApiEndpoint, CancellationToken, Task<ApiResult<
             SimultriaResourceResponse<SimultriaUnityBuildVersionDto>>>> sendAsync;
@@ -88,7 +87,7 @@ namespace Deucarian.Simultria.API.Services
                     default(CancellationToken))
         {
             return sendAsync(
-                SimultriaEndpointCatalog.UnityBuildVersion(
+                SimultriaUnityBuildDirectory.CreateEndpoint(
                     buildVersion,
                     product,
                     lookupEnvironment),
