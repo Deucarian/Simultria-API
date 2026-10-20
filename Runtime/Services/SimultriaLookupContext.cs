@@ -25,5 +25,22 @@ namespace Deucarian.Simultria.API.Services
 
         public Task<ApiResult<T>> SendAsync<T>(ApiEndpoint endpoint, CancellationToken cancellationToken)
             => _client.SendAsync<T>(endpoint, cancellationToken);
+
+        /// <summary>Sends an endpoint with typed Unity main-thread callbacks, including cancellation failures.</summary>
+        public void Send<T>(ApiEndpoint endpoint,
+                            Action<T> onSuccess,
+                            Action<ApiError> onFailure,
+                            CancellationToken cancellationToken = default)
+        {
+            ApiCallbacks.Run(() => SendAsync<T>(endpoint, cancellationToken),
+                             onSuccess,
+                             onFailure,
+                             cancellationToken
+            );
+        }
+
+        internal ApiEndpoint CreateEndpoint<TRequest, TResponse>(SimultriaOperation<TRequest, TResponse> operation,
+                                                                TRequest parameters)
+            => operation.CreateEndpoint(Composition, EnvironmentId, parameters);
     }
 }

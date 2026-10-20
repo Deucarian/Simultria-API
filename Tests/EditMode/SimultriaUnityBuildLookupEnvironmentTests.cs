@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Deucarian.API.Configuration;
 using Deucarian.API.Models;
 using Deucarian.Simultria.API.Configuration;
-using Deucarian.Simultria.API.Endpoints;
+using Deucarian.Simultria.API.Generated;
 using Deucarian.Simultria.API.Models;
 using Deucarian.Simultria.API.Services;
 using Deucarian.Simultria.UnityBuildRouting;
@@ -26,15 +26,17 @@ namespace Deucarian.Simultria.API.Tests.EditMode
 
         [TestCase(SimultriaUnityBuildLookupEnvironment.Production, "https://buildingvirtualitysuite.com")]
         [TestCase(SimultriaUnityBuildLookupEnvironment.Development, "https://backend.dev-buildingvirtuality.com")]
-        public void SupportedSelectionUsesOnlyItsApiOwnedHost(
+        public async Task SupportedSelectionUsesOnlyItsApiOwnedHost(
             SimultriaUnityBuildLookupEnvironment selection, string expectedBaseUrl)
         {
             Assert.That(SimultriaUnityBuildDirectory.TryGetBaseUrl(selection, out string baseUrl), Is.True);
             Assert.That(baseUrl, Is.EqualTo(expectedBaseUrl));
-            AssertPublicEndpoint(SimultriaEndpointCatalog.UnityBuildVersion("AV-1.0.0", "activity_viewer", selection),
-                expectedBaseUrl, "AV-1.0.0", "activity_viewer");
-            AssertPublicEndpoint(SimultriaEndpointCatalog.UnityBuildVersion("RV-1.0.0", "report_viewer", selection),
-                expectedBaseUrl, "RV-1.0.0", "report_viewer");
+            ApiClientSpy client = new ApiClientSpy();
+            SimultriaUnityBuildVersionLookupService lookup = new SimultriaUnityBuildVersionLookupService(client, selection);
+            await lookup.GetBuildVersionAsync("AV-1.0.0", "activity_viewer");
+            AssertPublicEndpoint(client.LastEndpoint, expectedBaseUrl, "AV-1.0.0", "activity_viewer");
+            await lookup.GetBuildVersionAsync("RV-1.0.0", "report_viewer");
+            AssertPublicEndpoint(client.LastEndpoint, expectedBaseUrl, "RV-1.0.0", "report_viewer");
         }
 
         [TestCase(-1)]
@@ -47,12 +49,18 @@ namespace Deucarian.Simultria.API.Tests.EditMode
             Assert.That(SimultriaUnityBuildDirectory.TryGetBaseUrl(selection, out string baseUrl), Is.False);
             Assert.That(baseUrl, Is.Empty);
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                SimultriaEndpointCatalog.UnityBuildVersion("AV-1.0.0", "activity_viewer", selection));
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
                 new SimultriaUnityBuildVersionLookupService(client, selection));
 
             using (var fixture = new SimultriaTestComposition())
             {
+                SimultriaApi api = new SimultriaApi(client, fixture.Composition, SimultriaEnvironmentIds.Development);
+                Assert.Throws<ArgumentOutOfRangeException>(() => api.CreateRequest(
+                    SimultriaEndpoints.UnityBuildVersions.GetVersion,
+                    new UnityBuildVersionsGetVersionRequest
+                    {
+                        Id = "AV-1.0.0", Product = "activity_viewer", LookupEnvironment = selection
+                    }
+                ));
                 var result = await new SimultriaUnityBuildRoutingService(client, selection, fixture.Composition)
                     .ResolveAsync("AV-1.0.0", "activity_viewer");
                 Assert.That(result.Succeeded, Is.False);

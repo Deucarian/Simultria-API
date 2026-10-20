@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.5.0] - Upstream synchronization
+
+- Synchronize package version 1.5.0 from [upstream commit `1c7dfb540d1f38be64272798fa31737780b322c6`](https://bitbucket.org/simultria/simultria-api/commits/1c7dfb540d1f38be64272798fa31737780b322c6).
+
 ## [1.2.2] - 2026-09-11
 
 - Clarify package-owned environment definitions versus project-owned deployment addresses, including reserved validation examples and the separate Unity build directory lookup.
