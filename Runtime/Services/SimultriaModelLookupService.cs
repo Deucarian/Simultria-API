@@ -2,13 +2,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Deucarian.API.Core;
 using Deucarian.API.Models;
-using Deucarian.Simultria.API.Endpoints;
+using Deucarian.Simultria.API.Generated;
 using Deucarian.Simultria.API.Models;
 
 namespace Deucarian.Simultria.API.Services
 {
     /// <summary>Read-only model and model-version lookup operations.</summary>
-    public sealed class SimultriaModelLookupService : SimultriaLookupServiceBase
+    public sealed partial class SimultriaModelLookupService : SimultriaLookupServiceBase
     {
         private readonly SimultriaLookupContext _lookup;
 
@@ -32,10 +32,9 @@ namespace Deucarian.Simultria.API.Services
                     default(CancellationToken))
         {
             return _lookup.SendAsync<SimultriaResourceResponse<SimultriaModelDto>>(
-                SimultriaEndpointCatalog.Model(
-                    _lookup.Composition,
-                    _lookup.EnvironmentId,
-                    modelId),
+                _lookup.CreateEndpoint(SimultriaEndpoints.Models.GetModel,
+                                       new ModelsGetModelRequest { Id = modelId }
+                ),
                 cancellationToken);
         }
 
@@ -48,10 +47,9 @@ namespace Deucarian.Simultria.API.Services
         {
             return _lookup.SendAsync<
                 SimultriaResourceResponse<SimultriaModelVersionDto>>(
-                SimultriaEndpointCatalog.ModelVersion(
-                    _lookup.Composition,
-                    _lookup.EnvironmentId,
-                    versionId),
+                _lookup.CreateEndpoint(SimultriaEndpoints.ModelVersions.GetModelVersion,
+                                       new ModelVersionsGetModelVersionRequest { Id = versionId }
+                ),
                 cancellationToken);
         }
 
@@ -64,10 +62,9 @@ namespace Deucarian.Simultria.API.Services
         {
             return _lookup.SendAsync<
                 SimultriaResourceResponse<SimultriaModelVersionDto>>(
-                SimultriaEndpointCatalog.ActiveModelVersion(
-                    _lookup.Composition,
-                    _lookup.EnvironmentId,
-                    modelId),
+                _lookup.CreateEndpoint(SimultriaEndpoints.Models.GetActiveVersion,
+                                       new ModelsGetActiveVersionRequest { ModelId = modelId }
+                ),
                 cancellationToken);
         }
 
@@ -80,10 +77,9 @@ namespace Deucarian.Simultria.API.Services
         {
             return _lookup.SendAsync<
                 SimultriaResourceResponse<SimultriaModelVersionDto>>(
-                SimultriaEndpointCatalog.FrozenModelVersion(
-                    _lookup.Composition,
-                    _lookup.EnvironmentId,
-                    modelId),
+                _lookup.CreateEndpoint(SimultriaEndpoints.Models.GetFrozenVersion,
+                                       new ModelsGetFrozenVersionRequest { ModelId = modelId }
+                ),
                 cancellationToken);
         }
     }

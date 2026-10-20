@@ -2,13 +2,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Deucarian.API.Core;
 using Deucarian.API.Models;
-using Deucarian.Simultria.API.Endpoints;
+using Deucarian.Simultria.API.Generated;
 using Deucarian.Simultria.API.Models;
 
 namespace Deucarian.Simultria.API.Services
 {
     /// <summary>Read-only activity metadata lookup operations.</summary>
-    public sealed class SimultriaActivityLookupService :
+    public sealed partial class SimultriaActivityLookupService :
         SimultriaLookupServiceBase
     {
         private readonly SimultriaLookupContext _lookup;
@@ -48,10 +48,9 @@ namespace Deucarian.Simultria.API.Services
                     default(CancellationToken))
         {
             return _lookup.SendAsync<SimultriaCollectionResponse<TActivity>>(
-                SimultriaEndpointCatalog.ModelVersionActivities(
-                    _lookup.Composition,
-                    _lookup.EnvironmentId,
-                    versionId),
+                _lookup.CreateEndpoint(SimultriaEndpoints.ModelVersions.GetActivities,
+                                       new ModelVersionsGetActivitiesRequest { VersionId = versionId }
+                ),
                 cancellationToken);
         }
 
@@ -76,11 +75,9 @@ namespace Deucarian.Simultria.API.Services
                     default(CancellationToken))
         {
             return _lookup.SendAsync<SimultriaResourceResponse<TActivity>>(
-                SimultriaEndpointCatalog.ModelVersionActivity(
-                    _lookup.Composition,
-                    _lookup.EnvironmentId,
-                    versionId,
-                    activityId),
+                _lookup.CreateEndpoint(SimultriaEndpoints.ModelVersions.GetActivity,
+                                       new ModelVersionsGetActivityRequest { VersionId = versionId, Id = activityId }
+                ),
                 cancellationToken);
         }
     }

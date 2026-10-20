@@ -1,3 +1,6 @@
+using System;
+using Deucarian.API.Models;
+
 namespace Deucarian.Simultria.API.Configuration
 {
     /// <summary>
@@ -12,6 +15,36 @@ namespace Deucarian.Simultria.API.Configuration
 
         public const string VersionRoute =
             "/api/v2/unity/builds/versions/{id}/{product}";
+
+        internal static ApiEndpoint CreateEndpoint(string buildVersion,
+                                                   string product,
+                                                   SimultriaUnityBuildLookupEnvironment lookupEnvironment)
+        {
+            if (!TryGetBaseUrl(lookupEnvironment, out string baseUrl))
+            {
+                throw new ArgumentOutOfRangeException(nameof(lookupEnvironment),
+                                                      "Select a supported Unity build lookup environment."
+                );
+            }
+
+            if (string.IsNullOrWhiteSpace(buildVersion))
+            {
+                throw new ArgumentException("A build version is required.", nameof(buildVersion));
+            }
+
+            if (string.IsNullOrWhiteSpace(product))
+            {
+                throw new ArgumentException("A product is required.", nameof(product));
+            }
+
+            return new ApiEndpoint(baseUrl + VersionRoute,
+                                   authentication: ApiAuthenticationRequirement.Disabled,
+                                   timeoutSeconds: 30,
+                                   suppressLogging: true
+                )
+                .WithPathParameter("id", buildVersion.Trim())
+                .WithPathParameter("product", product.Trim());
+        }
 
         public static bool TryGetBaseUrl(
             SimultriaUnityBuildLookupEnvironment lookupEnvironment,

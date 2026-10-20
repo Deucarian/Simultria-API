@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Deucarian.API.Core;
 using Deucarian.API.Models;
-using Deucarian.Simultria.API.Endpoints;
 using Deucarian.Simultria.API.Models;
 
 namespace Deucarian.Simultria.API.Services
@@ -17,38 +16,44 @@ namespace Deucarian.Simultria.API.Services
     public sealed class SimultriaViewerModelResolver :
         SimultriaLookupServiceBase
     {
-        private static readonly string IncludedFields = string.Join(
-            ",",
-            new[]
-            {
-                "projects.id",
-                "projects.name",
-                "projects.models",
-                "projects.sub_projects",
-                "models.id",
-                "models.name",
-                "models.active_version",
-                "models.model_versions",
-                "models.versions",
-                "model_versions.id",
-                "model_versions.name",
-                "model_versions.download_link",
-                "model_versions.version",
-                "model_versions.version_number",
-                "model_versions.order",
-                "model_versions.updated_at",
-                "model_versions.created_at"
-            });
+        private readonly SimultriaApi _api;
 
-        private readonly IApiClient apiClient;
-
-        public SimultriaViewerModelResolver(
-            IApiClient client,
-            ApiComposition composition,
-            ApiEnvironmentId environmentId)
-            : base(client, composition, environmentId)
+        public SimultriaViewerModelResolver(SimultriaApi api)
+            : base(api?.Client ?? throw new ArgumentNullException(nameof(api)), api.Composition, api.EnvironmentId)
         {
-            apiClient = client;
+            _api = api;
+        }
+
+        public SimultriaViewerModelResolver(IApiClient client,
+                                           ApiComposition composition,
+                                           ApiEnvironmentId environmentId)
+            : this(new SimultriaApi(client, composition, environmentId)) { }
+
+        /// <summary>Resolve model selection with success/failure callbacks on the Unity main thread.</summary>
+        /// <remarks>Cancellation calls onFailure with ApiError.IsCancellation set.</remarks>
+        public void Resolve(int projectId,
+                            int modelId,
+                            Action<SimultriaViewerModelResolveResult> onSuccess,
+                            Action<ApiError> onFailure,
+                            int? modelVersionId = null,
+                            CancellationToken cancellationToken = default)
+        {
+            _api.Run(async token =>
+                     {
+                         SimultriaViewerModelResolveResult result =
+                             await ResolveAsync(projectId, modelId, modelVersionId, token);
+                         return result.Succeeded
+                             ? ApiResult<SimultriaViewerModelResolveResult>.Success(
+                                 result, Deucarian.API.HttpMethod.GET, null, null, null)
+                             : ApiResult<SimultriaViewerModelResolveResult>.Failure(new ApiError
+                             {
+                                 Message = result.Message,
+                                 BackendCode = result.ErrorCode,
+                                 IsCancellation = result.ErrorCode == SimultriaViewerModelErrorCodes.ProjectRequestCanceled
+                             }, Deucarian.API.HttpMethod.GET);
+                     },
+                     onSuccess, onFailure, cancellationToken
+            );
         }
 
         public async Task<SimultriaViewerModelResolveResult> ResolveAsync(
@@ -78,19 +83,10 @@ namespace Deucarian.Simultria.API.Services
                     "The Simultria model version ID must be positive.");
             }
 
-            ApiEndpoint endpoint = SimultriaEndpointCatalog.Project(
-                    Composition,
-                    EnvironmentId,
-                    projectId)
-                .WithQueryParameter("included_fields", IncludedFields);
-
             ApiResult<SimultriaResourceResponse<SimultriaProjectDto>> response;
             try
             {
-                response = await apiClient.SendAsync<
-                    SimultriaResourceResponse<SimultriaProjectDto>>(
-                    endpoint,
-                    cancellationToken);
+                response = await _api.Projects.GetModelTreeAsync(projectId, cancellationToken);
             }
             catch (OperationCanceledException)
             {
@@ -103,6 +99,13 @@ namespace Deucarian.Simultria.API.Services
                 return SimultriaViewerModelResolveResult.Failure(
                     SimultriaViewerModelErrorCodes.ProjectRequestFailed,
                     "The Simultria project request failed.");
+            }
+
+            if (response?.Error?.IsCancellation == true)
+            {
+                return SimultriaViewerModelResolveResult.Failure(
+                    SimultriaViewerModelErrorCodes.ProjectRequestCanceled,
+                    "The Simultria project request was canceled.");
             }
 
             if (response == null || !response.IsSuccess)

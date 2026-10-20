@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using Deucarian.Simultria.API.Endpoints;
 using UnityEditor;
 using UnityEngine;
 using PackageManagerPackageInfo = UnityEditor.PackageManager.PackageInfo;
@@ -10,7 +9,7 @@ namespace Deucarian.Simultria.API.Editor
     internal static class SimultriaApiDocumentationMenu
     {
         private const string DeveloperGuideRelativePath =
-            "Documentation~/index.md";
+            "Documentation~/PublicApi.txt";
         private const string ReadmeRelativePath = "README.md";
         private const string EndpointReferenceRelativePath =
             "Documentation~/Generated/API-Endpoints.md";
@@ -68,7 +67,7 @@ namespace Deucarian.Simultria.API.Editor
             path = string.Empty;
             PackageManagerPackageInfo package =
                 PackageManagerPackageInfo.FindForAssembly(
-                    typeof(SimultriaEndpointCatalog).Assembly);
+                    typeof(SimultriaApi).Assembly);
             if (package == null)
             {
                 return false;
@@ -90,7 +89,7 @@ namespace Deucarian.Simultria.API.Editor
         {
             PackageManagerPackageInfo package =
                 PackageManagerPackageInfo.FindForAssembly(
-                    typeof(SimultriaEndpointCatalog).Assembly);
+                    typeof(SimultriaApi).Assembly);
             if (package == null ||
                 !TryFindDocumentationFile(
                     package.resolvedPath,
